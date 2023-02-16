@@ -1,4 +1,9 @@
-import React, { useState } from 'react';
+// styles - react & other assets  //
+import  "./LandingJumbotron.css";
+import React, { Component, useState } from 'react';
+import JobBoardBG from "../../assets/job_board_bg.svg";
+
+//  MDB  //
 import {
   MDBNavbar,
   MDBNavbarNav,
@@ -11,12 +16,12 @@ import {
   MDBBtn
 } from 'mdb-react-ui-kit';
 
-export default function App() {
+function LandingJumbotron() {
   const [showBasic, setShowBasic] = useState(false);
 
   return (
     <>
-      <MDBNavbar expand='lg' light bgColor='white' fluid>
+      {/* <MDBNavbar expand='lg' light bgColor='white' fluid>
         <MDBContainer fluid>
           <MDBNavbarToggler
             onClick={() => setShowBasic(!showBasic)}
@@ -45,11 +50,11 @@ export default function App() {
             </MDBNavbarNav>
           </MDBCollapse>
         </MDBContainer>
-      </MDBNavbar>
+      </MDBNavbar> */}
 
       <div
         className='p-5 text-center bg-image'
-        style={{ backgroundImage: "url('https://mdbootstrap.com/img/new/slides/041.webp')", height: '400px' }}
+        style={{ backgroundImage: <JobBoardBG /> , height: "50vh" }}
       >
         <div className='mask' style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
           <div className='d-flex justify-content-center align-items-center h-100'>
@@ -67,3 +72,5 @@ export default function App() {
     </>
   );
 }
+
+export default LandingJumbotron;
