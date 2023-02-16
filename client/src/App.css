@@ -1,5 +1,6 @@
 #root {
-  max-width: 1280px;
+  /* max-width: 1280px; */
+  min-width: 100vw;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -39,4 +40,8 @@
 
 .read-the-docs {
   color: #888;
+}
+
+body {
+  font-family: Figtree, Roboto, Helvetica, Arial, sans-serif;
 }
