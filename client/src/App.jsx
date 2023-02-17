@@ -1,7 +1,7 @@
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import './App.css'
-import Navbar from "./components/Navbar.jsx";
+import Navbar from "./components/Navbar/Navbar.jsx";
 import LandingJumbotron from './components/landingJumbotron/LandingJumbotron';
 import {
   MDBContainer,
@@ -14,11 +14,11 @@ function App() {
 
   return (
  <>
-      {/* <Navbar /> */}
+      <Navbar />
       {/* react-router-dom ? broswerrouter? */}
 
       <LandingJumbotron />
-      {/* <FillerSpace /> */}
+      <FillerSpace />
       
  </>
       

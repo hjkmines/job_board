@@ -1,3 +1,4 @@
+import "./Navbar.css";
 import React, { useState } from 'react';
 import {
   MDBContainer,
@@ -22,7 +23,10 @@ export default function App() {
   return (
     <MDBNavbar expand='lg' light bgColor='light'>
       <MDBContainer fluid>
-        <MDBNavbarBrand href='#'>Ya Shi Job Board</MDBNavbarBrand>
+        <MDBNavbarBrand className="mr-2" href='#'>
+            <div className="NavbarLogo">Ya-Shi </div>
+
+            </MDBNavbarBrand>
 
         <MDBNavbarToggler
           aria-controls='navbarSupportedContent'
