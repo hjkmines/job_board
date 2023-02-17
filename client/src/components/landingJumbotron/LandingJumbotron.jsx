@@ -52,11 +52,10 @@ function LandingJumbotron() {
         </MDBContainer>
       </MDBNavbar> */}
 
-      <div
-        className='p-5 text-center bg-image'
-        style={{ backgroundImage: <JobBoardBG /> , height: "50vh" }}
-      >
-        <div className='mask' style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
+     {/*  <div
+        className='text-center border bg-image'
+        style={{background-image: url('../../assets/job_board_bg.svg') , height: "100vh"}>
+      
           <div className='d-flex justify-content-center align-items-center h-100'>
             <div className='text-white'>
               <h1 className='mb-3'>Heading</h1>
@@ -66,8 +65,23 @@ function LandingJumbotron() {
               </MDBBtn>
             </div>
           </div>
-        </div>
-      </div>
+        </div> */}
+
+      <MDBContainer
+      fluid
+        className='text-center bg-jumbo p-0 '
+      >
+          <div className='d-flex justify-content-center align-items-center vh-100 vw-100 m-0 p-0'>
+            <div className='text-white'>
+              <h1 className='mb-3'>Heading</h1>
+              <h4 className='mb-3'>Subheading</h4>
+              <a className='btn btn-outline-light btn-lg' href='#!' role='button'>
+                Call to action
+              </a>
+            </div>
+          </div>
+
+      </MDBContainer>
 
     </>
   );
