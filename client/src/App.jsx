@@ -13,13 +13,16 @@ function App() {
  
 
   return (
-    <MDBContainer fluid>
-      <Navbar />
+ <>
+      {/* <Navbar /> */}
       {/* react-router-dom ? broswerrouter? */}
+
       <LandingJumbotron />
-      <FillerSpace />
+      {/* <FillerSpace /> */}
       
-    </MDBContainer>
+ </>
+      
+  
   )
 }
 
