@@ -7,6 +7,8 @@ import {
   MDBContainer,
 } from "mdb-react-ui-kit";
 import FillerSpace from './components/FillerSpace';
+import JobPosts from './components/JobPosts/JobPosts';
+import JobSearch from './components/JobSearch/JobSearch';
 
 
 function App() {
@@ -14,10 +16,11 @@ function App() {
 
   return (
  <>
-      <Navbar />
       {/* react-router-dom ? broswerrouter? */}
-
+      <Navbar />
       <LandingJumbotron />
+      <JobSearch />
+      <JobPosts /> 
       <FillerSpace />
       
  </>
