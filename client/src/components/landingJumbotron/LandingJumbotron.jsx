@@ -15,11 +15,12 @@ function LandingJumbotron() {
     <>
       <MDBContainer fluid className='text-center bg-jumbo p-0'>
           <div className='d-flex align-items-center justify-content-center vh-100 vw-100 m-0 pt-1'>
-            <div className='text-black'>
-              <h1  className='mb-5 '>Job Stuff Made Easy!</h1>
+            <div className='text-black '>
+              <h1  className='mb-5 tagGrab' >Job Stuff Made Easy!</h1>
               <h4 className='mb-5 tagLine'>Always up to Date, Always Relevant</h4>
               <div className="d-grid gap-2 col-6 mx-auto text-white">
-                <MDBBtn rounded className="my-2" color="#029C53" size="lg" href="!#">
+                <MDBBtn rounded className="my-2"
+                id="letsGo" color="#029C53" size="lg" href="!#">
                   LET'S GO!
                 </MDBBtn>
               </div>

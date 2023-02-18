@@ -17,6 +17,7 @@ import {
   MDBCollapse,
 } from 'mdb-react-ui-kit';
 
+
 export default function App() {
   const [showBasic, setShowBasic] = useState(false);
 
@@ -24,9 +25,10 @@ export default function App() {
     <MDBNavbar expand='lg' light bgColor='light'>
       <MDBContainer fluid>
         <MDBNavbarBrand className="mr-2" href='#'>
-            <div className="NavbarLogo">Ya-Shi </div>
+          <MDBIcon fas icon="kiwi-bird" />
+            {/* <div className="NavbarLogo">Ya-Shi </div> */}
 
-            </MDBNavbarBrand>
+        </MDBNavbarBrand>
 
         <MDBNavbarToggler
           aria-controls='navbarSupportedContent'
