@@ -6,19 +6,43 @@ import {
   MDBCardText,
   MDBCardHeader,
   MDBCardFooter,
-  MDBBtn
+  MDBBtn,
+  MDBListGroupItem,
+  MDBCardSubTitle
 } from 'mdb-react-ui-kit';
 
 export default function App() {
   return (
-    <MDBCard alignment='center'>
-      <MDBCardHeader>Featured</MDBCardHeader>
+    <MDBContainer>
+    <MDBCard>
       <MDBCardBody>
-        <MDBCardTitle>Special title treatment</MDBCardTitle>
-        <MDBCardText>With supporting text below as a natural lead-in to additional content.</MDBCardText>
-        <MDBBtn href='#'>Button</MDBBtn>
+        <MDBCardTitle className="h2">Job Title</MDBCardTitle>
+        <MDBCardSubTitle>Company</MDBCardSubTitle>
+        <MDBCardText>
+          <ul>
+            <li>
+              Candidate will work as Front-End Developer utilizing SDLC
+              process
+            </li>
+            <li>Proficient in JavaScript and TypeScript</li>
+            <li>
+              Familiar with AWS core technology such as Lambda, S3, Cloud
+              formation, SQS
+            </li>
+          </ul>
+          We are looking for an Intermediate Software Engineer to join our
+          development team that builds and maintains high-traffic storefronts
+          on the Shopify platform. The Technology team supports a dynamic end
+          to end e-commerce organization and implements a variety of
+          technology partners as well as custom solutions and integrations.
+          The right candidate for the role is a team player and problem solver
+          who enjoys learning and implementing new systems and technologies.{" "}
+        </MDBCardText>
+        <MDBBtn href="#" rounded className="shadow-none">
+          Apply
+        </MDBBtn>
       </MDBCardBody>
-      <MDBCardFooter className='text-muted'>2 days ago</MDBCardFooter>
     </MDBCard>
+  </MDBContainer>
   );
 }
