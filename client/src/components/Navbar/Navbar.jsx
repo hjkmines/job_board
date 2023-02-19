@@ -22,7 +22,7 @@ export default function App() {
   const [showBasic, setShowBasic] = useState(false);
 
   return (
-    <MDBNavbar expand='lg' light bgColor='light'>
+    <MDBNavbar expand='lg' light className="shadow-none">
       <MDBContainer fluid>
         <MDBNavbarBrand className="mr-2" href='#'>
           <MDBIcon fas icon="kiwi-bird" />
@@ -47,7 +47,7 @@ export default function App() {
               </MDBNavbarLink>
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <MDBNavbarLink href='#'>Link</MDBNavbarLink>
+              <MDBNavbarLink href='#'>Jobs</MDBNavbarLink>
             </MDBNavbarItem>
 
             <MDBNavbarItem>
@@ -63,17 +63,9 @@ export default function App() {
               </MDBDropdown>
             </MDBNavbarItem>
 
-            <MDBNavbarItem>
-              <MDBNavbarLink disabled href='#' tabIndex={-1} aria-disabled='true'>
-                Disabled
-              </MDBNavbarLink>
-            </MDBNavbarItem>
+            
           </MDBNavbarNav>
 
-          <form className='d-flex input-group w-auto'>
-            <input type='search' className='form-control' placeholder='Type query' aria-label='Search' />
-            <MDBBtn color='primary'>Search</MDBBtn>
-          </form>
         </MDBCollapse>
       </MDBContainer>
     </MDBNavbar>

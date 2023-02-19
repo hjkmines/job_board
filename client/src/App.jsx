@@ -14,10 +14,11 @@ function App() {
 
   return (
  <>
-      <Navbar />
+
       {/* react-router-dom ? broswerrouter? */}
 
       <LandingJumbotron />
+
       <FillerSpace />
       
  </>
