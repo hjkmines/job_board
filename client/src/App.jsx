@@ -6,7 +6,7 @@ import LandingJumbotron from './components/landingJumbotron/LandingJumbotron';
 import {
   MDBContainer,
 } from "mdb-react-ui-kit";
-import FillerSpace from './components/FillerSpace';
+// import FillerSpace from './components/FillerSpace';
 import JobPosts from './components/JobPosts/JobPosts';
 import JobSearch from './components/JobSearch/JobSearch';
 
@@ -21,7 +21,7 @@ function App() {
       <LandingJumbotron />
       <JobSearch />
       <JobPosts /> 
-      <FillerSpace />
+      {/* <FillerSpace /> */}
       
  </>
       
