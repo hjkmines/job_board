@@ -1,0 +1,38 @@
+body {
+    font-family: Figtree, Roboto, Helvetica, Arial, sans-serif;
+    background-color: #bde6ee;
+  }
+  
+  .apply-btn {
+    color: #db6032;
+    background-color: #f3f37a;
+    font-weight: 700;
+    font-size: 1rem;
+    width: 9rem;
+  }
+  
+  .apply-btn:hover {
+    background-color: #f3f37a;
+    color: #db6032;
+  }
+  
+  .apply-btn:visited {
+    color: #db6032;
+    background-color: #f3f37a;
+  }
+  
+  .job-card {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px 20px 20px 0px;
+  }
+  
+  .job-text {
+    line-height: 1.2rem;
+  }
+  
+  .job-title {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #429357;
+  }
+  

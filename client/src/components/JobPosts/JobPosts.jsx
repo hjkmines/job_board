@@ -1,12 +1,10 @@
 import React from 'react';
 import "./JobPosts.css";
+import JobCard from '../JobCard/JobCard.jsx';
 
 const JobPosts = () => {
   return (
-    <>
-        <div>JobPosts</div>
-        
-    </>
+    < JobCard />
   )
 }
 

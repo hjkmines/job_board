@@ -22,10 +22,10 @@ export default function App() {
   const [showBasic, setShowBasic] = useState(false);
 
   return (
-    <MDBNavbar expand='lg' light bgColor='light'>
-      <MDBContainer fluid>
+    <MDBNavbar expand='lg' light id="navBar">
+      <MDBContainer fluid >
         <MDBNavbarBrand className="mr-2" href='#'>
-          <MDBIcon fas icon="kiwi-bird" />
+          <MDBIcon fas icon="kiwi-bird" animate="shake"/>
             {/* <div className="NavbarLogo">Ya-Shi </div> */}
 
         </MDBNavbarBrand>

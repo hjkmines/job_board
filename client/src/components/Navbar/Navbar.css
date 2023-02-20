@@ -5,3 +5,7 @@
     background-size: cover;
     height: auto;
  }
+
+ #navBar {
+    background-color: transparent;
+ }
