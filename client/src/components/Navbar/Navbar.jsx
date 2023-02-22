@@ -22,12 +22,10 @@ export default function App() {
   const [showBasic, setShowBasic] = useState(false);
 
   return (
-    <MDBNavbar expand='lg' light className="shadow-none">
-      <MDBContainer fluid>
+    <MDBNavbar expand='lg' light className="shadow-none ">
+      <MDBContainer fluid className="NavbarContainer">
         <MDBNavbarBrand className="mr-2" href='#'>
-          <MDBIcon fas icon="kiwi-bird" />
-            {/* <div className="NavbarLogo">Ya-Shi </div> */}
-
+          <MDBIcon fas icon="kiwi-bird" animate='shake' />
         </MDBNavbarBrand>
 
         <MDBNavbarToggler
@@ -39,8 +37,8 @@ export default function App() {
           <MDBIcon icon='bars' fas />
         </MDBNavbarToggler>
 
-        <MDBCollapse navbar show={showBasic}>
-          <MDBNavbarNav className='mr-auto mb-2 mb-lg-0'>
+        <MDBCollapse navbar show={showBasic} >
+          <MDBNavbarNav className='mr-auto mb-2 mb-lg-0 navBarCollapse'>
             <MDBNavbarItem>
               <MDBNavbarLink active aria-current='page' href='#'>
                 Home
@@ -51,13 +49,13 @@ export default function App() {
             </MDBNavbarItem>
 
             <MDBNavbarItem>
-              <MDBDropdown>
-                <MDBDropdownToggle tag='a' className='nav-link' role='button'>
-                  Dropdown
+              <MDBDropdown className="navDropDown">
+                <MDBDropdownToggle tag='ul' className='toggleDropDown' role='button'>
+                  User 
                 </MDBDropdownToggle>
-                <MDBDropdownMenu>
-                  <MDBDropdownItem link>Action</MDBDropdownItem>
-                  <MDBDropdownItem link>Another action</MDBDropdownItem>
+                <MDBDropdownMenu className="profileSettings">
+                  <MDBDropdownItem link>Profile</MDBDropdownItem>
+                  <MDBDropdownItem link>Contact / About</MDBDropdownItem>
                   <MDBDropdownItem link>Something else here</MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>
