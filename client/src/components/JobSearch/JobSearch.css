@@ -1,4 +1,62 @@
 
 #searchRow {
     background-color: #DAC5FA;
+    /* align-items: center; */
+    margin-top: 3;
+    margin-bottom: 3;
+    /* justify-content: end; */
+}
+.searchRow{
+    /* align-items: center; */
+    padding-top: 2;
+}
+
+/* .searchBtnCol {
+    /* align-items: end; 
+} */
+
+.searchSubmitBtn {
+    background-color: #DAC5FA;
+    /* display: flex; */
+    justify-self: flex-end;
+}
+.searchInput  {
+    border-radius: 50%;
+}
+/* 
+.jobTitle {
+    border: 10 solid black;
+} */
+
+/* #remoteWork {
+    align-items: center;
+} */
+
+/* #cityInput {
+    background-color: white;
+} */
+
+.stateButton {
+    background-color: #FBFE67;
+    color: black
+}
+
+.expMenu {
+    align-items: center;
+}
+
+.moreFilter {
+    background: transparent;
+    box-shadow: none;
+}
+
+.moreFilter:hover {
+    background: transparent;
+    box-shadow: none;
+}
+
+
+#searchRow2{
+    align-items: center;
+   
 }
