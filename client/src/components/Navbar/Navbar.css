@@ -1,11 +1,16 @@
 .NavbarLogo {
-    background-image: url('../../assets/ya-shi.svg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: auto;
- }
+   background-image: url('../../assets/ya-shi.svg');
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size: cover;
+   height: auto;
+}
 
- #navBar {
-    background-color: transparent;
- }
+.navBarCollapse {
+   align-items: center;
+}
+
+.toggleDropDown {
+   padding-left: 0;
+   margin-top: 3;
+}

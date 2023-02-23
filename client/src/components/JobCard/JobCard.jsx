@@ -11,7 +11,7 @@ import {
   MDBCardSubTitle
 } from "mdb-react-ui-kit";
 
-export default function App() {
+export default function JobCard() {
   return (
     <MDBContainer className="m-4 bg-transparent border">
       <MDBRow>

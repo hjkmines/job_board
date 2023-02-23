@@ -1,5 +1,5 @@
 import './JobSearch.css';
-import React, { useState } from 'react'
+import React from 'react'
 import { 
     MDBCol,
     MDBContainer, 
@@ -61,22 +61,26 @@ export default function App () {
   return (
     <MDBContainer fluid className='search2'>
     <form className='searchForm'>
-        <MDBRow className='searchRow my-2 mr-0 gl-5 gr-0'>
-            <MDBCol size={2} className='searchBtnCol g-0 '>
+
+    {/* first row - searchbutton and search input */}
+        {/* 1st row. Search button and search input  */}
+        <MDBRow className='searchRow1  justify-content-start gx-0'>
+            <MDBCol fluid='true' size={2} className='searchBtnCol justify-content-end gr-0'>
                <MDBBtn type="submit" className='searchSubmitBtn' onSubmit={handleSearch}>
                     Search
                </MDBBtn>
             </MDBCol>
-            <MDBCol size={10} className="filterSearch">
+            <MDBCol size={8} sm={6} className="filterSearch">
                 <MDBInput label="Search" type='text' className="searchInput"/>
             </MDBCol>
         </MDBRow>
 
-        <MDBRow fluid='true' className='searchRow2 mb-2'>
-            <MDBCol size={2}>
-                <MDBSwitch form="true" id="remoteWork" label="Remote Work" value={'Remote'} aria-label='remote work toggle'/>
+    {/* second row */}
+        <MDBRow className='searchRow2'>
+            <MDBCol size={2}  className="remoteSwitchCol ">
+                <MDBSwitch id="remoteWork" label="Remote" value={'Remote'} aria-label='remote work toggle'/>
             </MDBCol>
-            <MDBCol size={2}>
+            <MDBCol size={3}  className='cityCol'>
                <CreateableSelect 
                 isClearable='true'
                 // isDisabled={isLoading}
@@ -89,16 +93,16 @@ export default function App () {
                 options={cityOptions} 
                 />
             </MDBCol>
-            <MDBCol size={2}>
+            <MDBCol size={2}  className=' stateCol'>
                 <Select 
                     isClearable
                     className='basic-single' 
                     placeholder='State'  
                     name="State"
-                     options={stateOptions} 
+                    options={stateOptions} 
                 />
             </MDBCol>
-            <MDBCol size={2}>
+            <MDBCol size={2} className='expCol'> 
                 <Select  
                     isClearable
                     className='basic-single'
@@ -108,10 +112,10 @@ export default function App () {
                     options={experienceOptions}
                 />
             </MDBCol>
-            <MDBCol size={2}>
+            <MDBCol size={2} className='sortByCol'>
                 <Select className='basic-single' placeholder='sort by'name="sortBy" options={sortByOptions} />
             </MDBCol>
-            <MDBCol size={2}>
+            <MDBCol size={1} className="moreToggleCol">
                 <MDBDropdown className='moreDropDown' >
                 <MDBIcon icon="ellipsis-h" size='2x' color='dark' />
                     <MDBDropdownToggle tag='a' className='moreFilter fas' icon="elipsis-h">
