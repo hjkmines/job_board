@@ -51,7 +51,16 @@ const stateOptions = [
     ]
 
     const handleSearch= (event) => {
-        console.log(event.target.data)
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        const search = {
+            search: data.get('search'),
+            remote: data.get('remote'),
+            state: data.get('state'),
+            exp: data.get('exp'),
+            sortBy: data.get('sortBy')
+        }
+        console.log(search)
     }
 
 
@@ -59,26 +68,26 @@ export default function App () {
 
 
   return (
-    <MDBContainer fluid className='search2'>
-    <form className='searchForm'>
+    <MDBContainer  fluid className='search2'>
+    <form className='searchForm' onSubmit={handleSearch} >
 
     {/* first row - searchbutton and search input */}
         {/* 1st row. Search button and search input  */}
         <MDBRow className='searchRow1  justify-content-start gx-0'>
             <MDBCol fluid='true' size={2} className='searchBtnCol justify-content-end gr-0'>
-               <MDBBtn type="submit" className='searchSubmitBtn' onSubmit={handleSearch}>
+               <MDBBtn type="submit" className='searchSubmitBtn' >
                     Search
                </MDBBtn>
             </MDBCol>
-            <MDBCol size={8} sm={6} className="filterSearch">
-                <MDBInput label="Search" type='text' className="searchInput"/>
+            <MDBCol size={8}  className="filterSearch">
+                <MDBInput label="Search" type='text' className="searchInput" name='search'/>
             </MDBCol>
         </MDBRow>
 
     {/* second row */}
-        <MDBRow className='searchRow2'>
+        <MDBRow className='d-flex searchRow2 gx-1 align-items-center justify-content-center'>
             <MDBCol size={2}  className="remoteSwitchCol ">
-                <MDBSwitch id="remoteWork" label="Remote" value={'Remote'} aria-label='remote work toggle'/>
+                <MDBSwitch id="remoteWork" label="Remote" value={'Remote'} aria-label='remote work toggle' name='remote'/>
             </MDBCol>
             <MDBCol size={3}  className='cityCol'>
                <CreateableSelect 
@@ -108,7 +117,7 @@ export default function App () {
                     className='basic-single'
                     classNamePrefix='select' 
                     placeholder='experience' 
-                    name="Experience" 
+                    name="exp" 
                     options={experienceOptions}
                 />
             </MDBCol>
