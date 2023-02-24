@@ -3,12 +3,11 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import './App.css'
 import Navbar from "./components/Navbar/Navbar.jsx";
 import LandingJumbotron from './components/landingJumbotron/LandingJumbotron';
-import {
-  MDBContainer,
-} from "mdb-react-ui-kit";
-// import FillerSpace from './components/FillerSpace';
-import JobPosts from './components/JobPosts/JobPosts';
-import JobSearch from './components/JobSearch/JobSearch';
+
+import NewJobPosts from './components/NewJobPosts/NewJobPosts.jsx';
+import JobSearch from './components/JobSearch/JobSearch.jsx';
+import YourMatches from './components/YourMatches/YourMatches.jsx'
+import LocalJobs from './components/LocalJobs/LocalJobs.jsx';
 
 
 function App() {
@@ -20,8 +19,9 @@ function App() {
       <Navbar />
       <LandingJumbotron />
       <JobSearch />
-      <JobPosts /> 
-      {/* <FillerSpace /> */}
+      <NewJobPosts /> 
+      <YourMatches />
+      <LocalJobs />
       
  </>
       

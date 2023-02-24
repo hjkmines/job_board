@@ -15,7 +15,7 @@ export default function JobCard() {
   return (
     <MDBContainer className="m-4 bg-transparent border">
       <MDBRow>
-        <MDBCol sm="8">
+        <MDBCol >
           <MDBCard className="job-card p-1">
             <MDBCardBody>
               <MDBCardTitle className="job-title mb-0">Job Title</MDBCardTitle>
