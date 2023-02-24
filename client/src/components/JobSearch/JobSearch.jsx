@@ -56,6 +56,7 @@ const stateOptions = [
         const search = {
             search: data.get('search'),
             remote: data.get('remote'),
+            city: data.get('city'),
             state: data.get('state'),
             exp: data.get('exp'),
             sortBy: data.get('sortBy')
@@ -107,7 +108,7 @@ export default function App () {
                     isClearable
                     className='basic-single' 
                     placeholder='State'  
-                    name="State"
+                    name="state"
                     options={stateOptions} 
                 />
             </MDBCol>
@@ -122,7 +123,7 @@ export default function App () {
                 />
             </MDBCol>
             <MDBCol size={2} className='sortByCol'>
-                <Select className='basic-single' placeholder='sort by'name="sortBy" options={sortByOptions} />
+                <Select className='basic-single' placeholder='sort by' name="sortBy" options={sortByOptions} />
             </MDBCol>
             <MDBCol size={1} className="moreToggleCol">
                 <MDBDropdown className='moreDropDown' >
