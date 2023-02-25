@@ -1,0 +1,41 @@
+.bg-jumbo {
+  background-image: url('../../assets/job_board_bg.svg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100;
+  background-attachment: fixed;
+}
+
+.tagGrab {
+  font-weight: 900;
+  font-size: 64px;
+  line-height: 77px;
+  /* font-family: 'Beau Rivage'; */
+  /* font-family:  'Grape Nuts'; */
+}
+
+
+.tagLine {
+  display: flex;
+  font-weight: 600;
+  font-size: 64px;
+  line-height: 77px;
+}
+
+#letsGo {
+  background-color: #029C53;
+  color: white;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 29px;
+}
+
+.action-btn:hover {
+  background-color: #429357;
+}
+
+.action-btn {
+ background-color: #429357;
+width: 14.375rem;
+}
