@@ -54,7 +54,7 @@ const handleSearch = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const search = {
-        search: data.get('search'),
+        search: data.get('searchInput'),
         remote: data.get('remote'),
         city: data.get('city'),
         state: data.get('state'),
@@ -80,7 +80,7 @@ export default function App() {
                             <MDBBtn type="submit" className='searchSubmitBtn shadow-none' >
                                 Search
                             </MDBBtn>
-                            <input placeHolder='Search' label="Search"  type='text' className="searchInput border border-0 rounded" />
+                            <input placeholder='search' label="search" name="searchInput"  type='text' className="searchInput border border-0 rounded" />
                         </MDBContainer>
                     </MDBCol>
                 </MDBRow>
