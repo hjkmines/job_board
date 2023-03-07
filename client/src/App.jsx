@@ -8,7 +8,7 @@ import NewJobPosts from './components/NewJobPosts/NewJobPosts.jsx';
 import JobSearch from './components/JobSearch/JobSearch.jsx';
 import YourMatches from './components/YourMatches/YourMatches.jsx'
 import LocalJobs from './components/LocalJobs/LocalJobs.jsx';
-
+import JobCarousel from './components/JobCarousel/JobCarousel.jsx';
 
 function App() {
  
@@ -18,6 +18,7 @@ function App() {
       {/* react-router-dom ? broswerrouter? */}
       <Navbar />
       <LandingJumbotron />
+      
       <JobSearch />
       <NewJobPosts /> 
       <YourMatches />
