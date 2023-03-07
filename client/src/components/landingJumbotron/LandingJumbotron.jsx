@@ -20,7 +20,7 @@ function LandingJumbotron() {
               <h4 className='mb-5 tagLine'>Always up to Date, Always Relevant</h4>
               <div className="d-grid gap-2 col-6 mx-auto text-white">
                 <MDBBtn rounded className="my-2"
-                id="letsGo" color="#029C53" size="lg" href="!#">
+                id="letsGo" color="#029C53" size="lg" href="#jobs">
                   LET'S GO!
                 </MDBBtn>
               </div>

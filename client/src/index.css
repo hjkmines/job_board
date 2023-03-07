@@ -9,3 +9,25 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+
+::-webkit-scrollbar-track {
+
+  border-radius: 20px;
+  background-color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  background-color: #E9AFC5;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+
+  background-color: #E9AFC5;
+
+}
+
+html {
+  scroll-behavior: smooth;
+}

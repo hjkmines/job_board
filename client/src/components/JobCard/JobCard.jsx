@@ -13,7 +13,7 @@ import {
 
 export default function JobCard() {
   return (
-    <MDBContainer className="m-4 bg-transparent border">
+    <MDBContainer className="m-4 bg-transparent">
       <MDBRow>
         <MDBCol >
           <MDBCard className="job-card p-1">

@@ -1,33 +1,26 @@
-import React, {useState} from 'react';
+
 import {
-  MDBTabs,
-  MDBTabsItem,
-  MDBTabsLink,
-  MDBTabsContent,
-  MDBTabsPane,
   MDBContainer,
   MDBTypography,
-  MDBRow,
-  MDBCol
+
 } from 'mdb-react-ui-kit';
+
 import "./NewJobPosts.css";
-import JobCard from '../JobCard/JobCard.jsx';
+
 import WithScrollbar from '../JobCarousel/WithScrollbar';
+
 const NewJobPosts = () => {
-  const [basicActive, setBasicActive] = useState('tab1');
-  const handleBasicClick = (value) => {
-    if (value === basicActive) {
-      return;
-    }
-    setBasicActive(value);
-  };
+ 
   return (
-    <MDBContainer className='border'>
-      
-        <MDBTypography tag='h2' className='d-flex align-self-center pt-3'>
-          New Jobs
-        </MDBTypography>
-        <WithScrollbar/>
+    <MDBContainer className='mb-4'>
+
+      <MDBTypography tag='h2' className='pt-3 section-header'>
+        New Jobs
+      </MDBTypography>
+
+      <MDBContainer fluid className='m-2 overflow-hidden p-2 '>
+        <WithScrollbar />
+      </MDBContainer>
 
     </MDBContainer>
 
