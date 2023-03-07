@@ -1,7 +1,9 @@
 :root {
   font-family: Figtree, system-ui, Avenir, Helvetica, Arial, sans-serif;
 
+
   background-color: #bde6ee;
+
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -31,3 +33,4 @@
 html {
   scroll-behavior: smooth;
 }
+
