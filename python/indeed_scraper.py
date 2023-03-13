@@ -82,11 +82,13 @@ def indeed_scrape(query="junior software developer", pages=1, wait=5):
                 cities.append(address.get('addressLocality'))
                 states.append(address.get('addressRegion1'))
                 zips.append(address.get('postalCode'))
+                countries.append(address.get('addressCountry'))
 
             except:
                 cities.append(None)
                 states.append(None)
                 zips.append(None)
+                countries.append(None)
 
             try:
                 mins.append(int(job_json['baseSalary']['value']['minValue']))
