@@ -39,6 +39,7 @@ def indeed_scrape(query="junior software developer", pages=1, wait=5):
         url = base + urlencode(params)
         driver.get(url)
         sleep(wait)
+
         html = driver.page_source
         soup = BeautifulSoup(html, 'html.parser')
 
@@ -58,7 +59,7 @@ def indeed_scrape(query="junior software developer", pages=1, wait=5):
         for link in page_links:
 
             driver.get(link)
-            sleep(5)
+            sleep(wait)
 
             html = driver.page_source
             cup = BeautifulSoup(html, 'html.parser')
@@ -108,6 +109,9 @@ def indeed_scrape(query="junior software developer", pages=1, wait=5):
     df['Min Salary'] = mins
     df['Max Salary'] = maxes
     df['Salary Type'] = types
+    df['City'] = cities
+    df['Country'] = countries 
+
 
     return df
 
