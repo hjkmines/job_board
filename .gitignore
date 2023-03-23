@@ -4,6 +4,9 @@
 # env
 *.env
 
+# Python
+.venv
+
 # Misc
 .vscode/
 .DS_Store

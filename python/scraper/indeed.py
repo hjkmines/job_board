@@ -9,7 +9,7 @@ from urllib.parse import urlencode, urljoin
 import json
 
 
-def indeed_scrape(query="junior software developer", pages=1, wait=5):
+def scrape_indeed(query="junior software developer", pages=1, wait=5):
     home = 'https://www.indeed.com'
     base = "https://www.indeed.com/jobs?"
     params = {}
@@ -101,23 +101,16 @@ def indeed_scrape(query="junior software developer", pages=1, wait=5):
                 types.append(None)
 
     df = pd.DataFrame()
-    df['Job_Title'] = titles
-    df['Company'] = companies
-    df['Link'] = links
-    df['Description'] = descriptions
-    df['Date Posted'] = dates
-    df['Min Salary'] = mins
-    df['Max Salary'] = maxes
-    df['Salary Type'] = types
-    df['City'] = cities
-    df['Country'] = countries 
+    df['job_title'] = titles
+    df['company'] = companies
+    df['link'] = links
+    df['description'] = descriptions
+    df['date_posted'] = dates
+    df['min_salary'] = mins
+    df['max_salary'] = maxes
+    df['salary_type'] = types
+    df['city'] = cities
+    df['country'] = countries 
 
 
     return df
-
-
-df = indeed_scrape(pages=5)
-
-
-df.to_csv(f'indeed_{date.today()}.csv')
-df.to_json(f'indeed_{date.today()}.json')
