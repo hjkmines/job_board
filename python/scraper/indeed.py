@@ -3,7 +3,6 @@
 from bs4 import BeautifulSoup
 import pandas as pd
 from time import sleep
-from datetime import date
 import undetected_chromedriver as uc
 from urllib.parse import urlencode, urljoin
 import json
@@ -100,6 +99,8 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                 maxes.append(None)
                 types.append(None)
 
+    driver.close()
+    
     df = pd.DataFrame()
     df['job_title'] = titles
     df['company'] = companies

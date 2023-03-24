@@ -6,7 +6,7 @@
 
 # Python
 .venv
-
+python/output
 # Misc
 .vscode/
 .DS_Store

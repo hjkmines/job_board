@@ -3,7 +3,6 @@
 from bs4 import BeautifulSoup
 import pandas as pd
 from time import sleep
-from datetime import date
 import requests
 import undetected_chromedriver as uc
 from urllib.parse import urljoin, urlencode
