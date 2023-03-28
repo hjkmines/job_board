@@ -65,7 +65,7 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
 
             try:
                 description = cup.find('div', id='jobDescriptionText')
-                descriptions.append(description.text)
+                descriptions.append(description.text.lstrip())
             except:
                 descriptions.append('')
 
@@ -99,8 +99,7 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                 maxes.append(None)
                 types.append(None)
 
-    driver.close()
-    
+
     df = pd.DataFrame()
     df['job_title'] = titles
     df['company'] = companies
