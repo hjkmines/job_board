@@ -134,7 +134,6 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
         titles += job_titles
         links += job_links
 
-    driver.close()
 
     for link in links:
         scrap_job(link)

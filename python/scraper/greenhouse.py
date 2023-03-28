@@ -4,14 +4,32 @@ import requests
 import json
 import html
 from datetime import date
+import csv
 
 
-def scrape_greenhouse(companies: dict, criteria: dict):
+def scrape_greenhouse(companies_file: str, criteria: dict):
 
     # # Main Code
     # Finds jobs and outputs results as csv or excel file
 
     # Return a list of eligible jobs from a set of companies
+
+    def get_companies(companies_file: str):
+        with open(companies_file, 'r') as data:
+            companies = {row[0]: row[1] for row in csv.reader(data)}
+        companies_clean = companies
+        companies_bad = {}
+        tokens = set(companies.keys())
+        for token in tokens:
+            if not requests.get(f'https://boards-api.greenhouse.io/v1/boards/{token}/jobs'):
+                companies_clean.pop(token)
+                companies_bad[token] = companies.get(token)
+
+        if companies_bad:
+            with open(f"./logs/companies_bad_{date.today()}.json", "w") as out:
+                json.dump(companies_bad, out)
+
+        return companies_clean
 
     def get_jobs(companies: dict, criteria: dict) -> list:
         roles = criteria.get('roles')
@@ -58,7 +76,7 @@ def scrape_greenhouse(companies: dict, criteria: dict):
                     job_info['location'] = str(job_detail.get('offices'))
                     offices = {office.get('name').lower()
                                for office in job_detail.get('offices')}
-                    if 'remote' in offices:
+                    if 'remote' in offices or 'anywhere' in offices:
                         job_info['remote'] = True
                     else:
                         job_info['remote'] = False
@@ -68,8 +86,9 @@ def scrape_greenhouse(companies: dict, criteria: dict):
         df = df.from_records(data)
 
         return df
+    companies_clean = get_companies(companies_file)
 
-    results = get_jobs(companies, criteria)
+    results = get_jobs(companies_clean, criteria)
     df = get_details(results)
 
     return df
