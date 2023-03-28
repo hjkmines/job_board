@@ -1,4 +1,3 @@
-
 import React from "react";
 import Carousel from "react-multi-carousel";
 import JobCard from "../JobCard/JobCard";
@@ -104,15 +103,9 @@ class JobCarousel extends React.Component {
                     }
                 }}
             >
-
-                <JobCard />
-                <JobCard />
-                <JobCard />
-                <JobCard />
-                <JobCard />
-                <JobCard />
-                <JobCard />
-                <JobCard />
+                {this.props.jobs.forEach(job => {
+                    <JobCard data = {job}/>
+                } )}
 
             </Carousel>
         );
