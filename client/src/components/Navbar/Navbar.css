@@ -1,5 +1,5 @@
 .NavbarLogo {
-<<<<<<< HEAD
+
    background-image: url('../../assets/ya-shi.svg');
    background-position: center;
    background-repeat: no-repeat;
@@ -15,13 +15,6 @@
    padding-left: 0;
    margin-top: 3;
 }
-=======
-    background-image: url('../../assets/ya-shi.svg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: auto;
- }
 
  .navBarCollapse {
     align-items: center;
@@ -31,4 +24,4 @@
     padding-left: 0;
     margin-top: 3;
  }
->>>>>>> main
+

@@ -7,8 +7,20 @@ import {
 
 import "./JobSection.css";
 import JobCarousel from '../JobCarousel/JobCarousel';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 const JobSection = ({ sectionTitle }) => {
+    const [jobs, setJobs] = useState([])
+
+
+    useEffect(() => {
+        axios.get('http://localhost:5001/jobs').then((res) => {
+            setJobs(res.data);
+            console.log(res.data)
+        });
+    }, []);
+
 
     return (
         <MDBContainer className='mb-4'>
@@ -18,7 +30,7 @@ const JobSection = ({ sectionTitle }) => {
             </MDBTypography>
 
             <MDBContainer fluid className='m-2 overflow-hidden p-2 '>
-                <JobCarousel />
+                <JobCarousel jobs={jobs} />
             </MDBContainer>
 
         </MDBContainer>
