@@ -5,8 +5,21 @@ import './App.css'
 import LandingJumbotron from './components/landingJumbotron/LandingJumbotron';
 import JobSearch from './components/JobSearch/JobSearch.jsx';
 import JobSection from './components/JobSection/JobSection.jsx';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import JobCard from './components/JobCard';
 
 function App() {
+  const [jobs, setJobs] = useState([])
+
+
+  useEffect(() => {
+    axios.get('http://localhost:5001/jobs').then((res) => {
+      setJobs(res.data);
+      console.log(res.data)
+    });
+
+  }, []);
 
   return (
     <>
@@ -14,7 +27,7 @@ function App() {
       <LandingJumbotron />
       <JobSearch />
       <JobSection sectionTitle='New Jobs' />
-
+   
     </>
   )
 }

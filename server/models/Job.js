@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const JobSchema = new Schema({
-    title: {
+    job_title: {
         type: String,
         unique: true,
         required: [true, 'Please provide a job title'],
@@ -17,7 +17,6 @@ const JobSchema = new Schema({
     },
     location: {
         type: String,
-
     },
     date_posted: {
         type: String

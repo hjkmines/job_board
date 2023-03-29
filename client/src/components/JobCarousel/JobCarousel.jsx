@@ -78,6 +78,7 @@ class JobCarousel extends React.Component {
                 </div>
             );
         };
+
         return (
             <Carousel
                 keyBoardControl={true}
@@ -103,8 +104,9 @@ class JobCarousel extends React.Component {
                     }
                 }}
             >
-                {this.props.jobs.forEach(job => {
-                    <JobCard data = {job}/>
+
+                {this.props.jobs.map(job => {
+                    return <JobCard key = {job._id} job = {job} />
                 } )}
 
             </Carousel>

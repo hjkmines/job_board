@@ -17,8 +17,10 @@ const JobSection = ({ sectionTitle }) => {
     useEffect(() => {
         axios.get('http://localhost:5001/jobs').then((res) => {
             setJobs(res.data);
-            console.log(res.data)
+            console.log('job data');
+            console.log(res.data);
         });
+
     }, []);
 
 

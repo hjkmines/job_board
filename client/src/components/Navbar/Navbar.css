@@ -1,8 +1,4 @@
 .NavbarLogo {
-<<<<<<< HEAD
-=======
-
->>>>>>> cfe70b6 (Start backend and axios requests in frontend)
    background-image: url('../../assets/ya-shi.svg');
    background-position: center;
    background-repeat: no-repeat;
@@ -17,9 +13,6 @@
 .toggleDropDown {
    padding-left: 0;
    margin-top: 3;
-<<<<<<< HEAD
-}
-=======
 }
 
  .navBarCollapse {
@@ -31,4 +24,3 @@
     margin-top: 3;
  }
 
->>>>>>> cfe70b6 (Start backend and axios requests in frontend)
