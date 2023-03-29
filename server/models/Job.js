@@ -17,10 +17,6 @@ const JobSchema = new Schema({
     },
     location: {
         type: String,
-<<<<<<< HEAD
-=======
-
->>>>>>> c3fa10026a3369944c0852e494552cb898d0a8d9
     },
     date_posted: {
         type: String

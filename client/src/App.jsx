@@ -7,7 +7,6 @@ import JobSearch from './components/JobSearch/JobSearch.jsx';
 import JobSection from './components/JobSection/JobSection.jsx';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import JobCard from './components/JobCard';
 
 function App() {
   const [jobs, setJobs] = useState([])

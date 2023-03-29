@@ -28,6 +28,7 @@ body {
   
   .job-text {
     line-height: 1.2rem;
+    overflow: hidden;
   }
   
   .job-title {
