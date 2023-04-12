@@ -7,11 +7,18 @@ import json
 import os
 
 today = date.today()
+# Output dir
+if not os.path.exists(f'./output/{today}'):
+    os.mkdir(f'./output/{today}')
 
 # Web scrapers
 dice_df = scraper.scrape_dice() 
+dice_json = f'./output/{today}/dice_{today}.json'
+dice_df.to_json(dice_json, orient='records')
 
 indeed_df = scraper.scrape_indeed()
+indeed_json = f'./output/{today}/indeed_{today}.json'
+indeed_df.to_json(indeed_json, orient='records')
 
 # Greenhouse API
 companies_file = 'companies.csv'
@@ -27,30 +34,18 @@ exclude = {'senior', 'principal' , 'sr.', 'ii', 'iii'}
 criteria ={'roles': roles, 'levels': levels, 'exclude' : exclude}
 
 greenhouse_df = scraper.scrape_greenhouse(companies_file, criteria)
-
-# Output dir
-if not os.path.exists(f'./output/{today}'):
-    os.mkdir(f'./output/{today}')
-
-# Output paths
 greenhouse_json = f'./output/{today}/greenhouse_{today}.json'
-dice_json = f'./output/{today}/dice_{today}.json'
-indeed_json = f'./output/{today}/indeed_{today}.json'
-
-# Output json 
 greenhouse_df.to_json(greenhouse_json, orient='records')
-dice_df.to_json(dice_json, orient='records')
-indeed_df.to_json(indeed_json, orient='records')
-
 
 
 MONGO_URL = dotenv_values('config/config.env').get('MONGO_URL') 
+print(MONGO_URL)
 client = pymongo.MongoClient(MONGO_URL)
 db = client["test"]
 
-dice_coll = db["dice_test"]
-indeed_coll = db["indeed_test"]
-greenhouse_coll = db["greenhouse_test"]
+dice_coll = db["dice_test3"]
+indeed_coll = db["indeed_test3"]
+greenhouse_coll = db["greenhouse_test3"]
 
 
 # Opening the json file

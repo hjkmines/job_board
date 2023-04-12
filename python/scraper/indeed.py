@@ -6,6 +6,7 @@ from time import sleep
 import undetected_chromedriver as uc
 from urllib.parse import urlencode, urljoin
 import json
+from datetime import datetime
 
 
 def scrape_indeed(query="junior software developer", pages=1, wait=5):
@@ -56,13 +57,15 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
         links += page_links
 
         for link in page_links:
-
-            driver.get(link)
-            sleep(wait)
-
-            html = driver.page_source
-            cup = BeautifulSoup(html, 'html.parser')
-
+            try:
+                driver.get(link)
+                sleep(wait)
+                html = driver.page_source
+                cup = BeautifulSoup(html, 'html.parser')
+            except:
+                cup = None
+            
+        
             try:
                 description = cup.find('div', id='jobDescriptionText')
                 descriptions.append(description.text.lstrip())
@@ -73,9 +76,15 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                 job_script = cup.find(
                     'script', attrs={'type': "application/ld+json"})
                 job_json = json.loads(str(job_script.contents[0]))
-                dates.append(job_json['datePosted'])
+                try:
+                    date_posted = str(datetime.strptime(job_json['datePosted'], '%a, %d %b %Y %H:%M:%S %Z').isoformat())
+                    dates.append(date_posted)
+
+                except:
+                    dates.append(job_json['datePosted'])
+                print(job_json['datePosted'])
             except:
-                dates.append('')
+                dates.append(None)
 
             try:
                 address = job_json['jobLocation']['address']
@@ -99,18 +108,20 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                 maxes.append(None)
                 types.append(None)
 
-
+    driver.close()
+    
     df = pd.DataFrame()
     df['job_title'] = titles
     df['company'] = companies
     df['link'] = links
     df['description'] = descriptions
-    df['date_posted'] = dates
+    df['date'] = dates
     df['min_salary'] = mins
     df['max_salary'] = maxes
     df['salary_type'] = types
     df['city'] = cities
-    df['country'] = countries 
+    df['country'] = countries
+    df['source'] = 'indeed'
 
 
     return df

@@ -69,7 +69,7 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
             if res:
                 job_detail = json.loads(res.text)
                 job_info = {'title': job_detail.get('title'), 'company': job.get('company'), 'link': job_detail.get('absolute_url'),
-                            'description': html.unescape(job_detail.get('content')), 'date_posted': job_detail.get('updated_at'),
+                            'description': html.unescape(job_detail.get('content')), 'date': job_detail.get('updated_at'),
                             'remote': None, 'greenhouse_id': job.get('id'), 'greenhouse_api_url': url}
 
                 if job_detail.get('offices'):
@@ -90,5 +90,6 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
 
     results = get_jobs(companies_clean, criteria)
     df = get_details(results)
+    df['source'] = 'greenhouse'
 
     return df
