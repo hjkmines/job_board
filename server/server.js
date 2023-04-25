@@ -1,10 +1,17 @@
+//config
+const bodyParser = require('body-parser');
 const express = require('express'); 
 const dotenv = require('dotenv'); 
-const connectDB = require('./config/db')
-const jobRouter = require('./routes/jobRouter'); 
+const connectDB = require('./config/db.js')
 const cors = require("cors");
+//routes
+const jobRouter = require('./routes/jobRouter'); 
+//midlewares
 
-dotenv.config({ path: './config/config.env' })
+//other
+
+
+dotenv.config({ path: './config/config.env' });
 
 connectDB(); 
 
@@ -20,4 +27,9 @@ app.use('/jobs', jobRouter);
 
 const server = app.listen(PORT, () => {
     console.log(`Server is listening on PORT ${PORT}`)
+})
+
+process.on('unhandledRejection', (err, promise) => {
+    console.log(`Error: ${err.message}`)
+    server.close(() => process.exit(1))
 })
