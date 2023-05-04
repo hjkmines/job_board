@@ -2,7 +2,7 @@ const Job = require('../models/Job');
 
 //for "/jobs" endpoint
 const getJobs = async (req, res, next) => {
-    //query param
+    // query param
     const filter = {};
     const options = {}; 
     if (Object.keys(req.query).length) {
