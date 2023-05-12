@@ -7,6 +7,7 @@ import json
 import os
 
 today = date.today()
+
 # Output dir
 if not os.path.exists(f'./output/{today}'):
     os.mkdir(f'./output/{today}')
@@ -20,33 +21,34 @@ indeed_df = scraper.scrape_indeed()
 indeed_json = f'./output/{today}/indeed_{today}.json'
 indeed_df.to_json(indeed_json, orient='records')
 
-# Greenhouse API
-companies_file = 'companies.csv'
+# Company lists
+greenhouse_companies_file = 'greenhouse_companies.csv'
+lever_companies_file = 'lever_companies.csv'
 
-roles = {'developer','engineer', 'frontend', 'software', 'apprentice', 'apprenticeship', 'front-end', 'backend', 'back-end', 'jr.', 'jr' }
+roles = {'developer','engineer', 'data', 'analyst', 'scientist','frontend', 'software', 'apprentice', 'apprenticeship', 'front-end', 'backend', 'back-end', 'jr.', 'jr' }
 
 # Includes 'software' for titles that are just 'software engineer', etc.
-levels = {'junior', 'entry-level', 'grad', 'graduate', 'apprentice', 'apprenticeship', 'software', 'entry', 'intern', 'i', '1', 'associate'}
+levels = {'junior', 'entry-level', 'grad', 'graduate', 'apprentice', 'web', 'apprenticeship', 'software', 'entry', 'intern', 'i', '1', 'associate', 'jr.', 'jr'}
 
 # Optional, but helps exclude higher level positions
 exclude = {'senior', 'principal' , 'sr.', 'ii', 'iii'}
 
 criteria ={'roles': roles, 'levels': levels, 'exclude' : exclude}
 
-greenhouse_df = scraper.scrape_greenhouse(companies_file, criteria)
+greenhouse_df = scraper.scrape_greenhouse(greenhouse_companies_file, criteria)
 greenhouse_json = f'./output/{today}/greenhouse_{today}.json'
 greenhouse_df.to_json(greenhouse_json, orient='records')
 
+lever_df = scraper.scrape_lever(lever_companies_file, criteria)
+lever_json = f'./output/{today}/lever_{today}.json'
+lever_df.to_json(lever_json, orient='records')
 
 MONGO_URL = dotenv_values('config/config.env').get('MONGO_URL') 
 print(MONGO_URL)
 client = pymongo.MongoClient(MONGO_URL)
 db = client["test"]
 
-dice_coll = db["dice_test3"]
-indeed_coll = db["indeed_test3"]
-greenhouse_coll = db["greenhouse_test3"]
-
+jobs_coll = db['jobs']
 
 # Opening the json file
 def insert_json(source_json: str, Collection):
@@ -58,12 +60,13 @@ def insert_json(source_json: str, Collection):
     # insert_many is used else insert_one is used
 
     if isinstance(file_data, list):
-        Collection.insert_many(file_data) 
+        Collection.insert_many(file_data)
+
     else:
         Collection.insert_one(file_data)
 
-
-insert_json(dice_json, dice_coll)
-insert_json(indeed_json, indeed_coll)
-insert_json(greenhouse_json, greenhouse_coll)
+insert_json(dice_json, jobs_coll)
+insert_json(indeed_json, jobs_coll)
+insert_json(greenhouse_json, jobs_coll)
+insert_json(lever_json, jobs_coll)
 

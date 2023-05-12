@@ -24,8 +24,9 @@ function App() {
     <>
       {/* react-router-dom ? broswerrouter? */}
       <LandingJumbotron />
-      <JobSearch />
-      <JobSection sectionTitle='New Jobs' />
+      {/* <JobSearch/> */}
+      <JobSection sectionTitle='New Jobs' query={{latest: true, limit: 100}} />
+      <JobSection sectionTitle='All Jobs' query={{limit: 1000}} />
    
     </>
   )

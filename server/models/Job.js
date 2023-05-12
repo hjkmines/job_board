@@ -34,10 +34,9 @@ const JobSchema = new Schema({
         type: String
     }
 
-
 }, {
     timestamps: true,
-    collection: 'indeed_test'
+    collection: 'jobs'
 })
 
 module.exports = mongoose.model('Job', JobSchema);

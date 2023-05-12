@@ -82,7 +82,7 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
 
                 except:
                     dates.append(job_json['datePosted'])
-                print(job_json['datePosted'])
+                
             except:
                 dates.append(None)
 
@@ -111,7 +111,7 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
     driver.close()
     
     df = pd.DataFrame()
-    df['job_title'] = titles
+    df['title'] = titles
     df['company'] = companies
     df['link'] = links
     df['description'] = descriptions

@@ -12,14 +12,21 @@ import {
 } from "mdb-react-ui-kit";
 
 export default function JobCard({ job }) {
+
+  const toDateString = (dateISO) => {
+    const date = new Date(dateISO)
+    return date.toDateString()
+  }
+
   return (
     <MDBContainer className="m-4 bg-transparent">
-      <MDBRow className='vh-50 border'>
+      <MDBRow className='vh-50'>
         <MDBCol >
           <MDBCard className="job-card vh-50 p-1">
             <MDBCardBody className='overflow-hidden'>
-              <MDBCardTitle className="job-title vh-50  mb-0">{job.job_title}</MDBCardTitle>
-              <MDBCardSubTitle>{job.company}</MDBCardSubTitle>
+              <MDBCardTitle className="job-title vh-50  mb-0">{job.title}</MDBCardTitle>
+              <MDBCardSubTitle className='fw-bold'>{job.company}</MDBCardSubTitle>
+              <MDBCardSubTitle>Date Posted: {toDateString(job.date)}</MDBCardSubTitle>
               <MDBCardText className="mt-2 job-text ">
              {job.description.slice(0,500)}
               </MDBCardText>

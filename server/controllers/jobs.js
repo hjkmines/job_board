@@ -1,17 +1,38 @@
 const Job = require('../models/Job');
 
 const getJobs = async (req, res, next) => {
-    try {
-        const jobs = await Job.find().limit(10);
-        res
+  try {
+    if (req.params.latest) {
+      const today = new Date();
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1)
+      yesterday.setHours(0)
+      yesterday.setMinutes(0)
+      yesterday.setSeconds(0)
+      yesterday.setMilliseconds(0)
+
+      const jobs = await Job.find({ date: { $gte: yesterday.toISOString(), $lt: today.toISOString() } }).sort({ date: 'desc' }).limit(req.query.limit);
+      console.log(req.query)
+      res
         .status(200)
         .setHeader('Content-Type', 'application/json')
         .json(jobs)
 
-    } catch (err) {
-        console.log('Error getting jobs');
-        next(err);
+    } else {
+
+      const jobs = await Job.find().sort({ date: 'desc' }).limit(req.query.limit);
+      console.log(req.query)
+      res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json(jobs)
     }
+
+
+  } catch (err) {
+    console.log('Error getting jobs');
+    next(err);
+  }
 }
 
 const getJob = async (req, res, next) => {
@@ -25,6 +46,6 @@ const getJob = async (req, res, next) => {
 };
 
 module.exports = {
-    getJobs,
-    getJob
+  getJobs,
+  getJob
 }

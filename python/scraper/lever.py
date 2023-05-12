@@ -2,62 +2,66 @@
 import pandas as pd
 import requests
 import json
-import html
 import datetime
+from datetime import date
 import csv
-import re
 
 
+def scrape_lever(companies_file: str, criteria: dict):
 
-companies_df = pd.read_csv('../lever_companies.csv')
+    def get_companies(companies_file: str) -> dict:
+        with open(companies_file, 'r') as data:
+            companies = {row[0]: row[1] for row in csv.reader(data)}
+            
+        companies_bad_lever = {}
+        tokens = set(companies.keys())
+        companies_clean = companies
+       
+        for token in tokens:
+            if not requests.get(f'https://jobs.lever.co/v0/postings/{token}?mode=json'):
+                companies_bad_lever[token] = companies.get(token)
+                companies_clean.pop(token)
 
-companies_dict = {}
-for _, row in companies_df.iterrows():
-    companies_dict[row['Token']] = row['Company']
+        if companies_bad_lever:
+            with open(f"./logs/companies_bad_lever_{date.today()}.json", "w") as out:
+                json.dump(companies_bad_lever, out)
 
-tokens = set(companies_df.Token)
-companies_clean = companies_dict
-companies_bad_lever = {}
+        return companies_clean
 
-for token in tokens:
-    if not requests.get(f'https://jobs.lever.co/v0/postings/{token}?mode=json'):
-        print(f'API call for {token} failed')
-        companies_bad_lever[token] = companies_dict.get(token)
-        companies_clean.pop(token)
+    def get_jobs(companies: dict, criteria: dict) -> list:
+        roles = criteria.get('roles')
+        levels = criteria.get('levels')
+        exclude = criteria.get('exclude')
+    
+        tokens = set(companies.keys())
+        results = []
 
+        for token in tokens:
+            res = requests.get(f'https://jobs.lever.co/v0/postings/{token}?mode=json')
+            if res:
+                jobs = json.loads(res.text)
 
+            company = companies_clean.get(token)
 
-roles = {'developer', 'engineer', 'data', 'engineering', 'frontend', 'software', 'apprentice',
-         'analyst', 'quality', 'apprenticeship', 'front-end', 'backend', 'back-end', 'jr.', 'jr'}
-# Includes 'software' for titles that are just 'software enginer', etc.
-levels = {'junior', 'entry-level', 'grad', 'graduate', 'data', 'apprentice', 'apprenticeship',
-          'software', 'qa', 'quality', 'test', 'entry', 'intern', 'i', '1', 'associate', 'co-op'}
-# Optional, but helps exclude higher level postiions
-exclude = {'senior', 'principal', 'sr.', 'sr' 'ii', 'iii', 'director'}
+            for job in jobs:
+                title = set(job.get('text').lower().split())
 
-res = requests.get(f'https://jobs.lever.co/v0/postings/tegus?mode=json')
-jobs = json.loads(res.text)
-job = jobs[0]
+                if title.intersection(roles) and title.intersection(levels) and not title.intersection(exclude):
+                    job_info = {'title': job.get('text'), 'company': company, 'description': job.get('descriptionPlain'),
+                                'link': job.get('applyUrl'), 'remote': True if job.get('workplaceType').lower() == 'remote' else False, 'location': job.get('categories').get('location'),
+                                'date_posted': datetime.datetime.fromtimestamp(job.get('createdAt')/1000.).isoformat()}
 
-results = []
+                    results.append(job_info)
 
-for token in tokens:
-    res = requests.get(f'https://jobs.lever.co/v0/postings/{token}?mode=json')
-    if res:
-        jobs = json.loads(res.text)
+        df = pd.DataFrame()
+        df = df.from_records(results)
 
-    company = companies_clean.get(token)
+        df.sort_values(by='date_posted', ascending=False)
+        return df
 
-    for job in jobs:
-        title = set(job.get('text').lower().split())
+    companies_clean = get_companies(companies_file)
+    df = get_jobs(companies_clean, criteria)
+    df['source'] = 'lever'
 
-        if title.intersection(roles) and title.intersection(levels) and not title.intersection(exclude):
-            job_info = {'title': job.get('text'), 'company': company, 'description': job.get('descriptionPlain'),
-                        'link': job.get('applyUrl'), 'remote': True if job.get('workplaceType').lower() == 'remote' else False, 'location': job.get('categories').get('location'),  'date_posted': datetime.datetime.fromtimestamp(job.get('createdAt')/1000.).isoformat()}
+    return df
 
-            results.append(job_info)
-
-df = pd.DataFrame()
-df = df.from_records(results)
-
-df.sort_values(by='date_posted', ascending=False)

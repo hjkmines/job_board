@@ -2,11 +2,12 @@ const jobRouter = require("express").Router();
 
 const {
   getJob,
-  getJobs,
+  getJobs
 } = require("../controllers/jobs");
 
-jobRouter.route("/")
-.get(getJobs)
+jobRouter
+  .route("/")
+  .get(getJobs)
 
 jobRouter
   .route("/:jobId")
