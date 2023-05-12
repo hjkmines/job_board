@@ -49,7 +49,7 @@ def scrape_lever(companies_file: str, criteria: dict):
                 if title.intersection(roles) and title.intersection(levels) and not title.intersection(exclude):
                     job_info = {'title': job.get('text'), 'company': company, 'description': job.get('descriptionPlain'),
                                 'link': job.get('applyUrl'), 'remote': True if job.get('workplaceType').lower() == 'remote' else False, 'location': job.get('categories').get('location'),
-                                'date_posted': datetime.datetime.fromtimestamp(job.get('createdAt')/1000.).isoformat()}
+                                'date_posted': datetime.datetime.fromtimestamp(int(str(job.get('createdAt'))[:-3])).isoformat()}
 
                     results.append(job_info)
 

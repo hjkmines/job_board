@@ -13,11 +13,11 @@ if not os.path.exists(f'./output/{today}'):
     os.mkdir(f'./output/{today}')
 
 # Web scrapers
-dice_df = scraper.scrape_dice() 
+dice_df = scraper.scrape_dice(pages=10) 
 dice_json = f'./output/{today}/dice_{today}.json'
 dice_df.to_json(dice_json, orient='records')
 
-indeed_df = scraper.scrape_indeed()
+indeed_df = scraper.scrape_indeed(pages=10)
 indeed_json = f'./output/{today}/indeed_{today}.json'
 indeed_df.to_json(indeed_json, orient='records')
 
