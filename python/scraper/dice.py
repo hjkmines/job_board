@@ -81,6 +81,8 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
 
         try:
             company = cup.find('a', attrs={'data-cy': 'companyNameLink'})
+            if not company:
+                company = cup.find('a', attrs={'data-cy': 'companyNameNoLink'})
             companies.append(company.text)
         except:
             companies.append(None)
