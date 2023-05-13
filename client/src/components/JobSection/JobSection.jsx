@@ -12,14 +12,10 @@ import { useState, useEffect } from 'react';
 
 const JobSection = ({ sectionTitle, query }) => {
     const [jobs, setJobs] = useState([])
-    console.log('query')
-    console.log(query)
 
     useEffect(() => {
         axios.get('http://localhost:5001/jobs', {params : {...query} } ).then((res) => {
             setJobs(res.data);
-            console.log('job data');
-            console.log(res.data);
         });
 
     }, []);

@@ -120,6 +120,7 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
     df['max_salary'] = maxes
     df['salary_type'] = types
     df['city'] = cities
+    df['state'] = states
     df['country'] = countries
     df['source'] = 'indeed'
 

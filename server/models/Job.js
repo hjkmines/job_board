@@ -11,7 +11,7 @@ const JobSchema = new Schema({
         type: String,
         required: [true, 'please provide a company'],
     },
-    company: {
+    link: {
         type: String,
         required: [true, 'please provide a link'],
     },

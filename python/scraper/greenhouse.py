@@ -76,15 +76,16 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
                             'remote': None, 'greenhouse_id': job.get('id'), 'greenhouse_api_url': url}
 
                 if job_detail.get('offices'):
-                    job_info['location'] = str(job_detail.get('offices'))
-                    offices = {office.get('name').lower()
-                               for office in job_detail.get('offices')}
-                    if 'remote' in offices or 'anywhere' in offices:
-                        job_info['remote'] = True
-                    else:
-                        job_info['remote'] = False
+                    job_info['location'] = [office['location'] for office in job_detail.get('offices')]
+                    
+                    if None in job_info['location']:
+                        job_info['location'] = [office['name'] for office in job_detail.get('offices')]
+
+                    if job_info['location']:
+                        job_info['location'] = ','.join(job_info['location'])
 
                 data.append(job_info)
+                    
         df = pd.DataFrame()
         df = df.from_records(data)
 

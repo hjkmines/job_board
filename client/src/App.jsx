@@ -11,15 +11,6 @@ import { useState, useEffect } from 'react';
 function App() {
   const [jobs, setJobs] = useState([])
 
-
-  useEffect(() => {
-    axios.get('http://localhost:5001/jobs').then((res) => {
-      setJobs(res.data);
-      console.log(res.data)
-    });
-
-  }, []);
-
   return (
     <>
       {/* react-router-dom ? broswerrouter? */}

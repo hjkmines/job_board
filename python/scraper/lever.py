@@ -48,15 +48,13 @@ def scrape_lever(companies_file: str, criteria: dict):
 
                 if title.intersection(roles) and title.intersection(levels) and not title.intersection(exclude):
                     job_info = {'title': job.get('text'), 'company': company, 'description': job.get('descriptionPlain'),
-                                'link': job.get('applyUrl'), 'remote': True if job.get('workplaceType').lower() == 'remote' else False, 'location': job.get('categories').get('location'),
-                                'date_posted': datetime.datetime.fromtimestamp(int(str(job.get('createdAt'))[:-3])).isoformat()}
+                                'link': job.get('applyUrl')[:-5], 'remote': True if job.get('workplaceType').lower() == 'remote' else False, 'location': job.get('categories').get('location'),
+                                'date': datetime.datetime.fromtimestamp(int(str(job.get('createdAt'))[:-3])).isoformat()}
 
                     results.append(job_info)
 
         df = pd.DataFrame()
         df = df.from_records(results)
-
-        df.sort_values(by='date_posted', ascending=False)
         return df
 
     companies_clean = get_companies(companies_file)
