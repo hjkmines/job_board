@@ -6,6 +6,7 @@ import html
 from datetime import date
 import csv
 import re
+from time import sleep
 
 def scrape_greenhouse(companies_file: str, criteria: dict):
 
@@ -59,7 +60,23 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
         return results
 
     # Get job details for eligible jobs and return a dataframe with the job data
-
+    def get_location(locations) -> list:
+        output = []
+        for location in locations:
+            if re.search('remote|anywhere|everywhere', location.strip().lower()):
+                continue
+            res = requests.get(f'https://geocode.maps.co/search?q={location}')
+            try:
+                data = res.json()[0]
+            except:
+                continue
+            coordinates = [float(data.get('lon')),float(data.get('lat'))]
+            output.append({'name': location, 'point' : {'type' : 'Point', 'coordinates' : coordinates}})
+            sleep(0.5)
+        if output:
+            return output
+        return None
+    
     def get_details(results: list) -> pd.DataFrame:
         data = []
 
@@ -76,13 +93,20 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
                             'remote': None, 'greenhouse_id': job.get('id'), 'greenhouse_api_url': url}
 
                 if job_detail.get('offices'):
-                    job_info['location'] = [office['location'] for office in job_detail.get('offices')]
+                    offices = job_detail.get('offices')
+                    locations = []
+                    for office in offices:
+                        if office.get('location'):
+                            locations.append(office.get('location'))
+                        else:
+                            if office.get('name'):
+                                locations.append(office.get('name'))
+                    job_info['location'] = locations
                     
-                    if None in job_info['location']:
-                        job_info['location'] = [office['name'] for office in job_detail.get('offices')]
+                    print(locations)
 
-                    if job_info['location']:
-                        job_info['location'] = ','.join(job_info['location'])
+                    if locations:
+                        job_info['points'] = get_location(locations)
 
                 data.append(job_info)
                     

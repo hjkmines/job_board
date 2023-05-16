@@ -11,7 +11,7 @@ const getJobs = async (req, res, next) => {
       yesterday.setSeconds(0)
       yesterday.setMilliseconds(0)
 
-      const jobs = await Job.find({ date: { $gte: yesterday.toISOString(), $lt: today.toISOString() } }).sort({ date: 'desc' }).limit(req.query.limit).toJSON();
+      const jobs = await Job.find({ date: { $gte: yesterday.toISOString(), $lt: today.toISOString() } }).sort({ date: 'desc' }).limit(req.query.limit).lean();
       res
         .status(200)
         .setHeader('Content-Type', 'application/json')
@@ -19,7 +19,7 @@ const getJobs = async (req, res, next) => {
 
     } else {
 
-      const jobs = await Job.find().sort({ date: 'desc' }).limit(req.query.limit);
+      const jobs = await Job.find().sort({ date: 'desc' }).limit(req.query.limit).lean();
       console.log(req.query)
       res
         .status(200)
