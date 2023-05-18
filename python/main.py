@@ -13,13 +13,15 @@ if not os.path.exists(f'./output/{today}'):
     os.mkdir(f'./output/{today}')
 
 # Web scrapers
-# dice_df = scraper.scrape_dice(pages=5) 
-# dice_json = f'./output/{today}/dice_{today}.json'
-# dice_df.to_json(dice_json, orient='records')
+print('Scraping Dice...')
+dice_df = scraper.scrape_dice(pages=1) 
+dice_json = f'./output/{today}/dice_{today}.json'
+dice_df.to_json(dice_json, orient='records')
 
-# indeed_df = scraper.scrape_indeed(pages=5)
-# indeed_json = f'./output/{today}/indeed_{today}.json'
-# indeed_df.to_json(indeed_json, orient='records')
+print('Scraping Indeed...')
+indeed_df = scraper.scrape_indeed(pages=1)
+indeed_json = f'./output/{today}/indeed_{today}.json'
+indeed_df.to_json(indeed_json, orient='records')
 
 # Company lists
 greenhouse_companies_file = 'greenhouse_companies.csv'
@@ -35,21 +37,26 @@ exclude = {'senior', 'principal' , 'sr.', 'ii', 'iii'}
 
 criteria ={'roles': roles, 'levels': levels, 'exclude' : exclude}
 
+# Scraping Greenhouse
+print('Scraping Greenhouse...')
 greenhouse_df = scraper.scrape_greenhouse(greenhouse_companies_file, criteria)
 greenhouse_json = f'./output/{today}/greenhouse_{today}.json'
 greenhouse_df.to_json(greenhouse_json, orient='records')
 
-# lever_df = scraper.scrape_lever(lever_companies_file, criteria)
-# lever_json = f'./output/{today}/lever_{today}.json'
-# lever_df.to_json(lever_json, orient='records')
+print('Scraping Lever...')
+lever_df = scraper.scrape_lever(lever_companies_file, criteria)
+lever_json = f'./output/{today}/lever_{today}.json'
+lever_df.to_json(lever_json, orient='records')
 
 MONGO_URL = dotenv_values('config/config.env').get('MONGO_URL') 
 client = pymongo.MongoClient(MONGO_URL)
 db = client["test"]
 
-jobs_coll = db['greenhouse_test']
+jobs_coll = db['jobs_test']
 
-jobs_coll.create_index([('point', pymongo.GEO2D)])
+jobs_coll.drop()
+jobs_coll = db['jobs_test']
+
 # Opening the json file
 def insert_json(source_json: str, Collection):
     with open(source_json) as file:
@@ -65,9 +72,10 @@ def insert_json(source_json: str, Collection):
     else:
         Collection.insert_one(file_data)
 
-# insert_json(dice_json, jobs_coll)
-# insert_json(indeed_json, jobs_coll)
+print('Inserting documents...')
+insert_json(dice_json, jobs_coll)
+insert_json(indeed_json, jobs_coll)
 insert_json(greenhouse_json, jobs_coll)
-# insert_json(lever_json, jobs_coll)
+insert_json(lever_json, jobs_coll)
 
-
+jobs_coll.create_index([('points', pymongo.GEOSPHERE)])

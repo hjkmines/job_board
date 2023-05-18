@@ -7,7 +7,9 @@ import undetected_chromedriver as uc
 from urllib.parse import urlencode, urljoin
 import json
 from datetime import datetime
-
+import requests
+from time import sleep
+import re
 
 def scrape_indeed(query="junior software developer", pages=1, wait=5):
     home = 'https://www.indeed.com'
@@ -19,18 +21,27 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
     titles = []
     companies = []
     links = []
-
+    remote = []
     cities = []
     states = []
     countries = []
     zips = []
-
+    points=[]
     dates = []
     mins = []
     maxes = []
     types = []
     descriptions = []
 
+    def get_location(location: str):
+        res = requests.get(f'https://geocode.maps.co/search?q={location}')
+        data = res.json()[0]
+        coordinates = [float(data.get('lon')), float(data.get('lat'))]
+        sleep(0.5)
+        if coordinates:
+             return {'type': 'MultiPoint', 'coordinates': [coordinates]}
+        return None
+    
     # web driver setup
     driver = uc.Chrome()
 
@@ -89,15 +100,21 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
             try:
                 address = job_json['jobLocation']['address']
                 cities.append(address.get('addressLocality'))
+                if re.search('remote|anywhere|everywhere', address.get('addressLocality')):
+                    remote.append(True)
+                else:
+                    remote.append(False)
                 states.append(address.get('addressRegion1'))
                 zips.append(address.get('postalCode'))
                 countries.append(address.get('addressCountry'))
+                points.append(get_location(f"{address.get('addressLocality')}, {address.get('addressRegion1')}, {address.get('addressCountry')}"))
 
             except:
                 cities.append(None)
                 states.append(None)
                 zips.append(None)
                 countries.append(None)
+                points.append(None)
 
             try:
                 mins.append(int(job_json['baseSalary']['value']['minValue']))
@@ -122,6 +139,8 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
     df['city'] = cities
     df['state'] = states
     df['country'] = countries
+    df['points'] = points
+    df['remote'] = remote
     df['source'] = 'indeed'
 
 

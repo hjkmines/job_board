@@ -61,7 +61,7 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
 
     # Get job details for eligible jobs and return a dataframe with the job data
     def get_location(locations) -> list:
-        output = []
+        points = []
         for location in locations:
             if re.search('remote|anywhere|everywhere', location.strip().lower()):
                 continue
@@ -70,11 +70,11 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
                 data = res.json()[0]
             except:
                 continue
-            coordinates = [float(data.get('lon')),float(data.get('lat'))]
-            output.append({'name': location, 'point' : {'type' : 'Point', 'coordinates' : coordinates}})
+            coordinates = [float(data.get('lon')), float(data.get('lat'))]
+            points.append(coordinates)
             sleep(0.5)
-        if output:
-            return output
+        if points:
+            return {'type': 'MultiPoint', 'coordinates': points}
         return None
     
     def get_details(results: list) -> pd.DataFrame:
@@ -102,13 +102,24 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
                             if office.get('name'):
                                 locations.append(office.get('name'))
                     job_info['location'] = locations
-                    
-                    print(locations)
 
-                    if locations:
-                        job_info['points'] = get_location(locations)
+                elif job_detail.get('location'):
+                    location = job_detail['location']['name']
+                    job_info['location'] = location
 
-                data.append(job_info)
+                locations = job_info.get('location')
+                if locations:
+                    points = get_location(locations)
+
+                    if re.search('remote|anywhere|everywhere', ' '.join(locations).lower()):
+                        job_info['remote'] = True
+                    else:
+                        job_info['remote'] = False
+                        
+                    if points:
+                        job_info['points'] = points
+
+            data.append(job_info)
                     
         df = pd.DataFrame()
         df = df.from_records(data)

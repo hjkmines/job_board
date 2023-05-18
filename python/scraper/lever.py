@@ -5,6 +5,7 @@ import json
 import datetime
 from datetime import date
 import csv
+from time import sleep
 
 
 def scrape_lever(companies_file: str, criteria: dict):
@@ -28,6 +29,25 @@ def scrape_lever(companies_file: str, criteria: dict):
 
         return companies_clean
 
+    def get_location(locations: str):
+        points = []
+        locations = locations.split('or')
+        for location in locations:
+           
+            res = requests.get(f'https://geocode.maps.co/search?q={location.strip()}')
+            try:
+                data = res.json()[0]
+            except:
+                continue
+            coordinates = [float(data.get('lon')), float(data.get('lat'))]
+            points.append(coordinates)
+            sleep(0.5)
+        if points:
+            return {'type': 'MultiPoint', 'coordinates': points}
+        
+        return None
+          
+
     def get_jobs(companies: dict, criteria: dict) -> list:
         roles = criteria.get('roles')
         levels = criteria.get('levels')
@@ -50,6 +70,9 @@ def scrape_lever(companies_file: str, criteria: dict):
                     job_info = {'title': job.get('text'), 'company': company, 'description': job.get('descriptionPlain'),
                                 'link': job.get('applyUrl')[:-5], 'remote': True if job.get('workplaceType').lower() == 'remote' else False, 'location': job.get('categories').get('location'),
                                 'date': datetime.datetime.fromtimestamp(int(str(job.get('createdAt'))[:-3])).isoformat()}
+
+                    if job_info.get('location'):
+                        job_info['points'] = get_location(job_info.get('location'))
 
                     results.append(job_info)
 
