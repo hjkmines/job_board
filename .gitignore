@@ -5,9 +5,10 @@
 *.env
 
 # Python
-.venv
+*/.venv
 python/output
-*__pycache__/
+*/__pycache__*
+*.pyc
 
 # Misc
 .vscode/

@@ -2,23 +2,24 @@ import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import './App.css'
 
-import Navbar from "./components/Navbar/Navbar.jsx";
 import LandingJumbotron from './components/landingJumbotron/LandingJumbotron';
 import JobSearch from './components/JobSearch/JobSearch.jsx';
 import JobSection from './components/JobSection/JobSection.jsx';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 function App() {
+  const [jobs, setJobs] = useState([])
 
   return (
- <>
+    <>
       {/* react-router-dom ? broswerrouter? */}
-      <LandingJumbotron/>
-      <JobSearch />
-      <JobSection sectionTitle='New Jobs'/>
-      <JobSection sectionTitle='Your Matches'/>
-      <JobSection sectionTitle='Local Jobs'/>
-
- </>
+      <LandingJumbotron />
+      {/* <JobSearch/> */}
+      <JobSection sectionTitle='New Jobs' query={{latest: true, limit: 100}} />
+      <JobSection sectionTitle='All Jobs' query={{limit: 1000}} />
+   
+    </>
   )
 }
 

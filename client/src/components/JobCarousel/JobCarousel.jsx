@@ -1,4 +1,3 @@
-
 import React from "react";
 import Carousel from "react-multi-carousel";
 import JobCard from "../JobCard/JobCard";
@@ -79,6 +78,7 @@ class JobCarousel extends React.Component {
                 </div>
             );
         };
+
         return (
             <Carousel
                 keyBoardControl={true}
@@ -105,14 +105,9 @@ class JobCarousel extends React.Component {
                 }}
             >
 
-                <JobCard />
-                <JobCard />
-                <JobCard />
-                <JobCard />
-                <JobCard />
-                <JobCard />
-                <JobCard />
-                <JobCard />
+                {this.props.jobs.map(job => {
+                    return <JobCard key = {job._id} job = {job} />
+                } )}
 
             </Carousel>
         );

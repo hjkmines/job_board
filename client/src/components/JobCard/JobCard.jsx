@@ -11,38 +11,47 @@ import {
   MDBCardSubTitle
 } from "mdb-react-ui-kit";
 
-export default function JobCard() {
+export default function JobCard({ job }) {
+
+  const toDateString = (dateISO) => {
+    const date = new Date(dateISO)
+    return date.toDateString()
+  }
+
+  const getLocation = (job) => {
+    if (job.source === 'dice' || job.source === 'indeed') {
+      if (job.state) {
+        return job.city + ', ' + job.state
+      }
+
+      if (!job.city) {
+        return null
+      }
+      return job.city
+
+    } else if (job.source === 'greenhouse')  {
+      console.log(Object.keys(job))
+      if (job.location) {
+        return job.location.toString()
+      }
+    }
+  }
+
   return (
     <MDBContainer className="m-4 bg-transparent">
-      <MDBRow>
+      <MDBRow className='vh-50'>
         <MDBCol >
-          <MDBCard className="job-card p-1">
-            <MDBCardBody>
-              <MDBCardTitle className="job-title mb-0">Job Title</MDBCardTitle>
-              <MDBCardSubTitle>Company</MDBCardSubTitle>
-              <ul>
-                <li>
-                  Candidate will work as Front-End Developer utilizing SDLC
-                  process
-                </li>
-                <li>Proficient in JavaScript and TypeScript</li>
-                <li>
-                  Familiar with AWS core technology such as Lambda, S3, Cloud
-                  formation, SQS
-                </li>
-              </ul>
-
-              <MDBCardText className="mt-2 job-text">
-                We are looking for an Intermediate Software Engineer to join our
-                development team that builds and maintains high-traffic
-                storefronts on the Shopify platform. The Technology team
-                supports a dynamic end to end e-commerce organization and
-                implements a variety of technology partners as well as custom
-                solutions and integrations. The right candidate for the role is
-                a team player and problem solver who enjoys learning and
-                implementing new systems and technologies.
+          <MDBCard className="job-card vh-50 p-1">
+            <MDBCardBody className='overflow-hidden'>
+              <MDBCardTitle className="job-title vh-50  mb-0">{job.title}</MDBCardTitle>
+              <MDBCardSubTitle className='fw-bold'>{job.company}</MDBCardSubTitle>
+              <MDBCardSubTitle> {getLocation(job)}</MDBCardSubTitle>
+              <MDBCardSubTitle>Date Posted: {toDateString(job.date)}</MDBCardSubTitle>
+              <MDBCardSubTitle>{job.source}</MDBCardSubTitle>
+              <MDBCardText className="mt-2 job-text ">
+                {job.description.slice(0, 500)}
               </MDBCardText>
-              <MDBBtn href="#" rounded className="shadow-none apply-btn">
+              <MDBBtn href={job.link} target='_blank' rounded className="shadow-none apply-btn">
                 Apply
               </MDBBtn>
             </MDBCardBody>
@@ -52,3 +61,4 @@ export default function JobCard() {
     </MDBContainer>
   );
 }
+

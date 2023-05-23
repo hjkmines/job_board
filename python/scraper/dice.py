@@ -8,6 +8,7 @@ import undetected_chromedriver as uc
 from urllib.parse import urljoin, urlencode
 import re
 import json
+from datetime import datetime
 
 def scrape_dice(query="junior software developer", pages=1, wait=5):
     base = 'https://www.dice.com/jobs/'
@@ -80,6 +81,8 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
 
         try:
             company = cup.find('a', attrs={'data-cy': 'companyNameLink'})
+            if not company:
+                company = cup.find('a', attrs={'data-cy': 'companyNameNoLink'})
             companies.append(company.text)
         except:
             companies.append(None)
@@ -91,12 +94,12 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
             firstkey = list(jobdata.keys())[0]
             locationdetail = jobdata[firstkey]['data']['locationDetail']
             locationdata = locationdetail['locations'][0]
-            dateposted = jobdata[firstkey]['data']['datePosted']
+            dateposted = datetime.strptime(jobdata[firstkey]['data']['datePosted'], "%Y-%m-%dT%H:%M:%S.000Z").isoformat()
             dates.append(dateposted)
             remote_status = locationdetail['remote']
             remote.append(remote_status)
             cities.append(locationdata['city'])
-            countries.append(locationdata['city'])
+            countries.append(locationdata['country'])
             states.append(locationdata['state'])
             zips.append(locationdata['postalCode'])
 
@@ -138,16 +141,19 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
     for link in links:
         scrap_job(link)
 
+    driver.close()
+
     df = pd.DataFrame()
     df['title'] = titles
     df['company'] = companies
     df['link'] = links
     df['description'] = descriptions
-    df['date_posted'] = dates
+    df['date'] = dates
     df['country'] = countries
     df['state'] = states
     df['city'] = cities
     df['zip'] = zips
     df['remote'] = remote
+    df['source'] = 'dice'
 
     return df
