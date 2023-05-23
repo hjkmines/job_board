@@ -4,6 +4,11 @@
 # env
 *.env
 
+# Python
+.venv
+python/output
+*__pycache__/
+
 # Misc
 .vscode/
 .DS_Store
