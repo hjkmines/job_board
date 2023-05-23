@@ -5,16 +5,10 @@
 *.env
 
 # Python
-<<<<<<< HEAD
 */.venv
 python/output
-*/__pycache__
+*/__pycache__*
 *.pyc
-=======
-.venv
-python/output
-*__pycache__/
->>>>>>> c3fa10026a3369944c0852e494552cb898d0a8d9
 
 # Misc
 .vscode/
