@@ -36,7 +36,7 @@ const JobSchema = new Schema({
 
 }, {
     timestamps: true,
-    collection: 'greenhouse_test'
+    collection: 'jobs_test'
 })
 
 module.exports = mongoose.model('Job', JobSchema);

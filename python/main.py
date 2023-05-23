@@ -35,7 +35,7 @@ levels = {'junior', 'entry-level', 'grad', 'graduate', 'apprentice', 'web', 'app
 # Optional, but helps exclude higher level positions
 exclude = {'senior', 'principal' , 'sr.', 'ii', 'iii'}
 
-criteria ={'roles': roles, 'levels': levels, 'exclude' : exclude}
+criteria = {'roles': roles, 'levels': levels, 'exclude' : exclude}
 
 # Scraping Greenhouse
 print('Scraping Greenhouse...')
@@ -79,3 +79,4 @@ insert_json(greenhouse_json, jobs_coll)
 insert_json(lever_json, jobs_coll)
 
 jobs_coll.create_index([('points', pymongo.GEOSPHERE)])
+

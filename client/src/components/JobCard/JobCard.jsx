@@ -31,7 +31,7 @@ export default function JobCard({ job }) {
 
     } else if (job.source === 'greenhouse')  {
       if (job.location) {
-        return job.location.join(', ')
+        return job.location
       }
     }
   }

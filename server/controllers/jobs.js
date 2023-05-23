@@ -18,7 +18,6 @@ const getJobs = async (req, res, next) => {
         .json(jobs)
 
     } else {
-
       const jobs = await Job.find().sort({ date: 'desc' }).limit(req.query.limit).lean();
       console.log(req.query)
       res
