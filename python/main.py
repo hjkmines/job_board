@@ -78,5 +78,10 @@ insert_json(indeed_json, jobs_coll)
 insert_json(greenhouse_json, jobs_coll)
 insert_json(lever_json, jobs_coll)
 
+print('Indexing...')
 jobs_coll.create_index([('points', pymongo.GEOSPHERE)])
+jobs_coll.create_index([('title', pymongo.TEXT),('description', pymongo.TEXT), ('company', pymongo.TEXT)])
+
+print('Done!')
+
 

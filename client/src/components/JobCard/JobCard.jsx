@@ -29,7 +29,7 @@ export default function JobCard({ job }) {
       }
       return job.city
 
-    } else if (job.source === 'greenhouse')  {
+    } else if (job.source === 'greenhouse' || job.source === 'lever')  {
       if (job.location) {
         return job.location
       }

@@ -18,73 +18,109 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons'
 import JobSection from '../JobSection/JobSection';
-import { Formik, Field, Form } from 'formik';
+import { Formik, Field, Form, useFormik } from 'formik';
 
 export default function JobSearchGeo() {
-  const [query, setQuery] = useState({})
+  
+  
+  
+  const formik = useFormik({
+    
+    initialValues: {
+      search: '',
+      location: '',
+      radius: 40233.6,
+      geoLocated: false,
+      lat : '',
+      long : ''
+    },
 
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  
+    enableReinitialize: true,
+  });
 
-  console.log(query)
+  const setLocationValue = (coords) => {
+    formik.setFieldValue("long", coords[0])
+    formik.setFieldValue("lat", coords[1])
+  }
+
   return (
     <>
-      <Formik
-        initialValues={{
-          search: '',
-          location: [],
-          radius: '',
-        }}
+      <form onSubmit={formik.handleSubmit} >
 
-        onSubmit={(values) => console.log(values)}
+        <MDBContainer fluid className='search2 mt-2 mb-4'>
 
-      >
+          <MDBRow className='justify-content-evenly align-items-end'>
+            <MDBCol fluid='true' size={2} className='searchBtnCol justify-content-end '>
+              <MDBBtn type="submit" className='searchSubmitBtn' >
+                Search
+              </MDBBtn>
+            </MDBCol>
 
-        <Form>
+            <MDBCol size={4} className="filterSearch">
+              <label htmlFor="search" className='text-center'> Search </label>
+              <input
+                id='search'
+                name='search'
+                type='text'
+                placeholder='Frontend, Python, etc'
+                className="searchInput form-control"
+                value = {formik.values.search}
+                onChange={formik.handleChange} />
+            </MDBCol>
 
-          <MDBContainer fluid className='search2 mt-2 mb-4'>
+            <MDBCol size={3} className="filterSearch">
+              <label htmlFor="location" className='text-center'> Location </label>
+              <input
+                name="location"
+                id="location"
+                type='text'
+                placeholder='Zip code, city'
+                className="searchInput form-control"
+                value = {formik.values.location}
+                onChange={formik.handleChange} />
+            </MDBCol>
 
-            <MDBRow className='justify-content-evenly align-items-end'>
-              <MDBCol fluid='true' size={2} className='searchBtnCol justify-content-end '>
-                <MDBBtn type="submit" className='searchSubmitBtn' >
-                  Search
-                </MDBBtn>
-              </MDBCol>
+            <MDBCol size={1} className="filterSearch">
 
-              <MDBCol size={4} className="filterSearch">
-                <label htmlFor="search" className='text-center'> Search </label>
-                <Field id='search' name='search' type='text' placeholder='Frontend, Python, etc' className="searchInput form-control" />
-              </MDBCol>
+              <MDBBtn
+                className='p-2'
+                color='success'
+                type='button'
+                name='location'
+                id='location'
+                onClick={() => {
+                  navigator.geolocation.getCurrentPosition(function (position) {
+                    const userCoords = [position.coords.longitude, position.coords.latitude];
+                    setLocationValue(userCoords)
+                    formik.setFieldValue('geoLocated', true)
+                  });
+                }}
+              >
+                <FontAwesomeIcon icon={faLocationCrosshairs} size='xl' />
+              </MDBBtn>
+            </MDBCol>
 
-              <MDBCol size={3} className="filterSearch">
-                <label htmlFor="location" className='text-center'> Location </label>
-                <Field name="location" id="location" type='text' placeholder='Zip code, city' className="searchInput form-control" />
-              </MDBCol>
+            <MDBCol size={2} >
+              <div className="form-group ">
+                <label htmlFor="radius" className='text-center'> Within: </label>
 
-              <MDBCol size={1} className="filterSearch">
-              
-                <Field as ='button' className='p-2 success' type = 'button' onClick={(values) => values.location = navigator.geolocation.getCurrentPosition((pos) => { return [pos.coords.longitude, pos.coords.latitude] })}>
-                  <FontAwesomeIcon icon={faLocationCrosshairs} size='xl' />
-                </Field>
-              </MDBCol>
+                <select className="form-select" name="radius" id='radius' onChange={formik.handleChange}>
+                  <option value={40233.6} >25 mi</option>
+                  <option value={80467.2} >50 mi</option>
+                  <option value={160934} >100 mi</option>
+                </select>
+              </div>
+            </MDBCol>
+          </MDBRow>
 
-              <MDBCol size={2} >
-                <div className="form-group ">
-                  <label htmlFor="radius" className='text-center'> Within: </label>
+        </MDBContainer >
+      </form>
 
-                  <Field as='select' className="form-select" name="radius" >
-                    <option value={null} ></option>
-                    <option value={25} >25 mi</option>
-                    <option value={50} >50 mi</option>
-                    <option value={100} >100 mi</option>
-                  </Field>
-                </div>
-              </MDBCol>
-            </MDBRow>
-
-          </MDBContainer >
-        </Form>
-      </Formik >
-
-      {(query.location || query.search) && <JobSection query={query} sectionTitle={'Your Search Results'} />
+      {formik.submitCount && <JobSection query={formik.values} sectionTitle={'Your Search Results'} />
       }
 
     </>
