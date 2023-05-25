@@ -18,8 +18,8 @@ const JobSchema = new Schema({
     location: {
         type: String,
     },
-    date_posted: {
-        type: String
+    date: {
+        type: Number
     },
     remote: {
         type: Boolean

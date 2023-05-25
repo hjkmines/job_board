@@ -23,7 +23,7 @@ import { Formik, Field, Form, useFormik } from 'formik';
 export default function JobSearchGeo() {
   
   
-  
+
   const formik = useFormik({
     
     initialValues: {
@@ -80,7 +80,7 @@ export default function JobSearchGeo() {
                 type='text'
                 placeholder='Zip code, city'
                 className="searchInput form-control"
-                value = {formik.values.location}
+                value = {[formik.values.lat,formik.values.long]}
                 onChange={formik.handleChange} />
             </MDBCol>
 
@@ -120,8 +120,7 @@ export default function JobSearchGeo() {
         </MDBContainer >
       </form>
 
-      {formik.submitCount && <JobSection query={formik.values} sectionTitle={'Your Search Results'} />
-      }
+      {(formik.submitCount>0) && <JobSection query={formik.values} sectionTitle={'Your Search Results'} />}
 
     </>
 

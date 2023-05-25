@@ -46,6 +46,7 @@ export default function JobCard({ job }) {
               <MDBCardSubTitle className='fw-bold'>{job.company}</MDBCardSubTitle>
               <MDBCardSubTitle> {getLocation(job)}</MDBCardSubTitle>
               <MDBCardSubTitle>Date Posted: {toDateString(job.date)}</MDBCardSubTitle>
+              <MDBCardSubTitle>Date Posted: {job.date}</MDBCardSubTitle>
               <MDBCardSubTitle>{job.source}</MDBCardSubTitle>
               <MDBCardText className="mt-2 job-text ">
                 {job.description.slice(0, 500)}

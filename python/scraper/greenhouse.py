@@ -1,12 +1,14 @@
 
-import pandas as pd
+
 import requests
 import json
 import html
-from datetime import date
 import csv
 import re
 from time import sleep
+import datetime
+from datetime import timezone
+
 
 def scrape_greenhouse(companies_file: str, criteria: dict):
 
@@ -18,7 +20,7 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
     def get_companies(companies_file: str):
         with open(companies_file, 'r') as data:
             companies = {row[0]: row[1] for row in csv.reader(data)}
-            
+
         companies_clean = companies
         companies_bad = {}
         tokens = set(companies.keys())
@@ -76,7 +78,7 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
         if points:
             return {'type': 'MultiPoint', 'coordinates': points}
         return None
-    
+
     def get_details(results: list) -> pd.DataFrame:
         data = []
 
@@ -89,8 +91,8 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
             if res:
                 job_detail = json.loads(res.text)
                 job_info = {'title': job_detail.get('title'), 'company': job.get('company'), 'link': job_detail.get('absolute_url'),
-                            'description': re.sub(html_re,'',html.unescape(job_detail.get('content'))), 'date': job_detail.get('updated_at'),
-                            'remote': None, 'greenhouse_id': job.get('id'), 'greenhouse_api_url': url}
+                            'description': re.sub(html_re, '', html.unescape(job_detail.get('content'))), 'date': datetime.datetime.fromisoformat(job_detail.get('updated_at')),
+                            'remote': None, 'greenhouse_id': job.get('id'), 'greenhouse_api_url': url, 'raw_date': job_detail.get('updated_at'), 'source': 'greenhouse'}
 
                 if job_detail.get('offices'):
                     offices = job_detail.get('offices')
@@ -115,20 +117,16 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
                         job_info['remote'] = True
                     else:
                         job_info['remote'] = False
-                        
+
                     if points:
                         job_info['points'] = points
 
             data.append(job_info)
-                    
-        df = pd.DataFrame()
-        df = df.from_records(data)
 
-        return df
+        return data
     companies_clean = get_companies(companies_file)
 
     results = get_jobs(companies_clean, criteria)
-    df = get_details(results)
-    df['source'] = 'greenhouse'
+    data = get_details(results)
 
-    return df
+    return data
