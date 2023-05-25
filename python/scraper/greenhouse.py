@@ -19,6 +19,7 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
         with open(companies_file, 'r') as data:
             companies = {row[0]: row[1] for row in csv.reader(data)}
             
+            
         companies_clean = companies
         companies_bad = {}
         tokens = set(companies.keys())
@@ -26,8 +27,10 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
             if not requests.get(f'https://boards-api.greenhouse.io/v1/boards/{token}/jobs'):
                 companies_bad[token] = companies.get(token)
                 companies_clean.pop(token)
+                companies_clean.pop(token)
 
         if companies_bad:
+            with open(f"./logs/companies_bad_greenhouse_{date.today()}.json", "w") as out:
             with open(f"./logs/companies_bad_greenhouse_{date.today()}.json", "w") as out:
                 json.dump(companies_bad, out)
 
@@ -82,6 +85,8 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
 
         html_re = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
 
+        html_re = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
+
         for job in results:
             url = f'https://boards-api.greenhouse.io/v1/boards/{job.get("token")}/jobs/{job.get("id")}'
             res = requests.get(url)
@@ -89,6 +94,7 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
             if res:
                 job_detail = json.loads(res.text)
                 job_info = {'title': job_detail.get('title'), 'company': job.get('company'), 'link': job_detail.get('absolute_url'),
+                            'description': re.sub(html_re,'',html.unescape(job_detail.get('content'))), 'date': job_detail.get('updated_at'),
                             'description': re.sub(html_re,'',html.unescape(job_detail.get('content'))), 'date': job_detail.get('updated_at'),
                             'remote': None, 'greenhouse_id': job.get('id'), 'greenhouse_api_url': url}
 
@@ -129,6 +135,7 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
 
     results = get_jobs(companies_clean, criteria)
     df = get_details(results)
+    df['source'] = 'greenhouse'
     df['source'] = 'greenhouse'
 
     return df

@@ -12,6 +12,10 @@ today = date.today()
 if not os.path.exists(f'./output/{today}'):
     os.mkdir(f'./output/{today}')
 
+# Output dir
+if not os.path.exists(f'./output/{today}'):
+    os.mkdir(f'./output/{today}')
+
 # Web scrapers
 print('Scraping Dice...')
 dice_df = scraper.scrape_dice(pages=1) 
@@ -26,10 +30,15 @@ indeed_df.to_json(indeed_json, orient='records')
 # Company lists
 greenhouse_companies_file = 'greenhouse_companies.csv'
 lever_companies_file = 'lever_companies.csv'
+# Company lists
+greenhouse_companies_file = 'greenhouse_companies.csv'
+lever_companies_file = 'lever_companies.csv'
 
+roles = {'developer','engineer', 'data', 'analyst', 'scientist','frontend', 'software', 'apprentice', 'apprenticeship', 'front-end', 'backend', 'back-end', 'jr.', 'jr' }
 roles = {'developer','engineer', 'data', 'analyst', 'scientist','frontend', 'software', 'apprentice', 'apprenticeship', 'front-end', 'backend', 'back-end', 'jr.', 'jr' }
 
 # Includes 'software' for titles that are just 'software engineer', etc.
+levels = {'junior', 'entry-level', 'grad', 'graduate', 'apprentice', 'web', 'apprenticeship', 'software', 'entry', 'intern', 'i', '1', 'associate', 'jr.', 'jr'}
 levels = {'junior', 'entry-level', 'grad', 'graduate', 'apprentice', 'web', 'apprenticeship', 'software', 'entry', 'intern', 'i', '1', 'associate', 'jr.', 'jr'}
 
 # Optional, but helps exclude higher level positions
@@ -49,6 +58,7 @@ lever_json = f'./output/{today}/lever_{today}.json'
 lever_df.to_json(lever_json, orient='records')
 
 MONGO_URL = dotenv_values('config/config.env').get('MONGO_URL') 
+print(MONGO_URL)
 client = pymongo.MongoClient(MONGO_URL)
 db = client["test"]
 
@@ -67,6 +77,8 @@ def insert_json(source_json: str, Collection):
     # insert_many is used else insert_one is used
 
     if isinstance(file_data, list):
+        Collection.insert_many(file_data)
+
         Collection.insert_many(file_data)
 
     else:

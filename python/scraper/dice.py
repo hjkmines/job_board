@@ -9,6 +9,7 @@ from urllib.parse import urljoin, urlencode
 import re
 import json
 from datetime import datetime
+from datetime import datetime
 
 def scrape_dice(query="junior software developer", pages=1, wait=5):
     base = 'https://www.dice.com/jobs/'

@@ -9,8 +9,10 @@ import { useState, useEffect } from 'react';
 
 function App() {
   const [jobs, setJobs] = useState([])
+  const [jobs, setJobs] = useState([])
 
   return (
+    <>
     <>
       {/* react-router-dom ? broswerrouter? */}
       <LandingJumbotron />

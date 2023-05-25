@@ -78,6 +78,15 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
             
         
             try:
+                driver.get(link)
+                sleep(wait)
+                html = driver.page_source
+                cup = BeautifulSoup(html, 'html.parser')
+            except:
+                cup = None
+            
+        
+            try:
                 description = cup.find('div', id='jobDescriptionText')
                 descriptions.append(description.text.lstrip())
             except:
@@ -94,7 +103,15 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                 except:
                     dates.append(job_json['datePosted'])
                 
+                try:
+                    date_posted = str(datetime.strptime(job_json['datePosted'], '%a, %d %b %Y %H:%M:%S %Z').isoformat())
+                    dates.append(date_posted)
+
+                except:
+                    dates.append(job_json['datePosted'])
+                
             except:
+                dates.append(None)
                 dates.append(None)
 
             try:
@@ -127,11 +144,15 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
 
     driver.close()
     
+    driver.close()
+    
     df = pd.DataFrame()
+    df['title'] = titles
     df['title'] = titles
     df['company'] = companies
     df['link'] = links
     df['description'] = descriptions
+    df['date'] = dates
     df['date'] = dates
     df['min_salary'] = mins
     df['max_salary'] = maxes
