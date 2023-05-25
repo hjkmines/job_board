@@ -14,11 +14,8 @@ const getJobs = async (req, res, next) => {
       yesterday.setMinutes(0)
       yesterday.setSeconds(0)
       yesterday.setMilliseconds(0)
-      console.log(req.query.latest)
-      console.log(today.getTime())
-      console.log(yesterday.getTime())
-
-      const jobs = await Job.find({ 'date': { '$gte': yesterday.getTime() }}).sort({ date: -1 }).lean();
+     
+      const jobs = await Job.find({ date: { $gte: yesterday, $lte: today }}).sort({ date: -1 }).lean();
 
       return res
         .status(200)
@@ -26,8 +23,7 @@ const getJobs = async (req, res, next) => {
         .json(jobs)
 
     } else if (req.query.lat && req.query.long) {
-      console.log('Search')
-      console.log(req.query)
+      
       const jobs = await Job.find({
         points: {
           $near: {

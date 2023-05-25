@@ -186,22 +186,22 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
     data = []
 
     for i in range(len(titles)):
+        if descriptions[i]:
+            job_data = {'title': titles[i],
+                        'company': companies[i],
+                        'link': links[i],
+                        'description': descriptions[i],
+                        'date': dates[i],
+                        'raw_date': raw_dates[i],
+                        'city': cities[i],
+                        'state': states[i],
+                        'country': countries[i],
+                        'zip': zips[i],
+                        'points': points[i],
+                        'remote': remote[i],
+                        'source': 'dice',
+                        }
 
-        job_data = {'title': titles[i],
-                    'company': companies[i],
-                    'link': links[i],
-                    'description': descriptions[i],
-                    'date': dates[i],
-                    'raw_date': raw_dates[i],
-                    'city': cities[i],
-                    'state': states[i],
-                    'country': countries[i],
-                    'zip': zips[i],
-                    'points': points[i],
-                    'remote': remote[i],
-                    'source': 'dice',
-                    }
-
-        data.append(job_data)
+            data.append(job_data)
 
     return data

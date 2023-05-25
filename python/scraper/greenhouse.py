@@ -79,7 +79,7 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
             return {'type': 'MultiPoint', 'coordinates': points}
         return None
 
-    def get_details(results: list) -> pd.DataFrame:
+    def get_details(results: list) -> list:
         data = []
 
         html_re = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
