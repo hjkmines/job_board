@@ -9,6 +9,7 @@ from urllib.parse import urljoin, urlencode
 import re
 import json
 from datetime import datetime
+from datetime import datetime
 
 def scrape_dice(query="junior software developer", pages=1, wait=5):
     base = 'https://www.dice.com/jobs/'
@@ -24,7 +25,7 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
     states = []
     countries = []
     zips = []
-
+    points =[]
     dates = []
     descriptions = []
 
@@ -64,11 +65,19 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
             zips.append(job_json['jobPostalCode'])
             dates.append(job_json['datePosted'])
             remote.append(job_json['remote'])
+
+            if job_json['postalCode']:
+                points.append(get_location(job_json['jobPostalCode']))
+            else:
+                points.append(None)
+            
+
         except:
             dates.append(None)
             cities.append(None)
             states.append(None)
             zips.append(None)
+            points.append({'type': 'MultiPoint', 'coordinates': [[0,0]]})
             countries.append(None)
             remote.append(None)
 
@@ -103,14 +112,28 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
             states.append(locationdata['state'])
             zips.append(locationdata['postalCode'])
 
+            if locationdata['postalCode']:
+                points.append(get_location(locationdata['postalCode']))
+            else:
+                points.append(None)
         except:
             dates.append(None)
             cities.append(None)
             states.append(None)
             zips.append(None)
+            points.append(None)
             remote.append(None)
             countries.append(None)
 
+    def get_location(zip: str):
+        res = requests.get(f'https://geocode.maps.co/search?q={zip}')
+        data = res.json()[0]
+        coordinates = [float(data.get('lon')), float(data.get('lat'))]
+        sleep(0.5)
+        if coordinates:
+             return {'type': 'MultiPoint', 'coordinates': [coordinates]}
+        return None
+    
     def scrap_job(joblink):
         res = requests.get(joblink)
         cup = BeautifulSoup(res.text, 'html.parser')
@@ -138,6 +161,7 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
         links += job_links
 
 
+
     for link in links:
         scrap_job(link)
 
@@ -154,6 +178,7 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
     df['city'] = cities
     df['zip'] = zips
     df['remote'] = remote
+    df['points'] = points
     df['source'] = 'dice'
 
     return df

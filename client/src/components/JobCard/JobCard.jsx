@@ -29,10 +29,9 @@ export default function JobCard({ job }) {
       }
       return job.city
 
-    } else if (job.source === 'greenhouse')  {
-      console.log(Object.keys(job))
+    } else if (job.source === 'greenhouse' || job.source === 'lever')  {
       if (job.location) {
-        return job.location.toString()
+        return job.location
       }
     }
   }
@@ -61,4 +60,6 @@ export default function JobCard({ job }) {
     </MDBContainer>
   );
 }
+
+
 
