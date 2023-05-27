@@ -1,10 +1,10 @@
 const Job = require('../models/Job');
 
 const getJobs = async (req, res, next) => {
-  
+
   try {
     console.log(req.query)
-    
+
     if (req.query.latest) {
 
       const today = new Date();
@@ -14,27 +14,71 @@ const getJobs = async (req, res, next) => {
       yesterday.setMinutes(0)
       yesterday.setSeconds(0)
       yesterday.setMilliseconds(0)
-     
-      const jobs = await Job.find({ date: { $gte: yesterday, $lte: today }}).sort({ date: -1 }).lean();
+
+      const jobs = await Job.find({ date: { $gte: yesterday, $lte: today } }).sort({ date: -1 }).lean();
 
       return res
         .status(200)
         .setHeader('Content-Type', 'application/json')
         .json(jobs)
 
-    } else if (req.query.lat && req.query.long) {
-      
+    } else if (req.query.geoLocated === 'true' && !req.query.search) {
+      // Geospatial search only
+      console.log('geospatial search')
       const jobs = await Job.find({
-        points: {
-          $near: {
-            $geometry: {
-              type: "Point",
-              coordinates: [parseFloat(req.query.long), parseFloat(req.query.lat)]
+        "points": {
+          "$near": {
+            "$geometry": {
+              "type": "Point",
+              "coordinates": [parseFloat(req.query.long), parseFloat(req.query.lat)]
             },
-            $maxDistance: parseFloat(req.query.radius),
+            "$maxDistance": parseFloat(req.query.radius),
           }
         }
       }).sort({ 'date': 'desc' }).lean();
+
+      return res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json(jobs)
+
+
+    }
+    else if (req.query.geoLocated === 'true' && req.query.search) {
+      console.log('search');
+      console.log(req.query.search);
+      const radiusSphere = 0.000621371 * req.query.radius / 3963.2;
+      const jobs = await Job.find({
+        "$text": { "$search": `${req.query.search}` },
+        "points": {
+          "$geoWithin": {
+            "$centerSphere": [[
+              parseFloat(req.query.long),
+              parseFloat(req.query.lat)
+            ], radiusSphere]
+          }
+        }
+      }).sort({ "date": -1 }).lean()
+
+      return res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json(jobs)
+
+    }
+
+    else if (req.geoLocated === 'false' && req.query.search) {
+      console.log('text search')
+      const filter = {
+        "$search": {
+          "text": {
+            "query": `${req.query.search}`,
+            "path": ["description", "company", "title"],
+          },
+        }
+      }
+
+      const jobs = await Job.aggregate([filter]).sort({ "date": -1 })
 
       return res
         .status(200)

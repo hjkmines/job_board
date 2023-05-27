@@ -22,8 +22,6 @@ import { Formik, Field, Form, useFormik } from 'formik';
 
 export default function JobSearchGeo() {
   
-  
-
   const formik = useFormik({
     
     initialValues: {
@@ -34,13 +32,14 @@ export default function JobSearchGeo() {
       lat : '',
       long : ''
     },
-
-    onSubmit: (values) => {
-      console.log(values);
+    
+    onSubmit: (values) => { 
+      setQuery({...values})
+      console.log(query)
     },
-  
-    enableReinitialize: true,
   });
+  
+  const [query, setQuery] = useState(formik.values) 
 
   const setLocationValue = (coords) => {
     formik.setFieldValue("long", coords[0])
@@ -120,7 +119,7 @@ export default function JobSearchGeo() {
         </MDBContainer >
       </form>
 
-      {(formik.submitCount>0) && <JobSection query={formik.values} sectionTitle={'Your Search Results'} />}
+      {(formik.submitCount>0) && <JobSection query={query} sectionTitle={'Your Search Results'} />}
 
     </>
 
