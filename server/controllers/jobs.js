@@ -6,7 +6,7 @@ const getJobs = async (req, res, next) => {
     console.log(req.query)
 
     if (req.query.latest) {
-
+      console.log('latest jobs')
       const today = new Date();
       const yesterday = new Date(today);
       yesterday.setDate(yesterday.getDate() - 1)
@@ -15,14 +15,16 @@ const getJobs = async (req, res, next) => {
       yesterday.setSeconds(0)
       yesterday.setMilliseconds(0)
 
-      const jobs = await Job.find({ date: { $gte: yesterday, $lte: today } }).sort({ date: -1 }).lean();
+      
+      const jobs = await Job.find({ date: { $gte: '2023-5-5' } }).sort({ 'date': -1 }).lean();
 
+      
       return res
         .status(200)
         .setHeader('Content-Type', 'application/json')
         .json(jobs)
 
-    } else if (req.query.geoLocated === 'true' && !req.query.search) {
+    } else if (req.query.lat && !req.query.search) {
       // Geospatial search only
       console.log('geospatial search')
       const jobs = await Job.find({
@@ -44,9 +46,9 @@ const getJobs = async (req, res, next) => {
 
 
     }
-    else if (req.query.geoLocated === 'true' && req.query.search) {
-      console.log('search');
-      console.log(req.query.search);
+    else if (req.query.lat && req.query.search) {
+      console.log('search text and geo');
+      console.log(req.query);
       const radiusSphere = 0.000621371 * req.query.radius / 3963.2;
       const jobs = await Job.find({
         "$text": { "$search": `${req.query.search}` },
@@ -67,7 +69,7 @@ const getJobs = async (req, res, next) => {
 
     }
 
-    else if (req.geoLocated === 'false' && req.query.search) {
+    else if (req.query.search) {
       console.log('text search')
       const filter = {
         "$search": {
@@ -88,7 +90,7 @@ const getJobs = async (req, res, next) => {
     }
 
     else {
-      const jobs = await Job.find().sort({ 'date': 'desc' }).limit(req.query.limit).lean();
+      const jobs = await Job.find().sort({ 'date': -1 }).limit(req.query.limit).lean();
       return res
         .status(200)
         .setHeader('Content-Type', 'application/json')

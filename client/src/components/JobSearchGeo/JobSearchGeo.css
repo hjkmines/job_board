@@ -63,6 +63,18 @@ Cherry Blossom: #FFB2CE
 
 }
 
+.switch label input[type=checkbox]:checked+.lever {
+
+    background-color: #1ffd01;
+
+}
+
+.switch label input[type=checkbox]:checked+.lever:after {
+
+    background-color: #1201fa ;
+
+}
+
 /* .remoteSwitchCol {
     justify-content: start;
     
