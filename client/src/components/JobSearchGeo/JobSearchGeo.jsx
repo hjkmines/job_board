@@ -19,7 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons'
 import JobSection from '../JobSection/JobSection';
 import { Formik, Field, Form, useFormik } from 'formik';
-
+import axios from 'axios'
 export default function JobSearchGeo() {
 
 
@@ -30,7 +30,6 @@ export default function JobSearchGeo() {
 
   const getLocationPermissionStatus = () => {
     navigator.permissions.query({ name: "geolocation" }).then((result) => {
-      console.log(res.state)
       if (result.state === "granted" || result.state == 'prompt') {
         setLocationPerimssion(true)
       } else if (result.state === 'denied') {
@@ -38,7 +37,9 @@ export default function JobSearchGeo() {
       }
     });
   }
-
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
   const formik = useFormik({
 
     initialValues: {
@@ -48,12 +49,10 @@ export default function JobSearchGeo() {
       radius: 40233.6,
       lat: '',
       long: '',
-      coords: ''
     },
 
     onSubmit: (values) => {
       setQuery({ ...values })
-      console.log(values)
     }
   });
 
@@ -66,11 +65,11 @@ export default function JobSearchGeo() {
     <>
       <form onSubmit={formik.handleSubmit} >
 
-        <MDBContainer fluid className='search2 mt-2 mb-4 px-5'>
+        <MDBContainer fluid className='search2 mt-2  mb-4 px-5'>
 
           <MDBRow className='justify-content-evenly align-items-end'>
             <MDBCol fluid='true' size={2} className='searchBtnCol justify-content-end '>
-              <MDBBtn type="submit" className='searchSubmitBtn' >
+              <MDBBtn type="submit" className='searchSubmitBtn fw-bold' >
                 Search
               </MDBBtn>
             </MDBCol>
@@ -87,7 +86,7 @@ export default function JobSearchGeo() {
                 onChange={formik.handleChange} />
             </MDBCol>
 
-            <MDBCol size={3} className="filterSearch">
+            <MDBCol size={4} className="filterSearch">
               <label htmlFor="location" className='text-center fw-bold'>Location</label>
               <input
                 name="location"
@@ -112,15 +111,13 @@ export default function JobSearchGeo() {
                     const userCoords = [position.coords.longitude, position.coords.latitude];
                     setLocationValue(userCoords);
                   });
-                  getLocationPermissionStatus();
                   setLocationDisable(!locationDisable);
-                  console.log(locationPermission);
                 }}
-                  disabled = {!locationPermission}
-                    />
+              
+              />
             </MDBCol>
 
-            <MDBCol size={2} >
+            <MDBCol size={1} >
               <div className="form-group ">
                 <label htmlFor="radius" className='text-center fw-bold'>Within</label>
 

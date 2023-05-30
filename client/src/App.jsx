@@ -5,6 +5,7 @@ import './App.css'
 import LandingJumbotron from './components/landingJumbotron/LandingJumbotron';
 import JobSearchGeo from './components/JobSearchGeo/JobSearchGeo.jsx';
 import JobSection from './components/JobSection/JobSection.jsx';
+import LoadingDots from './components/LoadingDots/LoadingDots';
 import { useState, useEffect } from 'react';
 
 function App() {
@@ -12,11 +13,11 @@ function App() {
 
   return (
     <>
-      {/* react-router-dom ? broswerrouter? */}
+      {/* {/* react-router-dom ? broswerrouter? */}
       <LandingJumbotron />
       <JobSearchGeo/>
       <JobSection sectionTitle='New Jobs' query={{latest: true, limit: 100}} />
-      <JobSection sectionTitle='All Jobs' query={{limit: 1000}} />
+      <JobSection sectionTitle='All Jobs' query={{limit: 1000}} /> 
     </>
   )
 }

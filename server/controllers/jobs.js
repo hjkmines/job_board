@@ -1,3 +1,4 @@
+const axios = require('axios')
 const Job = require('../models/Job');
 
 const getJobs = async (req, res, next) => {
@@ -15,10 +16,10 @@ const getJobs = async (req, res, next) => {
       yesterday.setSeconds(0)
       yesterday.setMilliseconds(0)
 
-      
+
       const jobs = await Job.find({ date: { $gte: '2023-5-5' } }).sort({ 'date': -1 }).lean();
 
-      
+
       return res
         .status(200)
         .setHeader('Content-Type', 'application/json')
@@ -45,6 +46,58 @@ const getJobs = async (req, res, next) => {
         .json(jobs)
 
 
+    }
+
+    else if (req.query.location) {
+      console.log('search location and geo');
+      console.log(req.query);
+      const radiusSphere = 0.000621371 * req.query.radius / 3963.2;
+      const coords = []
+
+      axios.get('https://geocode.maps.co/search', { params: { q: req.query.location } }).then((res) => {
+        coords.push(parseFloat(res.data[0].lon))
+        coords.push(parseFloat(res.data[0].lat))
+      })
+
+
+      // Don't spam the geocode API
+      await new Promise(r => setTimeout(r, 500));
+
+      if (req.query.search) {
+
+        const jobs = await Job.find({
+          "$text": { "$search": `${req.query.search}` },
+          "points": {
+            "$geoWithin": {
+              "$centerSphere": [coords, radiusSphere]
+            }
+          }
+        }).sort({ "date": -1 }).lean()
+        
+        return res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json(jobs)
+
+
+      } else {
+        const jobs = await Job.find({
+          "points": {
+            "$near": {
+              "$geometry": {
+                "type": "Point",
+                "coordinates": coords
+              },
+              "$maxDistance": parseFloat(req.query.radius),
+            }
+          }
+        }).sort({ 'date': 'desc' }).lean();
+        return res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json(jobs)
+      }
+      
     }
     else if (req.query.lat && req.query.search) {
       console.log('search text and geo');
