@@ -9,28 +9,29 @@ Oriole: #F5581C,
 Cherry Blossom: #FFB2CE
 */
 .action-btn {
-    background-color: #FFB2CE;
-    color: black;
+  background-color: #FFB2CE;
+  color: black;
 }
 
 .action-btn:hover {
-    background-color: #DAC5FA;
-    color: black;
+  background-color: #FFB2CE;
+  color: black;
+  opacity: 0.8
 }
 
 .action-btn:visited {
-    background-color: #DAC5FA;
-    color: black;
+  background-color: #DAC5FA;
+  color: black;
 }
 
 .action-btn:active {
-    background-color: #DAC5FA;
-    color: black;
+  background-color: #DAC5FA;
+  color: black;
 }
 
 .action-btn:focus {
-    background-color: #FFB2CE;
-    color: black;
+  background-color: #FFB2CE;
+  color: black;
 }
 
 .job-search-border {
@@ -45,24 +46,24 @@ Cherry Blossom: #FFB2CE
     } */
 
 .searchInput {
-    border-radius: 50px;
+  border-radius: 50px;
 
 }
 
 .form-control:focus {
-    border-color: #029C53;
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+  border-color: #029C53;
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
 }
 
 .form-select:focus {
-    border-color: #029C53;
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+  border-color: #029C53;
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
 }
 
 
 
 .select-round {
-    border-radius: 50px;
+  border-radius: 50px;
 }
 
 /* .remoteSwitchCol {
@@ -92,67 +93,69 @@ Cherry Blossom: #FFB2CE
 
 /* The switch - the box around the slider */
 .switch {
-    position: relative;
-    display: inline-block;
-    width: 3.75em;
-    height: 2.125em;
-  }
-  
-  /* Hide default HTML checkbox */
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  /* The slider */
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-  
+  position: relative;
+  display: inline-block;
+  width: 3.75em;
+  height: 2.125em;
+}
 
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 1.625em;
-    width: 1.625em;
-    left: 0.25em;
-    bottom: 0.25em;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
 
-  input:checked + .slider {
-    background-color: #029C53;
-  }
-  
-  input:focus + .slider {
-    box-shadow: 0 0 1px #029C53;
-  }
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
 
-  
-  
-  input:checked + .slider:before {
-    -webkit-transform: translateX(1.625em);
-    -ms-transform: translateX(1.625em);
-    transform: translateX(1.625em);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 2.125em;
-  }
-  
-  .slider.round:before {
-    border-radius: 50%;
-  }
 
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1.625em;
+  width: 1.625em;
+  left: 0.25em;
+  bottom: 0.25em;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked+.slider {
+  background-color: #029C53;
+}
+
+input:focus+.slider {
+  box-shadow: 0 0 1px #029C53;
+}
+input:hover+.slider {
+  opacity: 0.6
+}
+
+
+
+input:checked+.slider:before {
+  -webkit-transform: translateX(1.625em);
+  -ms-transform: translateX(1.625em);
+  transform: translateX(1.625em);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 2.125em;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}

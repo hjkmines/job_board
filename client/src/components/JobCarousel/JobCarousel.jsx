@@ -32,7 +32,6 @@ class JobCarousel extends React.Component {
         const { deviceType } = this.props;
         const CustomSlider = ({ carouselState }) => {
             let value = 0;
-            console.log(this.Carousel.state.slidesToShow)
             let carouselItemWidth = 0;
             if (this.Carousel) {
                 carouselItemWidth = this.Carousel.state.itemWidth;

@@ -10,8 +10,13 @@ import {
   MDBContainer,
   MDBCardSubTitle
 } from "mdb-react-ui-kit";
+import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck, faArrowRotateRight} from '@fortawesome/free-solid-svg-icons'
 
 export default function JobCard({ job }) {
+  
+  const [applied, setApplied] =useState(false)
 
   const toDateString = (dateISO) => {
     const date = new Date(dateISO)
@@ -48,9 +53,20 @@ export default function JobCard({ job }) {
               {job.description && <MDBCardText className="mt-2 job-text">
                 {job.description.slice(0,500)}
               </MDBCardText>}
-              <MDBBtn href={job.link} target='_blank' rounded className="shadow-none apply-btn mt-auto">
+
+              {applied ? <MDBRow className='d-flex align-items-center w-100 mt-auto'> 
+                <MDBBtn rounded className="shadow-none applied-btn mt-auto me-2 w-50" href={job.link} target='_blank' >
+              <FontAwesomeIcon icon={faCheck} /> Good Luck!
+              </MDBBtn>
+              <MDBBtn outline floating className='reset-btn' size='sm' onClick={()=> setApplied(false)} > 
+              <FontAwesomeIcon icon={faArrowRotateRight} size='xl' />
+              </MDBBtn>
+                </MDBRow>
+              : <MDBBtn href={job.link} target='_blank' rounded className="shadow-none apply-btn mt-auto" onClick={()=> setApplied(!applied)}>
                 Apply
               </MDBBtn>
+                 }
+
             </MDBCardBody>
           </MDBCard>
    

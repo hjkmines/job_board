@@ -57,14 +57,14 @@ export default function JobSearchGeo() {
       <MDBContainer  fluid className=''>
         <form onSubmit={formik.handleSubmit} >
 
-          <MDBRow  className='d-flex justify-content-center align-items-end mx-0 py-4 px-4 '>
+          <MDBRow  className='d-flex justify-content-center align-items-end mx-0 py-4 px-4-lg px-2-sm '>
             {/* Column for Search and query input */}
             <MDBCol xl='6' xs='12' >
 
               <MDBRow className=' d-flex justify-content-center  align-items-end'>
 
                 <MDBCol  size={2} md={1} className=' d-lg-none d-xs-block' >
-                  <MDBBtn floating  size='lg' type="submit" className='action-btn  shadow-none ' >
+                  <MDBBtn floating size='lg' type="submit" className='action-btn  shadow-none ' >
                   <FontAwesomeIcon icon={faMagnifyingGlass}  />
                   </MDBBtn>
                 </MDBCol>
@@ -90,7 +90,7 @@ export default function JobSearchGeo() {
             </MDBCol>
 
             {/* Column for location stuff */}
-            <MDBCol xl='6' xs='12'>
+            <MDBCol xl='6' xs='12' >
 
               <MDBRow className='d-flex justify-content-center align-items-end  '>
 
@@ -165,7 +165,7 @@ export default function JobSearchGeo() {
 
               </MDBRow>
             </MDBCol>
-            <MDBRow className='d-flex justify-content-center px-4 mt-4 '>
+            <MDBRow className='d-flex justify-content-center px-4-lg px-2-sm mt-4 '>
               <span className='job-search-border '></span>
             </MDBRow>
           </MDBRow >
