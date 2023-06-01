@@ -26,7 +26,6 @@ export default function JobSearchGeo() {
 
   const [query, setQuery] = useState({})
   const [locationDisable, setLocationDisable] = useState(false)
-  const [remoteDisable, setRemoteDisable] = useState(false)
   const [geoLocationChecked, setGeoLocationChecked] = useState(false)
   const [remoteChecked, setRemoteChecked] = useState(false)
 
@@ -64,7 +63,7 @@ export default function JobSearchGeo() {
 
               <MDBRow className=' d-flex justify-content-center  align-items-end'>
 
-                <MDBCol  size={1}  className=' d-lg-none d-xs-block' >
+                <MDBCol  size={2} md={1} className=' d-lg-none d-xs-block' >
                   <MDBBtn floating  size='lg' type="submit" className='action-btn  shadow-none ' >
                   <FontAwesomeIcon icon={faMagnifyingGlass}  />
                   </MDBBtn>
@@ -76,7 +75,7 @@ export default function JobSearchGeo() {
                   </MDBBtn>
                 </MDBCol>
 
-                <MDBCol  size={11} lg={10} xl={8} >
+                <MDBCol  size={10} md={11} lg={10} xl={8} >
                   <label htmlFor="search" className='fw-bold'>Search</label>
                   <input
                     id='search'
@@ -95,7 +94,7 @@ export default function JobSearchGeo() {
 
               <MDBRow className='d-flex justify-content-center align-items-end  '>
 
-                <MDBCol xl={6} size={5}>
+                <MDBCol xl={6} md={5} sm={8}>
                   <label htmlFor="location" className='fw-bold'>Location</label>
                   <input
                     name="location"
@@ -104,12 +103,12 @@ export default function JobSearchGeo() {
                     placeholder='Zip code, city'
                     className="searchInput form-control"
                     value={formik.values.location}
-                    disabled={locationDisable}
+                    disabled={remoteChecked || geoLocationChecked}
                     onChange={formik.handleChange} />
                 </MDBCol>
 
 
-                <MDBCol xl={2}  size={3} >
+                <MDBCol xl={2}  md={3} sm={4} >
                   <div className="form-group ">
                     <label htmlFor="radius" className='fw-bold'>Within</label>
 
@@ -120,8 +119,8 @@ export default function JobSearchGeo() {
                     </select>
                   </div>
                 </MDBCol>
-                <MDBCol xl='2'  size={2}>
-                  <label htmlFor="geoLocation" className='fw-bold'>Use your location</label>
+                <MDBCol xl='2'  md={2} size={6} >
+                  <label htmlFor="geoLocation" className='fw-bold'>Your location</label>
                   <label className="switch">
                     <input type="checkbox"
                       id='geoLocationSwitch'
@@ -132,20 +131,18 @@ export default function JobSearchGeo() {
                           const userCoords = [position.coords.longitude, position.coords.latitude];
                           setLocationValue(userCoords);
                         });
-                        setLocationDisable(!locationDisable);
-                        setRemoteDisable(!remoteDisable);
                       }}
                       onChange={(e) => {
                         setGeoLocationChecked(e.target.checked);
                         setRemoteChecked(false);
                       }}
-                      checked={geoLocationChecked}
+                      checked={geoLocationChecked }
                     />
                     <span className="slider round"></span>
                   </label>
 
                 </MDBCol>
-                <MDBCol xl={2} size={2} >
+                <MDBCol xl={2} md={2} size={6} >
                   <label htmlFor="remote" className='fw-bold'>Remote only</label>
 
                   <label className="switch">
@@ -168,7 +165,7 @@ export default function JobSearchGeo() {
 
               </MDBRow>
             </MDBCol>
-            <MDBRow className='d-flex justify-content-center px-5 mt-4 '>
+            <MDBRow className='d-flex justify-content-center px-4 mt-4 '>
               <span className='job-search-border '></span>
             </MDBRow>
           </MDBRow >
