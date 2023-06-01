@@ -34,7 +34,7 @@ const JobSection = ({ sectionTitle, query }) => {
                  <div className='d-flex fluid m-2 overflow-hidden p-2  text-center justify-content-center '>
                     <LoadingDots className='m-4'/>
                      </div> 
-                     :<MDBContainer fluid className='m-2 overflow-hidden p-2 '> 
+                     : <MDBContainer fluid className='m-2 overflow-hidden p-2 '> 
                      <JobCarousel jobs={jobs}/> 
                      </MDBContainer>}
             

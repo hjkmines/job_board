@@ -11,12 +11,13 @@ import {
   MDBDropdownItem,
   MDBInput,
   MDBBtn,
+  MDBTooltip,
   MDBIcon,
   MDBTypography,
   MDBInputGroup
 } from 'mdb-react-ui-kit'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
 import JobSection from '../JobSection/JobSection';
 import { Formik, Field, Form, useFormik } from 'formik';
 import axios from 'axios'
@@ -25,21 +26,11 @@ export default function JobSearchGeo() {
 
   const [query, setQuery] = useState({})
   const [locationDisable, setLocationDisable] = useState(false)
+  const [remoteDisable, setRemoteDisable] = useState(false)
+  const [geoLocationChecked, setGeoLocationChecked] = useState(false)
+  const [remoteChecked, setRemoteChecked] = useState(false)
 
-  const [locationPermission, setLocationPerimssion] = useState(true)
 
-  const getLocationPermissionStatus = () => {
-    navigator.permissions.query({ name: "geolocation" }).then((result) => {
-      if (result.state === "granted" || result.state == 'prompt') {
-        setLocationPerimssion(true)
-      } else if (result.state === 'denied') {
-        setLocationPerimssion(false)
-      }
-    });
-  }
-  function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
   const formik = useFormik({
 
     initialValues: {
@@ -49,6 +40,7 @@ export default function JobSearchGeo() {
       radius: 40233.6,
       lat: '',
       long: '',
+      remoteOnly: false
     },
 
     onSubmit: (values) => {
@@ -63,75 +55,126 @@ export default function JobSearchGeo() {
 
   return (
     <>
-      <form onSubmit={formik.handleSubmit} >
+      <MDBContainer  fluid className=''>
+        <form onSubmit={formik.handleSubmit} >
 
-        <MDBContainer fluid className='search2 mt-2  mb-4 px-5'>
+          <MDBRow  className='d-flex justify-content-center align-items-end mx-0 py-4 px-4 '>
+            {/* Column for Search and query input */}
+            <MDBCol xl='6' xs='12' >
 
-          <MDBRow className='justify-content-evenly align-items-end'>
-            <MDBCol fluid='true' size={2} className='searchBtnCol justify-content-end '>
-              <MDBBtn type="submit" className='searchSubmitBtn fw-bold' >
-                Search
-              </MDBBtn>
+              <MDBRow className=' d-flex justify-content-center  align-items-end'>
+
+                <MDBCol  size={1}  className=' d-lg-none d-xs-block' >
+                  <MDBBtn floating  size='lg' type="submit" className='action-btn  shadow-none ' >
+                  <FontAwesomeIcon icon={faMagnifyingGlass}  />
+                  </MDBBtn>
+                </MDBCol>
+
+                <MDBCol  size={1} lg={2} xl={4}  className=' d-none d-lg-block' >
+                  <MDBBtn rounded  size='lg' type="submit" className='action-btn fw-bold  shadow-none w-100' >
+                  Search
+                  </MDBBtn>
+                </MDBCol>
+
+                <MDBCol  size={11} lg={10} xl={8} >
+                  <label htmlFor="search" className='fw-bold'>Search</label>
+                  <input
+                    id='search'
+                    name='search'
+                    type='text'
+                    placeholder='Frontend, Python, etc'
+                    className="searchInput form-control"
+                    value={formik.values.search}
+                    onChange={formik.handleChange} />
+                </MDBCol>
+              </MDBRow>
             </MDBCol>
 
-            <MDBCol size={4} className="filterSearch">
-              <label htmlFor="search" className='text-center fw-bold'>Search</label>
-              <input
-                id='search'
-                name='search'
-                type='text'
-                placeholder='Frontend, Python, etc'
-                className="searchInput form-control"
-                value={formik.values.search}
-                onChange={formik.handleChange} />
+            {/* Column for location stuff */}
+            <MDBCol xl='6' xs='12'>
+
+              <MDBRow className='d-flex justify-content-center align-items-end  '>
+
+                <MDBCol xl={6} size={5}>
+                  <label htmlFor="location" className='fw-bold'>Location</label>
+                  <input
+                    name="location"
+                    id="location"
+                    type='text'
+                    placeholder='Zip code, city'
+                    className="searchInput form-control"
+                    value={formik.values.location}
+                    disabled={locationDisable}
+                    onChange={formik.handleChange} />
+                </MDBCol>
+
+
+                <MDBCol xl={2}  size={3} >
+                  <div className="form-group ">
+                    <label htmlFor="radius" className='fw-bold'>Within</label>
+
+                    <select className="form-select select-round" name="radius" id='radius' onChange={formik.handleChange} disabled={remoteChecked}>
+                      <option value={40233.6} >25 mi</option>
+                      <option value={80467.2} >50 mi</option>
+                      <option value={160934} >100 mi</option>
+                    </select>
+                  </div>
+                </MDBCol>
+                <MDBCol xl='2'  size={2}>
+                  <label htmlFor="geoLocation" className='fw-bold'>Use your location</label>
+                  <label className="switch">
+                    <input type="checkbox"
+                      id='geoLocationSwitch'
+                      className='mx-1'
+                      onClick={() => {
+                        formik.setFieldValue('location', '');
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                          const userCoords = [position.coords.longitude, position.coords.latitude];
+                          setLocationValue(userCoords);
+                        });
+                        setLocationDisable(!locationDisable);
+                        setRemoteDisable(!remoteDisable);
+                      }}
+                      onChange={(e) => {
+                        setGeoLocationChecked(e.target.checked);
+                        setRemoteChecked(false);
+                      }}
+                      checked={geoLocationChecked}
+                    />
+                    <span className="slider round"></span>
+                  </label>
+
+                </MDBCol>
+                <MDBCol xl={2} size={2} >
+                  <label htmlFor="remote" className='fw-bold'>Remote only</label>
+
+                  <label className="switch">
+                    <input type="checkbox"
+                      id='remoteSwitch'
+                      className='mx-1'
+                      onClick={() => {
+                        setLocationDisable(!locationDisable);
+                        formik.setFieldValue('remoteOnly', !formik.values.remoteOnly)
+                        console.log(formik.values)
+                      }}
+                      onChange={(e) => {
+                        setRemoteChecked(e.target.checked);
+                        setGeoLocationChecked(false);
+                      }}
+                      checked={remoteChecked} />
+                    <span className="slider round"></span>
+                  </label>
+                </MDBCol>
+
+              </MDBRow>
             </MDBCol>
+            <MDBRow className='d-flex justify-content-center px-5 mt-4 '>
+              <span className='job-search-border '></span>
+            </MDBRow>
+          </MDBRow >
+        </form >
 
-            <MDBCol size={4} className="filterSearch">
-              <label htmlFor="location" className='text-center fw-bold'>Location</label>
-              <input
-                name="location"
-                id="location"
-                type='text'
-                placeholder='Zip code, city'
-                className="searchInput form-control"
-                value={formik.values.location}
-                disabled={locationDisable}
-                onChange={formik.handleChange} />
-            </MDBCol>
-
-            <MDBCol size={1} className="filterSearch">
-              <label htmlFor="geoLocation" className='text-center fw-bold'>Use your location</label>
-
-              <MDBSwitch
-                id='flexSwitchCheckDefault'
-                className='m-1 mt-2'
-                onClick={() => {
-                  formik.setFieldValue('location', '');
-                  navigator.geolocation.getCurrentPosition(function (position) {
-                    const userCoords = [position.coords.longitude, position.coords.latitude];
-                    setLocationValue(userCoords);
-                  });
-                  setLocationDisable(!locationDisable);
-                }}
-              
-              />
-            </MDBCol>
-
-            <MDBCol size={1} >
-              <div className="form-group ">
-                <label htmlFor="radius" className='text-center fw-bold'>Within</label>
-
-                <select className="form-select" name="radius" id='radius' onChange={formik.handleChange}>
-                  <option value={40233.6} >25 mi</option>
-                  <option value={80467.2} >50 mi</option>
-                  <option value={160934} >100 mi</option>
-                </select>
-              </div>
-            </MDBCol>
-          </MDBRow>
-
-        </MDBContainer >
-      </form>
+      </MDBContainer >
 
       <JobSection query={query} sectionTitle={'Your Search Results'} />
 

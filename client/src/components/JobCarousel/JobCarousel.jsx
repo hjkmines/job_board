@@ -8,7 +8,7 @@ const responsive = {
     superLargeDesktop: {
         // the naming can be any, depends on you.
         breakpoint: { max: 4000, min: 3000 },
-        items: 5
+        items: 4
     },
     desktop: {
         breakpoint: { max: 3000, min: 1024 },
@@ -16,7 +16,7 @@ const responsive = {
     },
     tablet: {
         breakpoint: { max: 1024, min: 464 },
-        items: 2
+        items: 1
     },
     mobile: {
         breakpoint: { max: 464, min: 0 },
@@ -25,11 +25,14 @@ const responsive = {
 };
 
 class JobCarousel extends React.Component {
+
+    
     state = { additionalTransfrom: 0 };
     render() {
         const { deviceType } = this.props;
         const CustomSlider = ({ carouselState }) => {
             let value = 0;
+            console.log(this.Carousel.state.slidesToShow)
             let carouselItemWidth = 0;
             if (this.Carousel) {
                 carouselItemWidth = this.Carousel.state.itemWidth;
@@ -38,7 +41,7 @@ class JobCarousel extends React.Component {
                     carouselItemWidth *
                     (this.Carousel.state.totalItems -
                         this.Carousel.state.slidesToShow) +
-                    150
+                    -10
                 );
                 value = maxTranslateX / 100; // calculate the unit of transform for the slider
             }
@@ -51,7 +54,7 @@ class JobCarousel extends React.Component {
                         max={
                             (carouselItemWidth *
                                 (carouselState.totalItems - carouselState.slidesToShow) +
-                                (this.state.additionalTransfrom === 150 ? 0 : 150)) /
+                                (this.state.additionalTransfrom === -10 ? 0 : -10)) /
                             value
                         }
                         onChange={e => {
@@ -62,7 +65,7 @@ class JobCarousel extends React.Component {
                             const nextSlide = Math.round(nextTransform / carouselItemWidth);
                             if (
                                 e.target.value == 0 &&
-                                this.state.additionalTransfrom === 150
+                                this.state.additionalTransfrom === -10
                             ) {
                                 this.Carousel.isAnimationAllowed = true;
                                 this.setState({ additionalTransfrom: 0 });
@@ -96,10 +99,10 @@ class JobCarousel extends React.Component {
                 additionalTransfrom={this.state.additionalTransfrom-50}
 
                 beforeChange={nextSlide => {
-                    if (nextSlide !== 0 && this.state.additionalTransfrom !== 150) {
-                        this.setState({ additionalTransfrom: 150 });
+                    if (nextSlide !== 0 && this.state.additionalTransfrom !== -10) {
+                        this.setState({ additionalTransfrom: -10 });
                     }
-                    if (nextSlide === 0 && this.state.additionalTransfrom === 150) {
+                    if (nextSlide === 0 && this.state.additionalTransfrom === -10) {
                         this.setState({ additionalTransfrom: 0 });
                     }
                 }}
