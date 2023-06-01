@@ -4,8 +4,6 @@ const Job = require('../models/Job');
 const getJobs = async (req, res, next) => {
 
   try {
-    console.log(req.query)
-
     if (req.query.latest) {
       console.log('latest jobs')
       const today = new Date();
