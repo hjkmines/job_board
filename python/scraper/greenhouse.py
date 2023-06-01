@@ -67,14 +67,18 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
         for location in locations:
             if re.search('remote|anywhere|everywhere', location.strip().lower()):
                 continue
-            res = requests.get(f'https://geocode.maps.co/search?q={location}')
+            try:
+                res = requests.get(
+                    f'https://geocode.maps.co/search?q={location}')
+                sleep(0.55)
+            except:
+                continue
             try:
                 data = res.json()[0]
             except:
                 continue
             coordinates = [float(data.get('lon')), float(data.get('lat'))]
             points.append(coordinates)
-            sleep(0.5)
         if points:
             return {'type': 'MultiPoint', 'coordinates': points}
         return None
@@ -86,8 +90,10 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
 
         for job in results:
             url = f'https://boards-api.greenhouse.io/v1/boards/{job.get("token")}/jobs/{job.get("id")}'
-            res = requests.get(url)
-
+            try:
+                res = requests.get(url)
+            except:
+                res = None
             if res:
                 job_detail = json.loads(res.text)
                 job_info = {'title': job_detail.get('title'), 'company': job.get('company'), 'link': job_detail.get('absolute_url'),

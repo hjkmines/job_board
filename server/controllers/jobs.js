@@ -15,7 +15,7 @@ const getJobs = async (req, res, next) => {
       yesterday.setMilliseconds(0)
 
 
-      const jobs = await Job.find({ date: { $gte: '2023-5-5' } }).sort({ 'date': -1 }).lean();
+      const jobs = await Job.find({ date: { $gte: yesterday } }).sort({ 'date': -1 }).lean();
 
 
       return res
@@ -23,7 +23,7 @@ const getJobs = async (req, res, next) => {
         .setHeader('Content-Type', 'application/json')
         .json(jobs)
 
-    } else if (req.query.remoteOnly) {
+    } else if (req.query.remoteOnly === 'true') {
       console.log('remoteOnly');
       console.log(req.query);
 

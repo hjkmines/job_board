@@ -35,10 +35,14 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
     descriptions = []
 
     def get_location(location: str):
-        res = requests.get(f'https://geocode.maps.co/search?q={location}')
+        try:
+            res = requests.get(f'https://geocode.maps.co/search?q={location}')
+            sleep(0.55)
+        except:
+            return None
+
         data = res.json()[0]
         coordinates = [float(data.get('lon')), float(data.get('lat'))]
-        sleep(0.5)
         if coordinates:
             return {'type': 'MultiPoint', 'coordinates': [coordinates]}
         return None
@@ -89,7 +93,8 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                 job_json = json.loads(str(job_script.contents[0]))
                 try:
                     raw_dates.append(job_json['datePosted'])
-                    date_posted = datetime.strptime(job_json['datePosted'], '%Y-%m-%dT%H:%M:%SZ')
+                    date_posted = datetime.strptime(
+                        job_json['datePosted'], '%Y-%m-%dT%H:%M:%SZ')
 
                     dates.append(date_posted)
 

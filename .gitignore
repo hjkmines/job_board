@@ -19,3 +19,4 @@ python/output
 .vscode/
 .DS_Store
  
+*.bat

@@ -129,10 +129,13 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
             countries.append(None)
 
     def get_location(zip: str):
-        res = requests.get(f'https://geocode.maps.co/search?q={zip}')
+        try:
+            res = requests.get(f'https://geocode.maps.co/search?q={zip},USA')
+            sleep(0.55)
+        except:
+                return None
         data = res.json()[0]
         coordinates = [float(data.get('lon')), float(data.get('lat'))]
-        sleep(0.5)
         if coordinates:
             return {'type': 'MultiPoint', 'coordinates': [coordinates]}
         return None
