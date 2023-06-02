@@ -7,14 +7,13 @@ import csv
 import re
 from time import sleep
 import datetime
-from datetime import timezone
+from datetime import date
 
 
 def scrape_greenhouse(companies_file: str, criteria: dict):
 
     # # Main Code
     # Finds jobs and outputs results as csv or excel file
-
     # Return a list of eligible jobs from a set of companies
 
     def get_companies(companies_file: str):
