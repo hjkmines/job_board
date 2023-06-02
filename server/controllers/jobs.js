@@ -1,6 +1,6 @@
 const axios = require('axios')
 const Job = require('../models/Job');
-const zips = require("../utils/zipUs.json");
+const zips = require("../utils/zipUS.json");
 
 const getJobs = async (req, res, next) => {
 console.log('query')
