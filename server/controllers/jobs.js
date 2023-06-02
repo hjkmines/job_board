@@ -1,8 +1,10 @@
 const axios = require('axios')
 const Job = require('../models/Job');
+const zips = require("../utils/zipUs.json");
 
 const getJobs = async (req, res, next) => {
-
+console.log('query')
+console.log(req.params.query)
   try {
     if (req.query.latest) {
       console.log('latest jobs')
@@ -14,16 +16,14 @@ const getJobs = async (req, res, next) => {
       yesterday.setSeconds(0)
       yesterday.setMilliseconds(0)
 
-
-      const jobs = await Job.find({ date: { $gte: yesterday } }).sort({ 'date': -1 }).lean();
-
+      const jobs = await Job.find({ 'date': { $gte: yesterday } }).sort({ 'date': -1 }).lean();
 
       return res
         .status(200)
         .setHeader('Content-Type', 'application/json')
         .json(jobs)
 
-    } else if (req.query.remoteOnly === 'true') {
+    } else if (req.query.remoteOnly) {
       console.log('remoteOnly');
       console.log(req.query);
 
@@ -65,35 +65,45 @@ const getJobs = async (req, res, next) => {
     } else if (req.query.location) {
       console.log('search location and geo');
       console.log(req.query);
-      const radiusSphere = 0.000621371 * req.query.radius / 3963.2;
       const coords = []
+      // Use zip json to get coordinates for zip codes
+      if (/^[0-9]{5}(?:-[0-9]{4})?$/.test(req.query.location)){
+        coords.push(parseFloat(zips[req.query.location].LONG))
+        coords.push(parseFloat(zips[req.query.location].LAT))
 
-      axios.get('https://geocode.maps.co/search', { params: { q: req.query.location } }).then((res) => {
-        coords.push(parseFloat(res.data[0].lon))
-        coords.push(parseFloat(res.data[0].lat))
-      })
+      } else {
+        const location = req.query.location
 
-      // Don't spam the geocode API
-      await new Promise(r => setTimeout(r, 500));
+        axios.get('https://geocode.maps.co/search', { params: { q: location } }).then((res) => {
+          coords.push(parseFloat(res.data[0].lon))
+          coords.push(parseFloat(res.data[0].lat))
+        })
+        
+        // Don't spam the geocode API
+        await new Promise(r => setTimeout(r, 550));
+      }
 
-      if (req.query.search) {
-
-        const jobs = await Job.find({
-          "$text": { "$search": `${req.query.search}` },
-          "points": {
-            "$geoWithin": {
-              "$centerSphere": [coords, radiusSphere]
+        if (req.query.search) {
+          
+          const radiusSphere = 0.000621371 * req.query.radius / 3963.2;
+          
+          const jobs = await Job.find({
+            "$text": { "$search": `${req.query.search}` },
+            "points": {
+              "$geoWithin": {
+                "$centerSphere": [coords, radiusSphere]
+              }
             }
-          }
-        }).sort({ "date": -1 }).lean()
+          }).sort({ "date": -1 }).lean()
 
-        return res
-          .status(200)
-          .setHeader('Content-Type', 'application/json')
-          .json(jobs)
+          return res
+            .status(200)
+            .setHeader('Content-Type', 'application/json')
+            .json(jobs)
 
 
       } else {
+        console.log('no text search')
         const jobs = await Job.find({
           "points": {
             "$near": {
@@ -112,8 +122,8 @@ const getJobs = async (req, res, next) => {
       }
 
     }
-
-    else if (req.query.lat && !req.query.search) {
+ 
+    else if (req.query.geoLocation && !req.query.search) {
       // Geospatial search only
       console.log('geospatial search')
       const jobs = await Job.find({
@@ -133,11 +143,9 @@ const getJobs = async (req, res, next) => {
         .setHeader('Content-Type', 'application/json')
         .json(jobs)
 
-
     }
 
-
-    else if (req.query.lat && req.query.search) {
+    else if (req.query.geoLocation && req.query.search) {
       console.log('search text and geo');
       console.log(req.query);
       const radiusSphere = 0.000621371 * req.query.radius / 3963.2;
@@ -161,7 +169,8 @@ const getJobs = async (req, res, next) => {
     }
 
     else if (req.query.search) {
-      console.log('text search')
+      console.log('atlas search')
+      console.log(req.query.search)
       const filter = {
         "$search": {
           "text": {

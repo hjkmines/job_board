@@ -12,11 +12,11 @@ if not os.path.exists(f'./output/{today}'):
 
 # Web scrapers
 print('Scraping Dice...')
-dice_data = scraper.scrape_dice(pages=1)
+dice_data = scraper.scrape_dice(pages=10)
 
 
 print('Scraping Indeed...')
-indeed_data = scraper.scrape_indeed(pages=1)
+indeed_data = scraper.scrape_indeed(pages=10)
 
 # Company lists
 greenhouse_companies_file = 'greenhouse_companies.csv'

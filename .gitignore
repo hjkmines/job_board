@@ -12,7 +12,6 @@ python/output
 *.ipynb
 
 *notebooks/
-
 *logs/
 
 # Misc

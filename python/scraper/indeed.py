@@ -5,13 +5,13 @@ import undetected_chromedriver as uc
 from urllib.parse import urlencode, urljoin
 import json
 from datetime import datetime
-from datetime import timezone
 import requests
 from time import sleep
 import re
 
 
 def scrape_indeed(query="junior software developer", pages=1, wait=5):
+    zip_coords = json.loads('zipUs.json')
     home = 'https://www.indeed.com'
     base = "https://www.indeed.com/jobs?"
     params = {}
@@ -112,9 +112,15 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                 else:
                     remote.append(False)
                 states.append(address.get('addressRegion1'))
-                zips.append(address.get('postalCode'))
+                zip_code = address.get('postalCode')
+                zips.append(zip_code)
                 countries.append(address.get('addressCountry'))
-                points.append(get_location(
+
+                if zip_code:
+                   coordinates = [zip_coords[str(zip_code)]['LONG'], zip_coords[str(zip_code)]['LAT']]
+                   points.append({'type': 'MultiPoint', 'coordinates': [coordinates]})
+                else:
+                    points.append(get_location(
                     f"{address.get('addressLocality')}, {address.get('addressRegion1')}, {address.get('addressCountry')}"))
 
             except:
@@ -134,23 +140,6 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                 types.append(None)
 
     driver.close()
-
-    # df = pd.DataFrame()
-    # df['title'] = titles
-    # df['company'] = companies
-    # df['link'] = links
-    # df['description'] = descriptions
-    # df['date'] = dates
-    # df['raw_date'] = raw_dates
-    # df['min_salary'] = mins
-    # df['max_salary'] = maxes
-    # df['salary_type'] = types
-    # df['city'] = cities
-    # df['state'] = states
-    # df['country'] = countries
-    # df['points'] = points
-    # df['remote'] = remote
-    # df['source'] = 'indeed'
     data = []
 
     for i in range(len(titles)):
