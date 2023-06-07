@@ -11,7 +11,8 @@ import re
 
 
 def scrape_indeed(query="junior software developer", pages=1, wait=5):
-    zip_coords = json.loads('zipUs.json')
+    with open('./zipUS.json', 'r') as f:
+        zip_coords = json.load(f)
     home = 'https://www.indeed.com'
     base = "https://www.indeed.com/jobs?"
     params = {}
@@ -117,11 +118,13 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                 countries.append(address.get('addressCountry'))
 
                 if zip_code:
-                   coordinates = [zip_coords[str(zip_code)]['LONG'], zip_coords[str(zip_code)]['LAT']]
-                   points.append({'type': 'MultiPoint', 'coordinates': [coordinates]})
+                    coordinates = [
+                        zip_coords[str(zip_code)]['LONG'], zip_coords[str(zip_code)]['LAT']]
+                    points.append(
+                        {'type': 'MultiPoint', 'coordinates': [coordinates]})
                 else:
                     points.append(get_location(
-                    f"{address.get('addressLocality')}, {address.get('addressRegion1')}, {address.get('addressCountry')}"))
+                        f"{address.get('addressLocality')}, {address.get('addressRegion1')}, {address.get('addressCountry')}"))
 
             except:
                 cities.append(None)
@@ -139,7 +142,7 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                 maxes.append(None)
                 types.append(None)
 
-    driver.close()
+    #driver.close()
     data = []
 
     for i in range(len(titles)):

@@ -23,7 +23,7 @@ greenhouse_companies_file = 'greenhouse_companies.csv'
 lever_companies_file = 'lever_companies.csv'
 
 roles = {'developer', 'engineer', 'data', 'analyst', 'scientist', 'frontend', 'software',
-         'apprentice', 'apprenticeship', 'front-end', 'backend', 'back-end', 'jr.', 'jr'}
+         'apprentice', 'apprenticeship', 'front-end', 'backend', 'back-end'}
 
 # Includes 'software' for titles that are just 'software engineer', etc.
 levels = {'junior', 'entry-level', 'grad', 'graduate', 'apprentice', 'web',
@@ -50,6 +50,11 @@ jobs_coll = db['jobs_test']
 
 # jobs_coll.drop()
 # jobs_coll = db['jobs_test']
+print('Indexing...')
+jobs_coll.create_index([('points', pymongo.GEOSPHERE)])
+jobs_coll.create_index(
+    [('title', pymongo.TEXT), ('description', pymongo.TEXT), ('company', pymongo.TEXT)])
+
 
 print('Inserting documents...')
 jobs_coll.insert_many(indeed_data)
@@ -57,9 +62,5 @@ jobs_coll.insert_many(dice_data)
 jobs_coll.insert_many(greenhouse_data)
 jobs_coll.insert_many(lever_data)
 
-print('Indexing...')
-jobs_coll.create_index([('points', pymongo.GEOSPHERE)])
-jobs_coll.create_index(
-    [('title', pymongo.TEXT), ('description', pymongo.TEXT), ('company', pymongo.TEXT)])
 
 print('Done!')

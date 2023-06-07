@@ -3,8 +3,8 @@ const Job = require('../models/Job');
 const zips = require("../utils/zipUS.json");
 
 const getJobs = async (req, res, next) => {
-console.log('query')
-console.log(req.params.query)
+  console.log('query')
+  console.log(req.params.query)
   try {
     if (req.query.latest) {
       console.log('latest jobs')
@@ -30,17 +30,19 @@ console.log(req.params.query)
       if (req.query.search) {
         console.log('remoteOnly + search');
         const filter =
-          [{ '$search': {
+          [{
+            '$search': {
 
-            text: {
-              query: `${req.query.search}`,
-              path: ["description", "company", "title"]
+              text: {
+                query: `${req.query.search}`,
+                path: ["description", "company", "title"]
+              }
             }
-          }
-          }, { '$match': {
+          }, {
+            '$match': {
 
-            'remote': true
-          }
+              'remote': true
+            }
           }]
 
         const jobs = await Job.aggregate(filter).sort({ "date": -1 })
@@ -67,7 +69,7 @@ console.log(req.params.query)
       console.log(req.query);
       const coords = []
       // Use zip json to get coordinates for zip codes
-      if (/^[0-9]{5}(?:-[0-9]{4})?$/.test(req.query.location)){
+      if (/^[0-9]{5}(?:-[0-9]{4})?$/.test(req.query.location)) {
         coords.push(parseFloat(zips[req.query.location].LONG))
         coords.push(parseFloat(zips[req.query.location].LAT))
 
@@ -78,28 +80,28 @@ console.log(req.params.query)
           coords.push(parseFloat(res.data[0].lon))
           coords.push(parseFloat(res.data[0].lat))
         })
-        
+
         // Don't spam the geocode API
         await new Promise(r => setTimeout(r, 550));
       }
 
-        if (req.query.search) {
-          
-          const radiusSphere = 0.000621371 * req.query.radius / 3963.2;
-          
-          const jobs = await Job.find({
-            "$text": { "$search": `${req.query.search}` },
-            "points": {
-              "$geoWithin": {
-                "$centerSphere": [coords, radiusSphere]
-              }
-            }
-          }).sort({ "date": -1 }).lean()
+      if (req.query.search) {
 
-          return res
-            .status(200)
-            .setHeader('Content-Type', 'application/json')
-            .json(jobs)
+        const radiusSphere = 0.000621371 * req.query.radius / 3963.2;
+
+        const jobs = await Job.find({
+          "$text": { "$search": `${req.query.search}` },
+          "points": {
+            "$geoWithin": {
+              "$centerSphere": [coords, radiusSphere]
+            }
+          }
+        }).sort({ "date": -1 }).lean()
+
+        return res
+          .status(200)
+          .setHeader('Content-Type', 'application/json')
+          .json(jobs)
 
 
       } else {
@@ -122,7 +124,7 @@ console.log(req.params.query)
       }
 
     }
- 
+
     else if (req.query.geoLocation && !req.query.search) {
       // Geospatial search only
       console.log('geospatial search')
