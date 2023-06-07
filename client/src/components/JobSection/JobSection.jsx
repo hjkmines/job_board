@@ -6,7 +6,7 @@ import {
 } from 'mdb-react-ui-kit';
 
 import "./JobSection.css";
-import JobCarousel from '../JobCarousel/JobCarousel';
+import JobCarousel from '../JobCarouselSpring/JobCarousel';
 import axios from 'axios';
 import LoadingDots from '../LoadingDots/LoadingDots';
 
