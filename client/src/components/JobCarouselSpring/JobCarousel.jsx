@@ -33,6 +33,7 @@ const responsive = {
       freeScroll: true,
       itemsPerSlide: 1,
       enableFreeScrollDrag: false,
+      disableGestures: false,
       items: jobs.map((job) => ({
         id: job._id,
         renderItem: (
