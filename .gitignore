@@ -12,7 +12,7 @@ python/output
 *.ipynb
 
 *logs/
-
+*notebooks/
 # Misc
 .vscode/
 .DS_Store
