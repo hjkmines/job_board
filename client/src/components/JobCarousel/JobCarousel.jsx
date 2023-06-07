@@ -96,7 +96,7 @@ class JobCarousel extends React.Component {
                 itemAriaLabel="Image-aria-label"
                 responsive={responsive}
                 containerClass="carousel-container-with-scrollbar"
-                focusOnSelect={false}
+                focusOnSelect={true}
                 additionalTransfrom={this.state.additionalTransfrom-50}
 
                 beforeChange={nextSlide => {
