@@ -90,6 +90,8 @@ class JobCarousel extends React.Component {
                 arrows={false}
                 customButtonGroup={<CustomSlider />}
                 deviceType={this.props.deviceType}
+                draggable={false}
+                swipeable={true}
                 itemClass="job-item"
                 itemAriaLabel="Image-aria-label"
                 responsive={responsive}

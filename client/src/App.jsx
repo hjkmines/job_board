@@ -5,11 +5,9 @@ import './App.css'
 import LandingJumbotron from './components/landingJumbotron/LandingJumbotron';
 import JobSearchGeo from './components/JobSearchGeo/JobSearchGeo.jsx';
 import JobSection from './components/JobSection/JobSection.jsx';
-import LoadingDots from './components/LoadingDots/LoadingDots';
-import { useState, useEffect } from 'react';
+
 
 function App() {
-  const [jobs, setJobs] = useState([])
 
   return (
     <>
