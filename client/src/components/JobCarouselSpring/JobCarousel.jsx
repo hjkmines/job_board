@@ -30,9 +30,6 @@ const responsive = {
       slideToPrevItem, 
       slideToNextItem 
     } = useSpringCarousel({
-      freeScroll: true,
-      enableFreeScrollDrag: false,
-      disableGestures: false,
       items: jobs.map((job) => ({
         id: job._id,
         renderItem: (

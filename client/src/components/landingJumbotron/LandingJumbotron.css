@@ -1,9 +1,8 @@
 .bg-jumbo {
   background-image: url('../../assets/job_board_bg.svg');
-  background-position: center center;
+  background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
-  height: 100;
+  background-size: 150% 150%;
   background-attachment: fixed;
 }
 
