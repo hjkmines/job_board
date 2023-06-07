@@ -32,8 +32,7 @@ const responsive = {
     } = useSpringCarousel({
       freeScroll: true,
       itemsPerSlide: 1,
-      enableFreeScrollDrag: true,
-      slideAmount: 375,
+      enableFreeScrollDrag: false,
       items: jobs.map((job) => ({
         id: job._id,
         renderItem: (
