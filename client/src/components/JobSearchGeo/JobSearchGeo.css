@@ -1,0 +1,89 @@
+/* 
+//Main Color Palette: //
+
+Hexachrome_Green: #029C53,
+Thistle: #DAGSFA,
+Dandelion: #FBFE87,
+Sky_Blue: #BDE6EE,
+Oriole: #F5581C,
+Cherry Blossom: #FFB2CE
+*/
+
+/* entire search < form >  */
+.searchForm {}
+
+/* <MDBRow > that contains search input and submit button */
+.searchRow1 {
+    align-content: start;
+    padding-top: 2px;
+    margin-top: 3px;
+}
+
+/* MDBCol that holds search button */
+/* .searchBtnCol {
+       
+    } */
+/* MDB button type="submit" */
+.searchSubmitBtn {
+    background-color: #029C53;
+    width: 100%;
+    margin: 0;
+    border-radius: 100px;
+    /* padding-right: -10; */
+    /* display: flex; */
+    /* justify-self: end; */
+}
+
+.searchSubmitBtn:hover {
+    background-color: #F5581C;
+}
+
+/* Search input */
+/* .filterSearch {
+        
+    } */
+
+.searchInput {
+    border-radius: 50px;
+
+}
+
+.form-control:focus {
+    border-color: #029C53;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+} 
+.form-select:focus {
+    border-color: #029C53;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+} 
+/* 2nd row - toggles and filters */
+.searchRow2 {
+    /* margin-top: 4px; */
+    align-items: center;
+
+}
+
+/* .remoteSwitchCol {
+    justify-content: start;
+    
+} */
+
+/* .cityCol {
+    border: 1px solid yellow;
+}
+.stateCol {
+    border: 1px solid orange;
+
+}
+.expCol {
+    border: 1px solid green;
+
+} */
+/* .sortByCol {
+    border: 1px solid blue;
+    justify-items: center;
+} */
+/* .moreToggleCol {
+    align-items: center;
+    border:1px solid purple;
+} */
