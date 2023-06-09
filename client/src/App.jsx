@@ -15,7 +15,7 @@ function App() {
       <LandingJumbotron />
       <JobSearchGeo/>
       <JobSection sectionTitle='New Jobs' query={{latest: true, limit: 100}} />
-      <JobSection sectionTitle='All Jobs' query={{limit: 1000}} /> 
+      <JobSection sectionTitle='All Jobs' query={{limit: 100}} /> 
     </>
   )
 }

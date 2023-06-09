@@ -41,7 +41,7 @@ export default function JobCard({ job }) {
   }
 
   return (
-    <MDBContainer className="mx-4  bg-transparent h-100">
+    <MDBContainer className="mx-4 bg-transparent h-100">
           <MDBCard className="job-card" style={{'maxHeight': '95%', 'minHeight': '95%' }}>
             <MDBCardBody className='d-flex flex-column mb-2 overflow-hidden'>
               <MDBCardTitle className="job-title  mb-0">{job.title}</MDBCardTitle>

@@ -30,6 +30,10 @@ const responsive = {
       slideToPrevItem, 
       slideToNextItem 
     } = useSpringCarousel({
+        slideType: 'fluid',
+        slideAmount: 400,
+        freeScroll: true,
+        enableFreeScrollDrag: true,
       items: jobs.map((job) => ({
         id: job._id,
         renderItem: (
@@ -40,7 +44,9 @@ const responsive = {
 
     return (
         <div className="overflow-hidden">
+        <div className="">
         {carouselFragment}
+        </div>
         </div>
     );
   }
