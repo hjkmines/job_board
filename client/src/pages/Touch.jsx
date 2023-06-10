@@ -9,7 +9,7 @@ export default function Touch() {
         <>
             <LandingJumbotron />
             <JobSearchGeoTouch />
-            <JobSectionTouch sectionTitle='New Jobs' query={{ latest: true, limit: 100 }} />
+            <JobSectionTouch sectionTitle='New Jobs' query={{ latest: true, limit: 50 }} />
             <JobSectionTouch sectionTitle='All Jobs' query={{ limit: 100 }} />
         </>
     )
