@@ -9,7 +9,8 @@ from datetime import datetime
 
 
 def scrape_dice(query="junior software developer", pages=1, wait=5):
-    zip_coords = json.loads('zipUs.json')
+    with open('./zipUS.json', 'r') as f:
+        zip_coords = json.load(f)
     base = 'https://www.dice.com/jobs/'
     params = {}
     params['q'] = query

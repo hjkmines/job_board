@@ -11,7 +11,9 @@ import re
 
 
 def scrape_indeed(query="junior software developer", pages=1, wait=5):
-    zip_coords = json.loads('zipUs.json')
+    with open('./zipUS.json', 'r') as f:
+        zip_coords = json.load(f)
+
     home = 'https://www.indeed.com'
     base = "https://www.indeed.com/jobs?"
     params = {}

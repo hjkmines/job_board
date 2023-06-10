@@ -30,7 +30,7 @@ const JobSection = ({ sectionTitle, query }) => {
                 setIsLoading(false)
             })
         }
-    }, [query]);
+    }, []);
 
     return (
         <MDBContainer className='mb-4'>
