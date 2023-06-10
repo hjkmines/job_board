@@ -30,10 +30,10 @@ const JobSectionTouch = ({ sectionTitle, query }) => {
                 setIsLoading(false)
             })
         }
-    }, [query]);
+    }, []);
 
     return (
-        <MDBContainer fluid className=' mx-2'>
+        <MDBContainer fluid className='mx-2'>
 
             <MDBTypography tag='h2' className='pt-3 section-header'>
                 {sectionTitle}
