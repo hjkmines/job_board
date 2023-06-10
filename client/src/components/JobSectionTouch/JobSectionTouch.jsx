@@ -5,12 +5,12 @@ import {
 
 } from 'mdb-react-ui-kit';
 
-import "./JobSection.css";
-import JobCarousel from '../JobCarouselSpring/JobCarousel';
+import "./JobSectionTouch.css";
+import JobCarouselTouch from '../JobCarouselTouch/JobCarouselTouch';
 import axios from 'axios';
 import LoadingDots from '../LoadingDots/LoadingDots';
 
-const JobSection = ({ sectionTitle, query }) => {
+const JobSectionTouch = ({ sectionTitle, query }) => {
     const [jobs, setJobs] = useState([])
     const [isLoading, setIsLoading] = useState(true)
 
@@ -33,18 +33,18 @@ const JobSection = ({ sectionTitle, query }) => {
     }, [query]);
 
     return (
-        <MDBContainer fluid className='mb-4  px-5  '>
+        <MDBContainer fluid className=' mx-2'>
 
-            <MDBTypography tag='h2' className='pt-3 mx-5 px-5  section-header'>
+            <MDBTypography tag='h2' className='pt-3 section-header'>
                 {sectionTitle}
             </MDBTypography>
 
             {isLoading ?
-                <div className='d-flex fluid m-2  p-2  text-center justify-content-center  '>
-                    <LoadingDots className='m-4' />
+                <div className='d-flex fluid  text-center justify-content-center  '>
+                    <LoadingDots className='m-5 p-5'/>
                 </div>
-                : <MDBContainer fluid className=' mt-4 px-5 '>
-                    <JobCarousel jobs={jobs} />
+                : <MDBContainer fluid className=' mt-2 '>
+                    <JobCarouselTouch jobs={jobs} />
                 </MDBContainer>}
 
         </MDBContainer>
@@ -52,4 +52,4 @@ const JobSection = ({ sectionTitle, query }) => {
     )
 }
 
-export default JobSection;
+export default JobSectionTouch;

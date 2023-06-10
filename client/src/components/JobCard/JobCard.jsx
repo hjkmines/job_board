@@ -13,15 +13,20 @@ import {
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faArrowRotateRight} from '@fortawesome/free-solid-svg-icons'
+import useMediaQuery from '../../hooks/useMediaQuery';
 
 export default function JobCard({ job }) {
-  
+
+  const isMed = useMediaQuery('(min-width: 768px)');
+
   const [applied, setApplied] =useState(false)
+
 
   const toDateString = (dateISO) => {
     const date = new Date(dateISO)
     return date.toDateString()
   }
+
 
   const getLocation = (job) => {
     if (job.source === 'dice' || job.source === 'indeed') {
@@ -41,8 +46,8 @@ export default function JobCard({ job }) {
   }
 
   return (
-    <MDBContainer className="mx-4 bg-transparent h-100">
-          <MDBCard className="job-card" style={{'maxHeight': '95%', 'minHeight': '95%' }}>
+    <MDBContainer className="bg-transparent ">
+          <MDBCard className="job-card" style={{'maxHeight': '90%', 'minHeight': '90%', 'maxWidth': '100%', 'minWidth': '100%' }}>
             <MDBCardBody className='d-flex flex-column mb-2 overflow-hidden'>
               <MDBCardTitle className="job-title  mb-0">{job.title}</MDBCardTitle>
               <MDBCardSubTitle className='fw-bold'>{job.company}</MDBCardSubTitle>
@@ -51,7 +56,7 @@ export default function JobCard({ job }) {
               {/* <MDBCardSubTitle>Date Posted: {job.date}</MDBCardSubTitle> */}
               {/* <MDBCardSubTitle>{job.source}</MDBCardSubTitle> */}
               {job.description && <MDBCardText className="mt-2 job-text">
-                {job.description.slice(0,500)}
+                {job.description.slice(0,isMed ? 500 : 300)}
               </MDBCardText>}
 
               {applied ? <MDBRow className='d-flex align-items-center w-100 mt-auto'> 
@@ -62,7 +67,7 @@ export default function JobCard({ job }) {
               <FontAwesomeIcon icon={faArrowRotateRight} size='xl' />
               </MDBBtn>
                 </MDBRow>
-              : <MDBBtn href={job.link} target='_blank' rounded className="shadow-none apply-btn mt-auto" onClick={()=> setApplied(!applied)}>
+              : <MDBBtn href={job.link} target='_blank' rounded className="shadow-none apply-btn mt-auto flex justify-content-center d-flex align-items-center" onClick={()=> setApplied(!applied)}>
                 Apply
               </MDBBtn>
                  }

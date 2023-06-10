@@ -1,21 +1,17 @@
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import './App.css'
+import useMediaQuery from './hooks/useMediaQuery.js'
 
-import LandingJumbotron from './components/landingJumbotron/LandingJumbotron';
-import JobSearchGeo from './components/JobSearchGeo/JobSearchGeo.jsx';
-import JobSection from './components/JobSection/JobSection.jsx';
-
+import Desktop from './pages/Desktop';
+import Touch from './pages/Touch';
 
 function App() {
-
+  const isDesktop = useMediaQuery('(min-width: 960px)');
+  console.log(isDesktop)
   return (
     <>
-      {/* {/* react-router-dom ? broswerrouter? */}
-      <LandingJumbotron />
-      <JobSearchGeo/>
-      <JobSection sectionTitle='New Jobs' query={{latest: true, limit: 100}} />
-      <JobSection sectionTitle='All Jobs' query={{limit: 100}} /> 
+      {isDesktop ? <Desktop/> : <Touch/>}
     </>
   )
 }

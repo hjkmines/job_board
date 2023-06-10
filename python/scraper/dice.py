@@ -110,8 +110,8 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
             firstkey = list(jobdata.keys())[0]
             locationdetail = jobdata[firstkey]['data']['locationDetail']
             locationdata = locationdetail['locations'][0]
-            dateposted = datetime.strptime(
-                jobdata[firstkey]['data']['datePosted'], "%Y-%m-%dT%H:%M:%S.000Z")
+            dateposted = jobdata[firstkey]['data']['datePosted']
+            dateposted = datetime.fromisoformat(dateposted)
             dates.append(dateposted)
 
             raw_dates.append(jobdata[firstkey]['data']['datePosted'])

@@ -37,24 +37,12 @@ input[type=range]:focus::-webkit-slider-runnable-track {
   background: #ffffff;
 }
 
-.carousel-container-with-scrollbar {
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  overflow: visible !important;
+
+
+.carousel-control {
+  color: transparent;
 }
 
-.custom-slider {
-  position: absolute;
-  bottom: -1rem;
-  width: 100%;
+.carousel-control:hover {
+ color: white;
 }
-
-.custom-slider__input {
-  width: 100%;
-}
-
-.job-item {
-  padding: 1rem 0 1rem 1rem;
-}
-
-
