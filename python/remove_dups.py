@@ -18,9 +18,11 @@ def remove_dups():
         {"$match": {"count": {"$gt": 1}}},
         {"$sort": {"date": 1}}
     ]))
+   
 
     for dup in dups:
-        jobs_coll.delete_many({'_id' : {'$in' : dup[:-1]}})
+        print(dup)
+        jobs_coll.delete_many({'_id' : {'$in' : dup.get('dups')[:-1]}})
 
     # jobs_coll.eval(
     #     '''db.jobs_test.aggregate([
@@ -37,4 +39,5 @@ def remove_dups():
     #     db.jobs_backup.deleteMany({ _id: { $in: doc.dups } });
     #     }); ''')
 
-remove_dups
+
+remove_dups()
