@@ -33,7 +33,7 @@ export function JobCarousel({ jobs }) {
     slideToNextItem
     // useListenToCustomEvent
   } = useSpringCarousel({
-    itemsPerSlide: 3,
+    itemsPerSlide: jobs.length < 3 ? 1 : 3,
     freeScroll: true,
     enableFreeScrollDrag: false,
     items: jobs.map((job) => ({

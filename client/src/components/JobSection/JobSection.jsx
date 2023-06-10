@@ -13,24 +13,24 @@ import LoadingDots from '../LoadingDots/LoadingDots';
 const JobSection = ({ sectionTitle, query }) => {
     const [jobs, setJobs] = useState([])
     const [isLoading, setIsLoading] = useState(true)
-
+    search
     useEffect(() => {
-        setIsLoading(true)
-        if (import.meta.env.MODE === 'development') {
-            // Local dev server
-            console.log('Using local dev server at port 5001')
-            axios.get('http://localhost:5001/jobs', { params: { ...query } }).then((res) => {
-                setJobs([...res.data]);
-                setIsLoading(false)
-            })
-        } else {
-            // Production server
-            axios.get('https://hanawilo-jobs-server.onrender.com/jobs', { params: { ...query } }).then((res) => {
-                setJobs([...res.data]);
-                setIsLoading(false)
-            })
-        }
-    }, []);
+            setIsLoading(true)
+            if (import.meta.env.MODE === 'development') {
+                // Local dev server
+                console.log('Using local dev server at port 5001')
+                axios.get('http://localhost:5001/jobs', { params: { ...query } }).then((res) => {
+                    setJobs([...res.data]);
+                    setIsLoading(false)
+                })
+            } else {
+                // Production server
+                axios.get('https://hanawilo-jobs-server.onrender.com/jobs', { params: { ...query } }).then((res) => {
+                    setJobs([...res.data]);
+                    setIsLoading(false)
+                })
+            }
+    },[query]);
 
     return (
         <MDBContainer fluid className='mb-4  px-5  '>

@@ -32,6 +32,7 @@ export default function JobSearchGeo() {
     onSubmit: (values) => {
       if (geoLocationChecked) values.geoLocation = true
       if (remoteChecked) values.remoteOnly = true
+      console.log(values)
       setQuery({ ...values })
     }
   });
@@ -118,16 +119,19 @@ export default function JobSearchGeo() {
                       className='mx-1'
                       onChange={(e) => {
                         // Set geoLocation switch
-                        setGeoLocationChecked(e.target.checked);
                         // Set remote switch to false
-                        setRemoteChecked(false);
+                        console.log(e.target.checked)
+                        setGeoLocationChecked(e.target.checked);
                         if (e.target.checked) {
+                          
+                          setRemoteChecked(false);
                           navigator.geolocation.getCurrentPosition(function (position) {
                             const coords = [position.coords.longitude, position.coords.latitude];
                             formik.setFieldValue("long", coords[0])
                             formik.setFieldValue("lat", coords[1])
+                            formik.setFieldValue("remoteOnly", null)
                           });
-                        } else {
+                        } else { 
                           formik.setFieldValue("long", null)
                           formik.setFieldValue("lat", null)
                         }
@@ -150,7 +154,6 @@ export default function JobSearchGeo() {
                       onChange={(e) => {
                         // Set remote switch 
                         setRemoteChecked(e.target.checked);
-                        // Set geoLocation switch to false
                         setGeoLocationChecked(false);
                       }}
                       checked={remoteChecked}

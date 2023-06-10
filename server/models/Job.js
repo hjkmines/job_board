@@ -23,15 +23,6 @@ const JobSchema = new Schema({
     },
     remote: {
         type: Boolean
-    },
-    min_salary: {
-        type: Number
-    },
-    max_salary: {
-        type: Number
-    },
-    salary_type: {
-        type: String
     }
 
 }, {

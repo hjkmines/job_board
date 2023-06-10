@@ -12,8 +12,9 @@ function Desktop() {
       {/* {/* react-router-dom ? broswerrouter? */}
       <LandingJumbotron />
       <JobSearchGeo/>
-      <JobSection sectionTitle='New Jobs' query={{latest: true, limit: 100}} />
-      <JobSection sectionTitle='All Jobs' query={{limit: 100}} /> 
+      <JobSection query={{'latest': true}} sectionTitle={'New Jobs'}/>
+      <JobSection query={{'limit' : 500}} sectionTitle={'All Jobs'}/>
+   
     </>
   )
 }

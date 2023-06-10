@@ -123,9 +123,7 @@ const getJobs = async (req, res, next) => {
           .json(jobs)
       }
 
-    }
-
-    else if (req.query.geoLocation && !req.query.search) {
+    } else if (req.query.geoLocation && !req.query.search) {
       // Geospatial search only
       console.log('geospatial search')
       const jobs = await Job.find({
@@ -145,9 +143,7 @@ const getJobs = async (req, res, next) => {
         .setHeader('Content-Type', 'application/json')
         .json(jobs)
 
-    }
-
-    else if (req.query.geoLocation && req.query.search) {
+    } else if (req.query.geoLocation && req.query.search) {
       console.log('search text and geo');
       console.log(req.query);
       const radiusSphere = 0.000621371 * req.query.radius / 3963.2;
@@ -168,9 +164,7 @@ const getJobs = async (req, res, next) => {
         .setHeader('Content-Type', 'application/json')
         .json(jobs)
 
-    }
-
-    else if (req.query.search) {
+    } else if (req.query.search) {
       console.log('atlas search')
       console.log(req.query.search)
       const filter = {
@@ -189,10 +183,9 @@ const getJobs = async (req, res, next) => {
         .setHeader('Content-Type', 'application/json')
         .json(jobs)
 
-    }
-
-    else {
-      const jobs = await Job.find().sort({ 'date': -1 }).limit(req.query.limit).lean();
+    } else  {
+      console.log('default')
+      const jobs = await Job.find().sort({ 'date': -1 }).limit(50).lean();
       return res
         .status(200)
         .setHeader('Content-Type', 'application/json')
