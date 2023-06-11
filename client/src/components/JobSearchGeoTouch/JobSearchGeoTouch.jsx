@@ -169,7 +169,7 @@ export default function JobSearchGeo() {
       </form >
     </MDBContainer >
 
-    {formik.submitCount > 0 && <JobSection query={query} sectionTitle={'Your Search Results'} />}
+    {formik.submitCount > 0 && <JobSectionTouch query={query} sectionTitle={'Your Search Results'} />}
 
   </>
 
