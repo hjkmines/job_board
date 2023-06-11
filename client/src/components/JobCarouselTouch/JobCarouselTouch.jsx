@@ -29,7 +29,7 @@ export function JobCarouselTouch({ jobs }) {
 
   return (
 
-    <div className="" >
+    <div className="overflow-hidden" >
       {carouselFragment}
       <MDBProgress className="jobs-progress">
         <MDBProgressBar className="jobs-progress-bar" width={activeItem/jobs.length*100+1} valuemin={1} valuemax={99} />
