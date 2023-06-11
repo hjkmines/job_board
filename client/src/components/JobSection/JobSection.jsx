@@ -20,16 +20,17 @@ const JobSection = ({ sectionTitle, query }) => {
                 // Local dev server
                 console.log('Using local dev server at port 5001')
                 axios.get('http://localhost:5001/jobs', { params: { ...query } }).then((res) => {
-                    setJobs([...res.data]);
+                    setJobs(res.data);
                     setIsLoading(false)
                 })
             } else {
                 // Production server
                 axios.get('https://hanawilo-jobs-server.onrender.com/jobs', { params: { ...query } }).then((res) => {
-                    setJobs([...res.data]);
+                    setJobs(res.data);
                     setIsLoading(false)
                 })
             }
+            return () => setJobs([])
     },[query]);
 
     return (

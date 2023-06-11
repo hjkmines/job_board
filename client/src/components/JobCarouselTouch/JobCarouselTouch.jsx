@@ -6,7 +6,8 @@ import { useSpringCarousel } from 'react-spring-carousel'
 import { MDBProgress, MDBProgressBar } from 'mdb-react-ui-kit';
 
 export function JobCarouselTouch({ jobs }) {
-
+  console.log(jobs.length)
+  
   const [activeItem, setActiveItem] = useState(0)
   const {
     carouselFragment,
@@ -28,11 +29,10 @@ export function JobCarouselTouch({ jobs }) {
 
   return (
 
-    <div className="overflow-hidden  ">
-
+    <div className="" >
       {carouselFragment}
       <MDBProgress className="jobs-progress">
-        <MDBProgressBar className="jobs-progress-bar" width={activeItem+1} valuemin={0} valuemax={jobs.length+1} />
+        <MDBProgressBar className="jobs-progress-bar" width={activeItem/jobs.length*100+1} valuemin={1} valuemax={99} />
       </MDBProgress>
       </div>
 
