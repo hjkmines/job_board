@@ -5,7 +5,7 @@ import {
   MDBContainer,
   MDBBtn
 } from 'mdb-react-ui-kit';
-i
+
 function LandingJumbotron() {
 
   return (
