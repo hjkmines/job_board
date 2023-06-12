@@ -8,7 +8,7 @@ import {
   MDBContainer,
   MDBBtn
 } from 'mdb-react-ui-kit';
-import Navbar from "../Navbar/Navbar.jsx";
+i
 function LandingJumbotron() {
 
   return (

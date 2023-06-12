@@ -1,9 +1,9 @@
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import './App.css';
-import JobSection from './components/JobSection/JobSection';
-import LandingJumbotron from './components/LandingJumbotron/LandingJumbotron';
-import JobSearchGeo from './components/JobSearchGeo/JobSearchGeo';
+import JobSection from './components/JobSection/JobSection.jsx';
+import LandingJumbotron from './components/LandingJumbotron/LandingJumbotron.jsx';
+import JobSearchGeo from './components/JobSearchGeo/JobSearchGeo.jsx';
 
 function App() {
 
