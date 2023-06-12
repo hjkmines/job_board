@@ -1,4 +1,3 @@
-// styles - react & other assets  //
 import  "./LandingJumbotron.css";
 
 import {
