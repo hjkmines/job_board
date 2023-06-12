@@ -3,15 +3,15 @@ import JobCard from "../JobCard/JobCard";
 
 import "./JobCarouselTouch.css";
 import { useSpringCarousel } from 'react-spring-carousel'
-import { MDBProgress, MDBProgressBar } from 'mdb-react-ui-kit';
+import { MDBProgress, MDBProgressBar, MDBRange } from 'mdb-react-ui-kit';
 
 export function JobCarouselTouch({ jobs }) {
-  console.log(jobs.length)
-  
+
   const [activeItem, setActiveItem] = useState(0)
   const {
     carouselFragment,
-    useListenToCustomEvent
+    useListenToCustomEvent,
+    slideToItem
   } = useSpringCarousel({
     items: jobs.map((job, index) => ({
       id: index,
@@ -26,14 +26,25 @@ export function JobCarouselTouch({ jobs }) {
     }
   });
 
-
+  const handleChange= (e) => {
+    setActiveItem(parseInt(e.target.value))
+    slideToItem(parseInt(e.target.value))
+  }
   return (
 
-    <div className="overflow-x-scroll" >
+    <div className="overflow-hidden" >
       {carouselFragment}
-      {/* <MDBProgress className="jobs-progress">
-        <MDBProgressBar className="jobs-progress-bar" width={activeItem/jobs.length*100+1} valuemin={1} valuemax={99} />
-      </MDBProgress> */}
+      
+      <MDBRange
+      defaultValue={0}
+      value={activeItem}
+      id='customRange'
+      label='Example range'
+      min='0'
+      max={jobs.length-1}
+      onChange={(e)=> handleChange(e)}
+    />
+
       </div>
 
   );

@@ -35,7 +35,6 @@ export function JobCarousel({ jobs }) {
   } = useSpringCarousel({
     itemsPerSlide: jobs.length < 3 ? jobs.length : 3,
     freeScroll: true,
-    enableFreeScrollDrag: false,
     items: jobs.map((job) => ({
       id: job._id,
       renderItem: (
