@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import JobCard from "../JobCard/JobCard";
 
 import "./JobCarousel.css";
 import { useSpringCarousel } from 'react-spring-carousel'
-import { MDBProgress, MDBProgressBar, MDBRange } from 'mdb-react-ui-kit';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
-import useMediaQuery from '../../hooks/useMediaQuery'
-import useBreakpoints from '../../hooks/useBreakpoints'
 
+import useBreakpoints from '../../hooks/useBreakpoints'
 
 function JobCarousel({ jobs }) {
 

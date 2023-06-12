@@ -1,9 +1,6 @@
 // styles - react & other assets  //
 import  "./LandingJumbotron.css";
-import React from 'react';
-// import JobBoardBG from "../../assets/job_board_bg.svg";
 
-//  MDB  //
 import {
   MDBContainer,
   MDBBtn
