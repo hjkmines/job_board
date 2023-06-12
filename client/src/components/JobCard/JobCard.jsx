@@ -48,7 +48,7 @@ export default function JobCard({ job }) {
   return (
     <MDBContainer className="bg-transparent ">
           <MDBCard className="job-card" style={{'maxHeight': '90%', 'minHeight': '90%', 'maxWidth': '100%', 'minWidth': '100%' }}>
-            <MDBCardBody className='d-flex flex-column mb-2 overflow-hidden'>
+            <MDBCardBody className='d-flex flex-column  overflow-hidden'>
               <MDBCardTitle className="job-title  mb-0">{job.title}</MDBCardTitle>
               <MDBCardSubTitle className='fw-bold'>{job.company}</MDBCardSubTitle>
               <MDBCardSubTitle> {getLocation(job)}</MDBCardSubTitle>
@@ -60,7 +60,7 @@ export default function JobCard({ job }) {
               </MDBCardText>}
 
               {applied ? <MDBRow className='d-flex align-items-center w-100 mt-auto'> 
-                <MDBBtn rounded className="shadow-none applied-btn mt-auto me-2 w-50" href={job.link} target='_blank' >
+                <MDBBtn rounded className="shadow-none applied-btn mt-auto me-2 w-auto" href={job.link} target='_blank' >
               <FontAwesomeIcon icon={faCheck} /> Good Luck!
               </MDBBtn>
               <MDBBtn outline floating className='reset-btn' size='sm' onClick={()=> setApplied(false)} > 

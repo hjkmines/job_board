@@ -3,6 +3,7 @@ from datetime import date
 import pymongo
 from dotenv import dotenv_values
 import os
+import cleaning
 
 today = date.today()
 
@@ -61,6 +62,9 @@ jobs_coll.insert_many(indeed_data)
 jobs_coll.insert_many(dice_data)
 jobs_coll.insert_many(greenhouse_data)
 jobs_coll.insert_many(lever_data)
+
+print('Clean up')
+cleaning.delete_dups()
 
 
 print('Done!')

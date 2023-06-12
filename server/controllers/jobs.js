@@ -4,18 +4,16 @@ const zips = require("../utils/zipUS.json");
 
 const getJobs = async (req, res, next) => {
   console.log('query')
-  console.log(req.params.query)
+  console.log(req.query)
   try {
     if (req.query.latest) {
       console.log('latest jobs')
       const today = new Date();
       const yesterday = new Date(today);
-      yesterday.setDate(yesterday.getDate() - 1)
-      yesterday.setHours(0)
-      yesterday.setMinutes(0)
-      yesterday.setSeconds(0)
-      yesterday.setMilliseconds(0)
-
+      yesterday.setDate(yesterday.getDate() - 2)
+      yesterday.setUTCHours(0,0,0,0)
+     
+      console.log('Getting jobs since', yesterday)
       const jobs = await Job.find({ 'date': { $gte: yesterday } }).sort({ 'date': -1 }).lean();
 
       return res
@@ -123,7 +121,28 @@ const getJobs = async (req, res, next) => {
           .json(jobs)
       }
 
-    } else if (req.query.geoLocation && !req.query.search) {
+    } else if (req.query.geoLocation) {
+      if (req.query.geoLocation && req.query.search) {
+       console.log('search text and geo');
+       console.log(req.query);
+       const radiusSphere = 0.000621371 * req.query.radius / 3963.2;
+       const jobs = await Job.find({
+         "$text": { "$search": `${req.query.search}` },
+         "points": {
+           "$geoWithin": {
+             "$centerSphere": [[
+               parseFloat(req.query.long),
+               parseFloat(req.query.lat)
+             ], radiusSphere]
+           }
+         }
+       }).sort({ "date": -1 }).lean()
+ 
+       return res
+         .status(200)
+         .setHeader('Content-Type', 'application/json')
+         .json(jobs)
+     }
       // Geospatial search only
       console.log('geospatial search')
       const jobs = await Job.find({
@@ -137,27 +156,6 @@ const getJobs = async (req, res, next) => {
           }
         }
       }).sort({ 'date': 'desc' }).lean();
-
-      return res
-        .status(200)
-        .setHeader('Content-Type', 'application/json')
-        .json(jobs)
-
-    } else if (req.query.geoLocation && req.query.search) {
-      console.log('search text and geo');
-      console.log(req.query);
-      const radiusSphere = 0.000621371 * req.query.radius / 3963.2;
-      const jobs = await Job.find({
-        "$text": { "$search": `${req.query.search}` },
-        "points": {
-          "$geoWithin": {
-            "$centerSphere": [[
-              parseFloat(req.query.long),
-              parseFloat(req.query.lat)
-            ], radiusSphere]
-          }
-        }
-      }).sort({ "date": -1 }).lean()
 
       return res
         .status(200)

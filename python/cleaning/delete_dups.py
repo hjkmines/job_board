@@ -1,13 +1,12 @@
 import pymongo
 from dotenv import dotenv_values
-import pprint
 
-def remove_dups():
+def delete_dups(collection = 'jobs_test'):
     MONGO_URL = dotenv_values('config/config.env').get('MONGO_URL')
     client = pymongo.MongoClient(MONGO_URL)
     db = client["test"]
 
-    jobs_coll = db['jobs_test']
+    jobs_coll = db[collection]
 
     dups = list(jobs_coll.aggregate([
         {"$group": {
@@ -39,5 +38,3 @@ def remove_dups():
     #     db.jobs_backup.deleteMany({ _id: { $in: doc.dups } });
     #     }); ''')
 
-
-remove_dups()
