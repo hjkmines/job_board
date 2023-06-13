@@ -1,9 +1,19 @@
 .bg-jumbo {
-  background-image: url('../../assets/job_board_bg.svg');
+  background-image: url("../../assets/job_board_bg.svg");
   background-position: center;
   background-repeat: no-repeat;
-  background-size:  cover;
+  background-size: cover;
   background-attachment: fixed;
+}
+
+@supports (-webkit-touch-callout: none) {
+  .bg-jumbo {
+    background-image: url("../../assets/job_board_bg.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: scroll;
+  }
 }
 
 .tagGrab {
@@ -14,16 +24,14 @@
   /* font-family:  'Grape Nuts'; */
 }
 
-
 .tagLine {
-
   font-weight: 600;
   font-size: 64px;
   line-height: 77px;
 }
 
 #letsGo {
-  background-color: #029C53;
+  background-color: #029c53;
   color: white;
   font-weight: 600;
   font-size: 24px;
@@ -35,6 +43,6 @@
 }
 
 .action-btn {
- background-color: #429357;
-width: 14.375rem;
+  background-color: #429357;
+  width: 14.375rem;
 }

@@ -24,11 +24,11 @@ greenhouse_companies_file = 'greenhouse_companies.csv'
 lever_companies_file = 'lever_companies.csv'
 
 roles = {'developer', 'engineer', 'data', 'analyst', 'scientist', 'frontend', 'software',
-         'apprentice', 'apprenticeship', 'front-end', 'backend', 'back-end'}
+         'apprentice', 'apprenticeship', 'front-end', 'backend', 'back-end', 'fellowship'}
 
 # Includes 'software' for titles that are just 'software engineer', etc.
 levels = {'junior', 'entry-level', 'grad', 'graduate', 'apprentice', 'web',
-          'apprenticeship', 'software', 'entry', 'intern', 'i', '1', 'associate', 'jr.', 'jr'}
+          'apprenticeship','fellowship', 'software', 'entry', 'intern', 'i', '1', 'associate', 'jr.', 'jr'}
 
 # Optional, but helps exclude higher level positions
 exclude = {'senior', 'principal', 'sr.', 'sr', 'ii', 'iii'}
