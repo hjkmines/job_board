@@ -21,6 +21,12 @@ export default function JobCard({ job }) {
 
   const [applied, setApplied] =useState(false)
 
+  const titleCase = (s) => {
+    if (s ==='Any (new grads ok)') return 'Any (New Grads Ok)' 
+    return s.toLowerCase().split(' ').map(function(word) {
+      return (word.charAt(0).toUpperCase() + word.slice(1));
+    }).join(' ');
+  }
 
   const toDateString = (dateISO) => {
     const date = new Date(dateISO)
@@ -38,9 +44,16 @@ export default function JobCard({ job }) {
         return job.city
       }
 
-    } else if (job.source === 'greenhouse' || job.source === 'lever')  {
+    } else if (['greenhouse','lever', 'yc'].includes(job.source))  {
       if (job.location) {
-        return job.location
+        if (typeof(job.location) === 'object'){
+
+          const locations = job.location.join(', ')
+          return locations
+        } else {
+          return job.location
+        }
+
       }
     }
   }
@@ -53,6 +66,7 @@ export default function JobCard({ job }) {
               <MDBCardSubTitle className='fw-bold'>{job.company}</MDBCardSubTitle>
               <MDBCardSubTitle> {getLocation(job)}</MDBCardSubTitle>
               <MDBCardSubTitle>Date Posted: {toDateString(job.date)}</MDBCardSubTitle>
+              {job.experience && <MDBCardSubTitle>Experience: {titleCase(job.experience)}</MDBCardSubTitle>}
               {/* <MDBCardSubTitle>Date Posted: {job.date}</MDBCardSubTitle> */}
               {/* <MDBCardSubTitle>{job.source}</MDBCardSubTitle> */}
               {job.description && <MDBCardText className="mt-2 job-text">

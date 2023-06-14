@@ -18,6 +18,9 @@ const JobSchema = new Schema({
     location: {
         type: String,
     },
+    source: {
+        type: String,
+    },
     date: {
         type: Date
     },

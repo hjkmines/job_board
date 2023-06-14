@@ -23,12 +23,12 @@ indeed_data = scraper.scrape_indeed(pages=10)
 greenhouse_companies_file = 'greenhouse_companies.csv'
 lever_companies_file = 'lever_companies.csv'
 
-roles = {'developer', 'engineer', 'data', 'analyst', 'scientist', 'frontend', 'software',
+roles = {'developer', 'engineer', 'developers', 'engineers',  'data', 'analyst', 'scientist', 'frontend', 'software',
          'apprentice', 'apprenticeship', 'front-end', 'backend', 'back-end', 'fellowship'}
 
 # Includes 'software' for titles that are just 'software engineer', etc.
 levels = {'junior', 'entry-level', 'grad', 'graduate', 'apprentice', 'web',
-          'apprenticeship','fellowship', 'software', 'entry', 'intern', 'i', '1', 'associate', 'jr.', 'jr'}
+          'apprenticeship','fellowship', 'software', 'entry', 'intern', 'i', '1', 'associate', 'jr.', 'jr', 'cloud'}
 
 # Optional, but helps exclude higher level positions
 exclude = {'senior', 'principal', 'sr.', 'sr', 'ii', 'iii'}
@@ -43,6 +43,8 @@ greenhouse_data = scraper.scrape_greenhouse(
 print('Scraping Lever...')
 lever_data = scraper.scrape_lever(lever_companies_file, criteria)
 
+print('Scraping YC')
+yc_data = scraper.scrape_yc()
 MONGO_URL = dotenv_values('config/config.env').get('MONGO_URL')
 client = pymongo.MongoClient(MONGO_URL)
 db = client["test"]
@@ -62,6 +64,7 @@ jobs_coll.insert_many(indeed_data)
 jobs_coll.insert_many(dice_data)
 jobs_coll.insert_many(greenhouse_data)
 jobs_coll.insert_many(lever_data)
+jobs_coll.insert_many(yc_data)
 
 print('Clean up')
 cleaning.delete_dups()
