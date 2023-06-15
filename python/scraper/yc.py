@@ -137,8 +137,8 @@ def scrape_yc():
                     
                     if job_dict.get('jobLocationType') == "TELECOMMUTE":
                         remote = True
-                        job_locations.append(
-                            f"Remote {job_dict.get('applicantLocationRequirements').get('name')}")
+                        remoteLocation = job_dict.get('applicantLocationRequirements').get('name')
+                        job_locations.append(f"Remote {remoteLocation}") if remoteLocation else job_locations.append("Remote")
                     else:
                         remote = False
         
