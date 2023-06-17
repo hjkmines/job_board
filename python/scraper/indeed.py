@@ -1,15 +1,15 @@
-
-# imports
 from bs4 import BeautifulSoup
-import pandas as pd
+
 from time import sleep
 import undetected_chromedriver as uc
 from urllib.parse import urlencode, urljoin
 import json
 from datetime import datetime
+from datetime import timezone
 import requests
 from time import sleep
 import re
+
 
 def scrape_indeed(query="junior software developer", pages=1, wait=5):
     home = 'https://www.indeed.com'
@@ -26,8 +26,9 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
     states = []
     countries = []
     zips = []
-    points=[]
+    points = []
     dates = []
+    raw_dates = []
     mins = []
     maxes = []
     types = []
@@ -39,9 +40,9 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
         coordinates = [float(data.get('lon')), float(data.get('lat'))]
         sleep(0.5)
         if coordinates:
-             return {'type': 'MultiPoint', 'coordinates': [coordinates]}
+            return {'type': 'MultiPoint', 'coordinates': [coordinates]}
         return None
-    
+
     # web driver setup
     driver = uc.Chrome()
 
@@ -75,17 +76,7 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                 cup = BeautifulSoup(html, 'html.parser')
             except:
                 cup = None
-            
-        
-            try:
-                driver.get(link)
-                sleep(wait)
-                html = driver.page_source
-                cup = BeautifulSoup(html, 'html.parser')
-            except:
-                cup = None
-            
-        
+
             try:
                 description = cup.find('div', id='jobDescriptionText')
                 descriptions.append(description.text.lstrip())
@@ -97,21 +88,15 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                     'script', attrs={'type': "application/ld+json"})
                 job_json = json.loads(str(job_script.contents[0]))
                 try:
-                    date_posted = str(datetime.strptime(job_json['datePosted'], '%a, %d %b %Y %H:%M:%S %Z').isoformat())
+                    raw_dates.append(job_json['datePosted'])
+                    date_posted = datetime.strptime(job_json['datePosted'], '%Y-%m-%dT%H:%M:%SZ')
+
                     dates.append(date_posted)
 
                 except:
                     dates.append(job_json['datePosted'])
-                
-                try:
-                    date_posted = str(datetime.strptime(job_json['datePosted'], '%a, %d %b %Y %H:%M:%S %Z').isoformat())
-                    dates.append(date_posted)
 
-                except:
-                    dates.append(job_json['datePosted'])
-                
             except:
-                dates.append(None)
                 dates.append(None)
 
             try:
@@ -124,7 +109,8 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                 states.append(address.get('addressRegion1'))
                 zips.append(address.get('postalCode'))
                 countries.append(address.get('addressCountry'))
-                points.append(get_location(f"{address.get('addressLocality')}, {address.get('addressRegion1')}, {address.get('addressCountry')}"))
+                points.append(get_location(
+                    f"{address.get('addressLocality')}, {address.get('addressRegion1')}, {address.get('addressCountry')}"))
 
             except:
                 cities.append(None)
@@ -143,26 +129,41 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                 types.append(None)
 
     driver.close()
-    
-    driver.close()
-    
-    df = pd.DataFrame()
-    df['title'] = titles
-    df['title'] = titles
-    df['company'] = companies
-    df['link'] = links
-    df['description'] = descriptions
-    df['date'] = dates
-    df['date'] = dates
-    df['min_salary'] = mins
-    df['max_salary'] = maxes
-    df['salary_type'] = types
-    df['city'] = cities
-    df['state'] = states
-    df['country'] = countries
-    df['points'] = points
-    df['remote'] = remote
-    df['source'] = 'indeed'
 
+    # df = pd.DataFrame()
+    # df['title'] = titles
+    # df['company'] = companies
+    # df['link'] = links
+    # df['description'] = descriptions
+    # df['date'] = dates
+    # df['raw_date'] = raw_dates
+    # df['min_salary'] = mins
+    # df['max_salary'] = maxes
+    # df['salary_type'] = types
+    # df['city'] = cities
+    # df['state'] = states
+    # df['country'] = countries
+    # df['points'] = points
+    # df['remote'] = remote
+    # df['source'] = 'indeed'
+    data = []
 
-    return df
+    for i in range(len(titles)):
+
+        job_data = {'title': titles[i],
+                    'company': companies[i],
+                    'link': links[i],
+                    'description': descriptions[i],
+                    'date': dates[i],
+                    'raw_date': raw_dates[i],
+                    'city': cities[i],
+                    'state': states[i],
+                    'country': countries[i],
+                    'points': points[i],
+                    'remote': remote[i],
+                    'source': 'indeed',
+                    }
+
+        data.append(job_data)
+
+    return data

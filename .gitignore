@@ -4,14 +4,6 @@
 # env
 *.env
 
-# Python
-*/.venv
-*/.venv
-python/output
-*.pyc
-**__pycache__/
-*notebooks/
-*logs/
 # Misc
 .vscode/
 .DS_Store

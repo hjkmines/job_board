@@ -24,10 +24,9 @@ export default function JobCard({ job }) {
         return job.city + ', ' + job.state
       }
 
-      if (!job.city) {
-        return null
+      if (job.city) {
+        return job.city
       }
-      return job.city
 
     } else if (job.source === 'greenhouse' || job.source === 'lever')  {
       if (job.location) {
@@ -46,10 +45,11 @@ export default function JobCard({ job }) {
               <MDBCardSubTitle className='fw-bold'>{job.company}</MDBCardSubTitle>
               <MDBCardSubTitle> {getLocation(job)}</MDBCardSubTitle>
               <MDBCardSubTitle>Date Posted: {toDateString(job.date)}</MDBCardSubTitle>
+              <MDBCardSubTitle>Date Posted: {job.date}</MDBCardSubTitle>
               <MDBCardSubTitle>{job.source}</MDBCardSubTitle>
-              <MDBCardText className="mt-2 job-text ">
+              {job.description && <MDBCardText className="mt-2 job-text ">
                 {job.description.slice(0, 500)}
-              </MDBCardText>
+              </MDBCardText>}
               <MDBBtn href={job.link} target='_blank' rounded className="shadow-none apply-btn">
                 Apply
               </MDBBtn>
@@ -60,6 +60,4 @@ export default function JobCard({ job }) {
     </MDBContainer>
   );
 }
-
-
 
