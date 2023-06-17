@@ -1,7 +1,4 @@
-
-# imports
 from bs4 import BeautifulSoup
-import pandas as pd
 from time import sleep
 import requests
 import undetected_chromedriver as uc
@@ -9,9 +6,13 @@ from urllib.parse import urljoin, urlencode
 import re
 import json
 from datetime import datetime
-from datetime import datetime
+
 
 def scrape_dice(query="junior software developer", pages=1, wait=5):
+
+    with open('./zipUS.json', 'r') as f:
+        zip_coords = json.load(f)
+
     base = 'https://www.dice.com/jobs/'
     params = {}
     params['q'] = query
@@ -25,8 +26,9 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
     states = []
     countries = []
     zips = []
-    points =[]
+    points = []
     dates = []
+    raw_dates = []
     descriptions = []
 
     def scrap_template1(cup):
@@ -62,22 +64,27 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
             cities.append(job_json['jobCity'])
             states.append(job_json['jobRegion'])
             countries.append(job_json['jobCountry'])
+            zip_code = job_json.get('jobPostalCode')
             zips.append(job_json['jobPostalCode'])
             dates.append(job_json['datePosted'])
+            raw_dates.append(job_json['datePosted'])
             remote.append(job_json['remote'])
 
-            if job_json['postalCode']:
-                points.append(get_location(job_json['jobPostalCode']))
+            if zip_code:
+                coordinates = [float(zip_coords[str(zip_code)]
+                               ['LONG']), float(zip_coords[str(zip_code)]['LAT'])]
+                points.append(
+                    {'type': 'MultiPoint', 'coordinates': [coordinates]})
             else:
                 points.append(None)
-            
 
         except:
             dates.append(None)
+            raw_dates.append(None)
             cities.append(None)
             states.append(None)
             zips.append(None)
-            points.append({'type': 'MultiPoint', 'coordinates': [[0,0]]})
+            points.append(None)
             countries.append(None)
             remote.append(None)
 
@@ -103,21 +110,30 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
             firstkey = list(jobdata.keys())[0]
             locationdetail = jobdata[firstkey]['data']['locationDetail']
             locationdata = locationdetail['locations'][0]
-            dateposted = datetime.strptime(jobdata[firstkey]['data']['datePosted'], "%Y-%m-%dT%H:%M:%S.000Z").isoformat()
+            dateposted = jobdata[firstkey]['data']['datePosted']
+            dateposted = datetime.fromisoformat(dateposted)
             dates.append(dateposted)
+
+            raw_dates.append(jobdata[firstkey]['data']['datePosted'])
             remote_status = locationdetail['remote']
             remote.append(remote_status)
             cities.append(locationdata['city'])
             countries.append(locationdata['country'])
             states.append(locationdata['state'])
+            zip_code = locationdata.get('postalCode')
             zips.append(locationdata['postalCode'])
 
-            if locationdata['postalCode']:
-                points.append(get_location(locationdata['postalCode']))
+            if zip_code:
+                coordinates = [zip_coords[str(zip_code)]
+                               ['LONG'], zip_coords[str(zip_code)]['LAT']]
+                points.append(
+                    {'type': 'MultiPoint', 'coordinates': [coordinates]})
             else:
                 points.append(None)
+                
         except:
             dates.append(None)
+            raw_dates.append(None)
             cities.append(None)
             states.append(None)
             zips.append(None)
@@ -126,14 +142,17 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
             countries.append(None)
 
     def get_location(zip: str):
-        res = requests.get(f'https://geocode.maps.co/search?q={zip}')
+        try:
+            res = requests.get(f'https://geocode.maps.co/search?q={zip},USA')
+            sleep(0.55)
+        except:
+            return None
         data = res.json()[0]
         coordinates = [float(data.get('lon')), float(data.get('lat'))]
-        sleep(0.5)
         if coordinates:
-             return {'type': 'MultiPoint', 'coordinates': [coordinates]}
+            return {'type': 'MultiPoint', 'coordinates': [coordinates]}
         return None
-    
+
     def scrap_job(joblink):
         res = requests.get(joblink)
         cup = BeautifulSoup(res.text, 'html.parser')
@@ -160,25 +179,45 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
         titles += job_titles
         links += job_links
 
-
-
     for link in links:
         scrap_job(link)
 
-    driver.close()
+    #driver.close()
 
-    df = pd.DataFrame()
-    df['title'] = titles
-    df['company'] = companies
-    df['link'] = links
-    df['description'] = descriptions
-    df['date'] = dates
-    df['country'] = countries
-    df['state'] = states
-    df['city'] = cities
-    df['zip'] = zips
-    df['remote'] = remote
-    df['points'] = points
-    df['source'] = 'dice'
+    # df = pd.DataFrame()
+    # df['title'] = titles
+    # df['company'] = companies
+    # df['link'] = links
+    # df['description'] = descriptions
+    # df['date'] = dates
+    # df['raw_date'] = raw_dates
+    # df['country'] = countries
+    # df['state'] = states
+    # df['city'] = cities
+    # df['zip'] = zips
+    # df['remote'] = remote
+    # df['points'] = points
+    # df['source'] = 'dice'
 
-    return df
+    data = []
+
+    for i in range(len(titles)):
+        if descriptions[i]:
+            job_data = {'title': titles[i],
+                        'company': companies[i],
+                        'link': links[i],
+                        'description': descriptions[i],
+                        'date': dates[i],
+                        'raw_date': raw_dates[i],
+                        'city': cities[i],
+                        'state': states[i],
+                        'country': countries[i],
+                        'zip': zips[i],
+                        'points': points[i],
+                        'remote': remote[i],
+                        'source': 'dice',
+                        }
+
+            data.append(job_data)
+
+    return data

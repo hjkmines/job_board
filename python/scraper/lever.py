@@ -1,5 +1,3 @@
-
-import pandas as pd
 import requests
 import json
 import datetime
@@ -34,15 +32,19 @@ def scrape_lever(companies_file: str, criteria: dict):
         locations = locations.split('or')
         for location in locations:
 
-            res = requests.get(
-                f'https://geocode.maps.co/search?q={location.strip()}')
+            try:
+                res = requests.get(
+                    f'https://geocode.maps.co/search?q={location}')
+                sleep(0.55)
+            except:
+                    continue
             try:
                 data = res.json()[0]
             except:
                 continue
+
             coordinates = [float(data.get('lon')), float(data.get('lat'))]
             points.append(coordinates)
-            sleep(0.5)
         if points:
             return {'type': 'MultiPoint', 'coordinates': points}
 
@@ -57,8 +59,11 @@ def scrape_lever(companies_file: str, criteria: dict):
         results = []
 
         for token in tokens:
-            res = requests.get(
-                f'https://jobs.lever.co/v0/postings/{token}?mode=json')
+            try:
+                res = requests.get(
+                    f'https://jobs.lever.co/v0/postings/{token}?mode=json')
+            except:
+                res = None
             if res:
                 jobs = json.loads(res.text)
 
@@ -70,7 +75,7 @@ def scrape_lever(companies_file: str, criteria: dict):
                 if title.intersection(roles) and title.intersection(levels) and not title.intersection(exclude):
                     job_info = {'title': job.get('text'), 'company': company, 'description': job.get('descriptionPlain'),
                                 'link': job.get('applyUrl')[:-5], 'remote': True if job.get('workplaceType').lower() == 'remote' else False, 'location': job.get('categories').get('location'),
-                                'date': datetime.datetime.fromtimestamp(int(str(job.get('createdAt'))[:-3])).isoformat()}
+                                'date': datetime.datetime.fromtimestamp(int(job.get('createdAt'))//1000), 'rawDate': job.get('createdAt'), 'source': 'lever'}
 
                     if job_info.get('location'):
                         job_info['points'] = get_location(
@@ -78,12 +83,9 @@ def scrape_lever(companies_file: str, criteria: dict):
 
                     results.append(job_info)
 
-        df = pd.DataFrame()
-        df = df.from_records(results)
-        return df
+        return results
 
     companies_clean = get_companies(companies_file)
-    df = get_jobs(companies_clean, criteria)
-    df['source'] = 'lever'
+    data = get_jobs(companies_clean, criteria)
 
-    return df
+    return data

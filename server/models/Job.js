@@ -18,20 +18,14 @@ const JobSchema = new Schema({
     location: {
         type: String,
     },
-    date_posted: {
-        type: String
+    source: {
+        type: String,
+    },
+    date: {
+        type: Date
     },
     remote: {
         type: Boolean
-    },
-    min_salary: {
-        type: Number
-    },
-    max_salary: {
-        type: Number
-    },
-    salary_type: {
-        type: String
     }
 
 }, {

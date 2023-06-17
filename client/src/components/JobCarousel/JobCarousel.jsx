@@ -1,117 +1,93 @@
-import React from "react";
-import Carousel from "react-multi-carousel";
+import React, { useState } from "react";
 import JobCard from "../JobCard/JobCard";
+
 import "./JobCarousel.css";
-import "react-multi-carousel/lib/styles.css";
+import { useSpringCarousel } from 'react-spring-carousel'
 
-const responsive = {
-    superLargeDesktop: {
-        // the naming can be any, depends on you.
-        breakpoint: { max: 4000, min: 3000 },
-        items: 5
-    },
-    desktop: {
-        breakpoint: { max: 3000, min: 1024 },
-        items: 3
-    },
-    tablet: {
-        breakpoint: { max: 1024, min: 464 },
-        items: 2
-    },
-    mobile: {
-        breakpoint: { max: 464, min: 0 },
-        items: 1
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+
+import useBreakpoints from '../../hooks/useBreakpoints'
+
+function JobCarousel({ jobs }) {
+
+
+  const [activeItem, setActiveItem] = useState(0)
+
+  const groupSizes = {
+    'xs': 1,
+    'sm': 1,
+    'md': 2,
+    'lg': 2,
+    'xl': 3,
+  }
+  const breakpoint = useBreakpoints()
+ 
+  const groupSize = groupSizes[breakpoint.active]
+
+  const {
+    carouselFragment,
+    useListenToCustomEvent,
+    slideToItem,
+    slideToNextItem,
+    slideToPrevItem
+  } = useSpringCarousel({
+    itemsPerSlide: groupSize,
+    items: jobs.map((job, index) => ({
+      id: index,
+      renderItem: (
+        <JobCard key={job._id} job={job} />
+      )
+    })),
+  });
+  useListenToCustomEvent((event) => {
+    if (event.eventName === "onSlideStartChange") {
+      setActiveItem(event.nextItem.id)
     }
-};
+  });
 
-class JobCarousel extends React.Component {
-    state = { additionalTransfrom: 0 };
-    render() {
-        const { deviceType } = this.props;
-        const CustomSlider = ({ carouselState }) => {
-            let value = 0;
-            let carouselItemWidth = 0;
-            if (this.Carousel) {
-                carouselItemWidth = this.Carousel.state.itemWidth;
-                const maxTranslateX = Math.round(
-                    // so that we don't over-slide
-                    carouselItemWidth *
-                    (this.Carousel.state.totalItems -
-                        this.Carousel.state.slidesToShow) +
-                    150
-                );
-                value = maxTranslateX / 100; // calculate the unit of transform for the slider
-            }
-            const { transform, currentSlide } = carouselState;
-            return (
-                <div className="custom-slider">
-                    <input
-                        type="range"
-                        value={Math.round(Math.abs(transform) / value)}
-                        max={
-                            (carouselItemWidth *
-                                (carouselState.totalItems - carouselState.slidesToShow) +
-                                (this.state.additionalTransfrom === 150 ? 0 : 150)) /
-                            value
-                        }
-                        onChange={e => {
-                            if (this.Carousel.isAnimationAllowed) {
-                                this.Carousel.isAnimationAllowed = false;
-                            }
-                            const nextTransform = e.target.value * value;
-                            const nextSlide = Math.round(nextTransform / carouselItemWidth);
-                            if (
-                                e.target.value == 0 &&
-                                this.state.additionalTransfrom === 150
-                            ) {
-                                this.Carousel.isAnimationAllowed = true;
-                                this.setState({ additionalTransfrom: 0 });
-                            }
-                            this.Carousel.setState({
-                                transform: -nextTransform, // padding 20px and 5 items.
-                                currentSlide: nextSlide
-                            });
-                        }}
-                        className="custom-slider__input"
-                    />
-                    
-                </div>
-            );
-        };
+  const handleChange = (e) => {
+    setActiveItem(parseInt(e.target.value))
+    slideToItem(parseInt(e.target.value))
+  }
 
-        return (
-            <Carousel
-                keyBoardControl={true}
-                ssr={false}
-                ref={el => (this.Carousel = el)}
-                partialVisible={false}
-                arrows={false}
-                customButtonGroup={<CustomSlider />}
-                deviceType={this.props.deviceType}
-                itemClass="job-item"
-                itemAriaLabel="Image-aria-label"
-                responsive={responsive}
-                containerClass="carousel-container-with-scrollbar"
-                focusOnSelect={true}
-                additionalTransfrom={this.state.additionalTransfrom-50}
 
-                beforeChange={nextSlide => {
-                    if (nextSlide !== 0 && this.state.additionalTransfrom !== 150) {
-                        this.setState({ additionalTransfrom: 150 });
-                    }
-                    if (nextSlide === 0 && this.state.additionalTransfrom === 150) {
-                        this.setState({ additionalTransfrom: 0 });
-                    }
-                }}
-            >
 
-                {this.props.jobs.map(job => {
-                    return <JobCard key = {job._id} job = {job} />
-                } )}
+  return (
+    <>
+      <div className="d-flex flex-row align-items-stretch justify-content-center">
+        <button className=" d-lg-flex d-none align-items-center carousel-control " onClick={slideToPrevItem} >
+          <FontAwesomeIcon icon={faChevronLeft} className="fa-10x" />
+        </button>
+        <div className=" overflow-hidden ">
+          {carouselFragment}
 
-            </Carousel>
-        );
-    }
+        </div>
+
+        <button className=" d-lg-flex d-none align-items-center carousel-control   " onClick={slideToNextItem}>
+          <FontAwesomeIcon icon={faChevronRight} className="fa-10x  " />
+
+        </button>
+
+      </div >
+      {(jobs.length / groupSize) > 1 ?
+        <div className="slidecontainer text-center ">
+          <input
+            type="range"
+            value={activeItem}
+            id='customRange'
+            label='Example range'
+            min='0'
+            max={(jobs.length - 1) - ((jobs.length) % groupSize) - 1}
+            className="w-75"
+            onChange={(e) => handleChange(e)} />
+        </div>
+        : <></>}
+
+    </>
+
+
+  );
 }
 
 export default JobCarousel;

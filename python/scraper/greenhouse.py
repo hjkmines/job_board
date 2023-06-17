@@ -1,25 +1,25 @@
 
-import pandas as pd
+
 import requests
 import json
 import html
-from datetime import date
 import csv
 import re
 from time import sleep
+import datetime
+from datetime import date
+
 
 def scrape_greenhouse(companies_file: str, criteria: dict):
 
     # # Main Code
     # Finds jobs and outputs results as csv or excel file
-
     # Return a list of eligible jobs from a set of companies
 
     def get_companies(companies_file: str):
         with open(companies_file, 'r') as data:
             companies = {row[0]: row[1] for row in csv.reader(data)}
-            
-            
+
         companies_clean = companies
         companies_bad = {}
         tokens = set(companies.keys())
@@ -27,10 +27,8 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
             if not requests.get(f'https://boards-api.greenhouse.io/v1/boards/{token}/jobs'):
                 companies_bad[token] = companies.get(token)
                 companies_clean.pop(token)
-                companies_clean.pop(token)
 
         if companies_bad:
-            with open(f"./logs/companies_bad_greenhouse_{date.today()}.json", "w") as out:
             with open(f"./logs/companies_bad_greenhouse_{date.today()}.json", "w") as out:
                 json.dump(companies_bad, out)
 
@@ -68,35 +66,38 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
         for location in locations:
             if re.search('remote|anywhere|everywhere', location.strip().lower()):
                 continue
-            res = requests.get(f'https://geocode.maps.co/search?q={location}')
+            try:
+                res = requests.get(
+                    f'https://geocode.maps.co/search?q={location}')
+                sleep(0.55)
+            except:
+                continue
             try:
                 data = res.json()[0]
             except:
                 continue
             coordinates = [float(data.get('lon')), float(data.get('lat'))]
             points.append(coordinates)
-            sleep(0.5)
         if points:
             return {'type': 'MultiPoint', 'coordinates': points}
         return None
-    
-    def get_details(results: list) -> pd.DataFrame:
-        data = []
 
-        html_re = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
+    def get_details(results: list) -> list:
+        data = []
 
         html_re = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
 
         for job in results:
             url = f'https://boards-api.greenhouse.io/v1/boards/{job.get("token")}/jobs/{job.get("id")}'
-            res = requests.get(url)
-
+            try:
+                res = requests.get(url)
+            except:
+                res = None
             if res:
                 job_detail = json.loads(res.text)
                 job_info = {'title': job_detail.get('title'), 'company': job.get('company'), 'link': job_detail.get('absolute_url'),
-                            'description': re.sub(html_re,'',html.unescape(job_detail.get('content'))), 'date': job_detail.get('updated_at'),
-                            'description': re.sub(html_re,'',html.unescape(job_detail.get('content'))), 'date': job_detail.get('updated_at'),
-                            'remote': None, 'greenhouse_id': job.get('id'), 'greenhouse_api_url': url}
+                            'description': re.sub(html_re, '', html.unescape(job_detail.get('content'))), 'date': datetime.datetime.fromisoformat(job_detail.get('updated_at')),
+                            'remote': None, 'greenhouse_id': job.get('id'), 'greenhouse_api_url': url, 'raw_date': job_detail.get('updated_at'), 'source': 'greenhouse'}
 
                 if job_detail.get('offices'):
                     offices = job_detail.get('offices')
@@ -121,21 +122,16 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
                         job_info['remote'] = True
                     else:
                         job_info['remote'] = False
-                        
+
                     if points:
                         job_info['points'] = points
 
             data.append(job_info)
-                    
-        df = pd.DataFrame()
-        df = df.from_records(data)
 
-        return df
+        return data
     companies_clean = get_companies(companies_file)
 
     results = get_jobs(companies_clean, criteria)
-    df = get_details(results)
-    df['source'] = 'greenhouse'
-    df['source'] = 'greenhouse'
+    data = get_details(results)
 
-    return df
+    return data
