@@ -9,9 +9,9 @@ import json
 import re
 
 
-driver = uc.Chrome()
 
 def scrape_yc():
+    driver = uc.Chrome()
     def get_companies():
         
         driver.get('https://www.ycombinator.com/companies?isHiring=true')

@@ -43,8 +43,9 @@ greenhouse_data = scraper.scrape_greenhouse(
 print('Scraping Lever...')
 lever_data = scraper.scrape_lever(lever_companies_file, criteria)
 
-print('Scraping YC')
+print('Scraping YC...')
 yc_data = scraper.scrape_yc()
+
 MONGO_URL = dotenv_values('config/config.env').get('MONGO_URL')
 client = pymongo.MongoClient(MONGO_URL)
 db = client["test"]
