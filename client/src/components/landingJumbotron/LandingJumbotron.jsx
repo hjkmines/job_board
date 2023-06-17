@@ -1,14 +1,10 @@
-// styles - react & other assets  //
 import  "./LandingJumbotron.css";
-import React from 'react';
-// import JobBoardBG from "../../assets/job_board_bg.svg";
 
-//  MDB  //
 import {
   MDBContainer,
   MDBBtn
 } from 'mdb-react-ui-kit';
-import Navbar from "../Navbar/Navbar.jsx";
+
 function LandingJumbotron() {
 
   return (

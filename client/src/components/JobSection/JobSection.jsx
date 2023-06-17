@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
     MDBContainer,
     MDBTypography,
@@ -9,9 +10,11 @@ import "./JobSection.css";
 import JobCarousel from '../JobCarousel/JobCarousel';
 import axios from 'axios';
 import LoadingDots from '../LoadingDots/LoadingDots';
+import LoadingDots from '../LoadingDots/LoadingDots';
 
 const JobSection = ({ sectionTitle, query }) => {
     const [jobs, setJobs] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
@@ -30,20 +33,20 @@ const JobSection = ({ sectionTitle, query }) => {
                 setIsLoading(false)
             })
         }
-    }, []);
+    }, [query]);
 
     return (
-        <MDBContainer className='mb-4'>
+        <MDBContainer fluid className='px-lg-5 px-2 mb-2'>
 
-            <MDBTypography tag='h2' className='pt-3 section-header'>
+            <MDBTypography tag='h2' className='px-lg-5 px-2 section-header'>
                 {sectionTitle}
             </MDBTypography>
 
             {isLoading ?
-                <div className='d-flex fluid m-2 overflow-hidden p-2  text-center justify-content-center '>
-                    <LoadingDots className='m-4' />
+                <div className='d-flex fluid  text-center justify-content-center  '>
+                    <LoadingDots className='m-5 p-5'/>
                 </div>
-                : <MDBContainer fluid className='m-2 overflow-hidden p-2 '>
+                : <MDBContainer fluid className=' mt-2 '>
                     <JobCarousel jobs={jobs} />
                 </MDBContainer>}
 

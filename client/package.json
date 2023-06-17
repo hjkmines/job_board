@@ -21,9 +21,6 @@
     "mdb-react-ui-kit": "^5.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.44.2",
-    "react-multi-carousel": "^2.8.2",
-    "react-select": "^5.7.0",
     "react-spring-carousel": "^2.0.19"
   },
   "devDependencies": {

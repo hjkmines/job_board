@@ -1,240 +1,224 @@
-const axios = require('axios')
-const Job = require('../models/Job');
+const axios = require("axios");
+const Job = require("../models/Job");
 const zips = require("../utils/zipUS.json");
 
 const getJobs = async (req, res, next) => {
-<<<<<<< HEAD
-console.log('query')
-console.log(req.params.query)
+  console.log("query");
+  console.log(req.query);
   try {
-=======
-  
-  try {
-    console.log(req.query)
-    
->>>>>>> c826d1ea89a8467b42e0d458acaee3b9bbb0c51a
     if (req.query.latest) {
-      console.log('latest jobs')
+      console.log("latest jobs");
       const today = new Date();
       const yesterday = new Date(today);
-      yesterday.setDate(yesterday.getDate() - 1)
-      yesterday.setHours(0)
-      yesterday.setMinutes(0)
-      yesterday.setSeconds(0)
-      yesterday.setMilliseconds(0)
+      yesterday.setDate(yesterday.getDate() - 2);
+      yesterday.setUTCHours(0, 0, 0, 0);
 
-      const jobs = await Job.find({ 'date': { $gte: yesterday } }).sort({ 'date': -1 }).lean();
+      console.log("Getting jobs since", yesterday);
+      const jobs = await Job.find({ date: { $gte: yesterday } })
+        .sort({ date: -1 })
+        .lean();
 
-<<<<<<< HEAD
-=======
-      const today = new Date();
-      const yesterday = new Date(today);
-      yesterday.setDate(yesterday.getDate() - 1)
-      yesterday.setHours(0)
-      yesterday.setMinutes(0)
-      yesterday.setSeconds(0)
-      yesterday.setMilliseconds(0)
-     
-      const jobs = await Job.find({ date: { $gte: yesterday, $lte: today }}).sort({ date: -1 }).lean();
-
->>>>>>> c826d1ea89a8467b42e0d458acaee3b9bbb0c51a
       return res
         .status(200)
-        .setHeader('Content-Type', 'application/json')
-        .json(jobs)
+        .setHeader("Content-Type", "application/json")
+        .json(jobs);
 
-<<<<<<< HEAD
+    } else if (req.query.startups) {
+      console.log("startup jobs");
+      const today = new Date();
+      const lastMonth = new Date(today);
+      lastMonth.setDate(lastMonth.getDate() - 30);
+      lastMonth.setUTCHours(0, 0, 0, 0);
+
+      console.log("Getting startup jobs since", lastMonth);
+      const jobs = await Job.find({ source: 'yc' , date: { $gte: lastMonth }  })
+        .sort({ date: -1 })
+        .lean();
+
+      return res
+        .status(200)
+        .setHeader("Content-Type", "application/json")
+        .json(jobs);
     } else if (req.query.remoteOnly) {
-      console.log('remoteOnly');
+      console.log("remoteOnly");
       console.log(req.query);
 
       if (req.query.search) {
-        console.log('remoteOnly + search');
-        const filter =
-          [{ '$search': {
-
-            text: {
-              query: `${req.query.search}`,
-              path: ["description", "company", "title"]
-            }
-          }
-          }, { '$match': {
-
-            'remote': true
-          }
-          }]
-
-        const jobs = await Job.aggregate(filter).sort({ "date": -1 })
-
-        return res
-          .status(200)
-          .setHeader('Content-Type', 'application/json')
-          .json(jobs)
-
-      } else {
-        console.log('remoteOnly no search');
-        const jobs = await Job.find({
-          'remote': true
-        }).sort({ "date": -1 }).lean()
-
-        return res
-          .status(200)
-          .setHeader('Content-Type', 'application/json')
-          .json(jobs)
-      }
-
-    } else if (req.query.location) {
-      console.log('search location and geo');
-      console.log(req.query);
-      const coords = []
-      // Use zip json to get coordinates for zip codes
-      if (/^[0-9]{5}(?:-[0-9]{4})?$/.test(req.query.location)){
-        coords.push(parseFloat(zips[req.query.location].LONG))
-        coords.push(parseFloat(zips[req.query.location].LAT))
-
-      } else {
-        const location = req.query.location
-
-        axios.get('https://geocode.maps.co/search', { params: { q: location } }).then((res) => {
-          coords.push(parseFloat(res.data[0].lon))
-          coords.push(parseFloat(res.data[0].lat))
-        })
-        
-        // Don't spam the geocode API
-        await new Promise(r => setTimeout(r, 550));
-      }
-
-        if (req.query.search) {
-          
-          const radiusSphere = 0.000621371 * req.query.radius / 3963.2;
-          
-          const jobs = await Job.find({
-            "$text": { "$search": `${req.query.search}` },
-            "points": {
-              "$geoWithin": {
-                "$centerSphere": [coords, radiusSphere]
-              }
-            }
-          }).sort({ "date": -1 }).lean()
-
-          return res
-            .status(200)
-            .setHeader('Content-Type', 'application/json')
-            .json(jobs)
-
-
-      } else {
-        console.log('no text search')
-        const jobs = await Job.find({
-          "points": {
-            "$near": {
-              "$geometry": {
-                "type": "Point",
-                "coordinates": coords
+        console.log("remoteOnly + search");
+        const filter = [
+          {
+            $search: {
+              text: {
+                query: `${req.query.search}`,
+                path: ["description", "company", "title"],
               },
-              "$maxDistance": parseFloat(req.query.radius),
-            }
-          }
-        }).sort({ 'date': 'desc' }).lean();
+            },
+          },
+          {
+            $match: {
+              remote: true,
+            },
+          },
+        ];
+
+        const jobs = await Job.aggregate(filter).sort({ date: -1 });
+
         return res
           .status(200)
-          .setHeader('Content-Type', 'application/json')
-          .json(jobs)
+          .setHeader("Content-Type", "application/json")
+          .json(jobs);
+      } else {
+        console.log("remoteOnly no search");
+        const jobs = await Job.find({
+          remote: true,
+        })
+          .sort({ date: -1 })
+          .lean();
+
+        return res
+          .status(200)
+          .setHeader("Content-Type", "application/json")
+          .json(jobs);
       }
-
-    }
- 
-    else if (req.query.geoLocation && !req.query.search) {
-      // Geospatial search only
-      console.log('geospatial search')
-=======
-    } else if (req.query.lat && req.query.long) {
-      
->>>>>>> c826d1ea89a8467b42e0d458acaee3b9bbb0c51a
-      const jobs = await Job.find({
-        "points": {
-          "$near": {
-            "$geometry": {
-              "type": "Point",
-              "coordinates": [parseFloat(req.query.long), parseFloat(req.query.lat)]
-            },
-            "$maxDistance": parseFloat(req.query.radius),
-          }
-        }
-      }).sort({ 'date': 'desc' }).lean();
-
-      return res
-        .status(200)
-        .setHeader('Content-Type', 'application/json')
-        .json(jobs)
-
-    }
-<<<<<<< HEAD
-
-    else if (req.query.geoLocation && req.query.search) {
-      console.log('search text and geo');
+    } else if (req.query.location) {
+      console.log("search location and geo");
       console.log(req.query);
-      const radiusSphere = 0.000621371 * req.query.radius / 3963.2;
-      const jobs = await Job.find({
-        "$text": { "$search": `${req.query.search}` },
-        "points": {
-          "$geoWithin": {
-            "$centerSphere": [[
-              parseFloat(req.query.long),
-              parseFloat(req.query.lat)
-            ], radiusSphere]
-          }
-        }
-      }).sort({ "date": -1 }).lean()
+      const coords = [];
+      // Use zip json to get coordinates for zip codes
+      if (/^[0-9]{5}(?:-[0-9]{4})?$/.test(req.query.location)) {
+        coords.push(parseFloat(zips[req.query.location].LONG));
+        coords.push(parseFloat(zips[req.query.location].LAT));
+      } else {
+        const location = req.query.location;
 
-      return res
-        .status(200)
-        .setHeader('Content-Type', 'application/json')
-        .json(jobs)
+        axios
+          .get("https://geocode.maps.co/search", { params: { q: location } })
+          .then((res) => {
+            coords.push(parseFloat(res.data[0].lon));
+            coords.push(parseFloat(res.data[0].lat));
+          });
 
-    }
-
-    else if (req.query.search) {
-      console.log('atlas search')
-      console.log(req.query.search)
-      const filter = {
-        "$search": {
-          "text": {
-            "query": `${req.query.search}`,
-            "path": ["description", "company", "title"],
-          },
-        }
+        // Don't spam the geocode API
+        await new Promise((r) => setTimeout(r, 550));
       }
 
-      const jobs = await Job.aggregate([filter]).sort({ "date": -1 })
+      if (req.query.search) {
+        const radiusSphere = (0.000621371 * req.query.radius) / 3963.2;
+
+        const jobs = await Job.find({
+          $text: { $search: `${req.query.search}` },
+          points: {
+            $geoWithin: {
+              $centerSphere: [coords, radiusSphere],
+            },
+          },
+        })
+          .sort({ date: -1 })
+          .lean();
+
+        return res
+          .status(200)
+          .setHeader("Content-Type", "application/json")
+          .json(jobs);
+      } else {
+        console.log("no text search");
+        const jobs = await Job.find({
+          points: {
+            $near: {
+              $geometry: {
+                type: "Point",
+                coordinates: coords,
+              },
+              $maxDistance: parseFloat(req.query.radius),
+            },
+          },
+        })
+          .sort({ date: "desc" })
+          .lean();
+        return res
+          .status(200)
+          .setHeader("Content-Type", "application/json")
+          .json(jobs);
+      }
+    } else if (req.query.geoLocation) {
+      if (req.query.geoLocation && req.query.search) {
+        console.log("search text and geo");
+        console.log(req.query);
+        const radiusSphere = (0.000621371 * req.query.radius) / 3963.2;
+        const jobs = await Job.find({
+          $text: { $search: `${req.query.search}` },
+          points: {
+            $geoWithin: {
+              $centerSphere: [
+                [parseFloat(req.query.long), parseFloat(req.query.lat)],
+                radiusSphere,
+              ],
+            },
+          },
+        })
+          .sort({ date: -1 })
+          .lean();
+
+        return res
+          .status(200)
+          .setHeader("Content-Type", "application/json")
+          .json(jobs);
+      }
+      // Geospatial search only
+      console.log("geospatial search");
+      const jobs = await Job.find({
+        points: {
+          $near: {
+            $geometry: {
+              type: "Point",
+              coordinates: [
+                parseFloat(req.query.long),
+                parseFloat(req.query.lat),
+              ],
+            },
+            $maxDistance: parseFloat(req.query.radius),
+          },
+        },
+      })
+        .sort({ date: "desc" })
+        .lean();
 
       return res
         .status(200)
-        .setHeader('Content-Type', 'application/json')
-        .json(jobs)
+        .setHeader("Content-Type", "application/json")
+        .json(jobs);
+    } else if (req.query.search) {
+      console.log("atlas search");
+      console.log(req.query.search);
+      const filter = {
+        $search: {
+          text: {
+            query: `${req.query.search}`,
+            path: ["description", "company", "title"],
+          },
+        },
+      };
 
-    }
+      const jobs = await Job.aggregate([filter]).sort({ date: -1 });
 
-    else {
-      const jobs = await Job.find().sort({ 'date': -1 }).limit(req.query.limit).lean();
-=======
-
-    else {
-      const jobs = await Job.find().sort({ 'date': 'desc' }).limit(req.query.limit).lean();
->>>>>>> c826d1ea89a8467b42e0d458acaee3b9bbb0c51a
       return res
         .status(200)
-        .setHeader('Content-Type', 'application/json')
-        .json(jobs)
+        .setHeader("Content-Type", "application/json")
+        .json(jobs);
+    } else {
+      console.log("default");
+      const jobs = await Job.find().sort({ date: -1 }).limit(50).lean();
+      return res
+        .status(200)
+        .setHeader("Content-Type", "application/json")
+        .json(jobs);
     }
-
-
   } catch (err) {
-    console.log('Error getting jobs');
+    console.log("Error getting jobs");
     res.status(501).send(`Can't get job data, ${err.message}`);
     next(err);
   }
-}
+};
 
 const getJob = async (req, res, next) => {
   try {
@@ -242,11 +226,12 @@ const getJob = async (req, res, next) => {
     res.status(200).setHeader("Content-type", "application/json").json(job);
   } catch (err) {
     res.status(501).send(`Can't get job data, ${err.message}`);
+    res.status(501).send(`Can't get job data, ${err.message}`);
     next(err);
   }
 };
 
 module.exports = {
   getJobs,
-  getJob
-}
+  getJob,
+};

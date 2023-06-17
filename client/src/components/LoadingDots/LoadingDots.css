@@ -90,3 +90,51 @@
       transform: scale(1, 1);
     }
   }
+
+
+  .dot-flashing {
+    position: relative;
+    width: 2em;
+    height: 2em;
+    border-radius: 1em;
+    background-color: #FFB2CE;
+    color: #FFB2CE;
+    animation: dot-flashing 1s infinite linear alternate;
+    animation-delay: 0.5s;
+  }
+  .dot-flashing::before, .dot-flashing::after {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: 0;
+  }
+  .dot-flashing::before {
+    left: -2.5em;
+    width: 2em;
+    height: 2em;
+    border-radius: 1em;
+    background-color: #FFB2CE;
+    color: #FFB2CE;
+    animation: dot-flashing 1s infinite alternate;
+    animation-delay: 0s;
+  }
+  .dot-flashing::after {
+    left: 2.5em;
+    width: 2em;
+    height: 2em;
+    border-radius: 1em;
+    background-color: #FFB2CE;
+    color: #FFB2CE;
+    animation: dot-flashing 1s infinite alternate;
+    animation-delay: 1s;
+  }
+  
+  @keyframes dot-flashing {
+    0% {
+      background-color: #FFB2CE;
+    }
+    50%, 100% {
+      background-color: rgba(255,178,206,0.3);
+    }
+  }
+  

@@ -5,14 +5,14 @@
 *.env
 
 # Python
-*.venv/
-python/output
+*/.venv
+*/output
 *.pyc
-*__pycache__/
+**__pycache__/
 *.ipynb
-
-*logs/
 *notebooks/
+*logs/
+
 # Misc
 .vscode/
 .DS_Store

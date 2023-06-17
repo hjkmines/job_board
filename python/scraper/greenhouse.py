@@ -7,11 +7,7 @@ import csv
 import re
 from time import sleep
 import datetime
-<<<<<<< HEAD
 from datetime import date
-=======
-from datetime import timezone
->>>>>>> c826d1ea89a8467b42e0d458acaee3b9bbb0c51a
 
 
 def scrape_greenhouse(companies_file: str, criteria: dict):
