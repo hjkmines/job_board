@@ -12,11 +12,11 @@ if not os.path.exists(f'./output/{today}'):
 
 # Web scrapers
 print('Scraping Dice...')
-dice_data = scraper.scrape_dice(pages=1)
+dice_data = scraper.scrape_dice(pages=10)
 
 
 print('Scraping Indeed...')
-indeed_data = scraper.scrape_indeed(pages=1)
+indeed_data = scraper.scrape_indeed(pages=10)
 
 # Company lists
 greenhouse_companies_file = 'greenhouse_companies.csv'
@@ -30,7 +30,7 @@ levels = {'junior', 'entry-level', 'grad', 'graduate', 'apprentice', 'web',
           'apprenticeship', 'software', 'entry', 'intern', 'i', '1', 'associate', 'jr.', 'jr'}
 
 # Optional, but helps exclude higher level positions
-exclude = {'senior', 'principal', 'sr.', 'ii', 'iii'}
+exclude = {'senior', 'principal', 'sr.', 'sr', 'ii', 'iii'}
 
 criteria = {'roles': roles, 'levels': levels, 'exclude': exclude}
 
@@ -48,8 +48,8 @@ db = client["test"]
 
 jobs_coll = db['jobs_test']
 
-jobs_coll.drop()
-jobs_coll = db['jobs_test']
+# jobs_coll.drop()
+# jobs_coll = db['jobs_test']
 
 print('Inserting documents...')
 jobs_coll.insert_many(indeed_data)

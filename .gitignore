@@ -4,7 +4,17 @@
 # env
 *.env
 
+# Python
+*.venv/
+python/output
+*.pyc
+*__pycache__/
+*.ipynb
+
+*logs/
+*notebooks/
 # Misc
 .vscode/
 .DS_Store
  
+*.bat

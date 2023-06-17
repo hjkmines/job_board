@@ -32,15 +32,19 @@ def scrape_lever(companies_file: str, criteria: dict):
         locations = locations.split('or')
         for location in locations:
 
-            res = requests.get(
-                f'https://geocode.maps.co/search?q={location.strip()}')
+            try:
+                res = requests.get(
+                    f'https://geocode.maps.co/search?q={location}')
+                sleep(0.55)
+            except:
+                    continue
             try:
                 data = res.json()[0]
             except:
                 continue
+
             coordinates = [float(data.get('lon')), float(data.get('lat'))]
             points.append(coordinates)
-            sleep(0.5)
         if points:
             return {'type': 'MultiPoint', 'coordinates': points}
 
@@ -55,8 +59,11 @@ def scrape_lever(companies_file: str, criteria: dict):
         results = []
 
         for token in tokens:
-            res = requests.get(
-                f'https://jobs.lever.co/v0/postings/{token}?mode=json')
+            try:
+                res = requests.get(
+                    f'https://jobs.lever.co/v0/postings/{token}?mode=json')
+            except:
+                res = None
             if res:
                 jobs = json.loads(res.text)
 

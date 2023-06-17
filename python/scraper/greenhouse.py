@@ -7,14 +7,17 @@ import csv
 import re
 from time import sleep
 import datetime
+<<<<<<< HEAD
+from datetime import date
+=======
 from datetime import timezone
+>>>>>>> c826d1ea89a8467b42e0d458acaee3b9bbb0c51a
 
 
 def scrape_greenhouse(companies_file: str, criteria: dict):
 
     # # Main Code
     # Finds jobs and outputs results as csv or excel file
-
     # Return a list of eligible jobs from a set of companies
 
     def get_companies(companies_file: str):
@@ -67,14 +70,18 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
         for location in locations:
             if re.search('remote|anywhere|everywhere', location.strip().lower()):
                 continue
-            res = requests.get(f'https://geocode.maps.co/search?q={location}')
+            try:
+                res = requests.get(
+                    f'https://geocode.maps.co/search?q={location}')
+                sleep(0.55)
+            except:
+                continue
             try:
                 data = res.json()[0]
             except:
                 continue
             coordinates = [float(data.get('lon')), float(data.get('lat'))]
             points.append(coordinates)
-            sleep(0.5)
         if points:
             return {'type': 'MultiPoint', 'coordinates': points}
         return None
@@ -86,8 +93,10 @@ def scrape_greenhouse(companies_file: str, criteria: dict):
 
         for job in results:
             url = f'https://boards-api.greenhouse.io/v1/boards/{job.get("token")}/jobs/{job.get("id")}'
-            res = requests.get(url)
-
+            try:
+                res = requests.get(url)
+            except:
+                res = None
             if res:
                 job_detail = json.loads(res.text)
                 job_info = {'title': job_detail.get('title'), 'company': job.get('company'), 'link': job_detail.get('absolute_url'),

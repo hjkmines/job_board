@@ -12,6 +12,9 @@ import re
 
 
 def scrape_indeed(query="junior software developer", pages=1, wait=5):
+    with open('./zipUS.json', 'r') as f:
+        zip_coords = json.load(f)
+
     home = 'https://www.indeed.com'
     base = "https://www.indeed.com/jobs?"
     params = {}
@@ -35,10 +38,14 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
     descriptions = []
 
     def get_location(location: str):
-        res = requests.get(f'https://geocode.maps.co/search?q={location}')
+        try:
+            res = requests.get(f'https://geocode.maps.co/search?q={location}')
+            sleep(0.55)
+        except:
+            return None
+
         data = res.json()[0]
         coordinates = [float(data.get('lon')), float(data.get('lat'))]
-        sleep(0.5)
         if coordinates:
             return {'type': 'MultiPoint', 'coordinates': [coordinates]}
         return None
@@ -89,7 +96,12 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                 job_json = json.loads(str(job_script.contents[0]))
                 try:
                     raw_dates.append(job_json['datePosted'])
+<<<<<<< HEAD
+                    date_posted = datetime.strptime(
+                        job_json['datePosted'], '%Y-%m-%dT%H:%M:%SZ')
+=======
                     date_posted = datetime.strptime(job_json['datePosted'], '%Y-%m-%dT%H:%M:%SZ')
+>>>>>>> c826d1ea89a8467b42e0d458acaee3b9bbb0c51a
 
                     dates.append(date_posted)
 
@@ -107,9 +119,19 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                 else:
                     remote.append(False)
                 states.append(address.get('addressRegion1'))
-                zips.append(address.get('postalCode'))
+                zip_code = address.get('postalCode')
+                zips.append(zip_code)
                 countries.append(address.get('addressCountry'))
+<<<<<<< HEAD
+
+                if zip_code:
+                   coordinates = [zip_coords[str(zip_code)]['LONG'], zip_coords[str(zip_code)]['LAT']]
+                   points.append({'type': 'MultiPoint', 'coordinates': [coordinates]})
+                else:
+                    points.append(get_location(
+=======
                 points.append(get_location(
+>>>>>>> c826d1ea89a8467b42e0d458acaee3b9bbb0c51a
                     f"{address.get('addressLocality')}, {address.get('addressRegion1')}, {address.get('addressCountry')}"))
 
             except:
@@ -129,6 +151,12 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                 types.append(None)
 
     driver.close()
+<<<<<<< HEAD
+    data = []
+
+    for i in range(len(titles)):
+
+=======
 
     # df = pd.DataFrame()
     # df['title'] = titles
@@ -150,6 +178,7 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
 
     for i in range(len(titles)):
 
+>>>>>>> c826d1ea89a8467b42e0d458acaee3b9bbb0c51a
         job_data = {'title': titles[i],
                     'company': companies[i],
                     'link': links[i],
