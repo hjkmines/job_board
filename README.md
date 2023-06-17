@@ -6,8 +6,10 @@ Welcome to the  Hanawilo Job Board, a place for aspiring software engineers and 
 
 
 ## Preview 
-![Hanawilo Job Board Preview](./readme/JobBoard.gif)
-
+<!-- ![Hanawilo Job Board Preview](./readme/JobBoard.gif) -->
+<div align='center'>
+<img src="./readme/JobBoard.gif" width='800'>
+</div>
 
 ## Setup Instructions
 
