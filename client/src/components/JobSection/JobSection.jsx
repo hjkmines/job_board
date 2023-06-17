@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useState, useEffect } from 'react';
 import {
     MDBContainer,
     MDBTypography,
@@ -10,11 +9,9 @@ import "./JobSection.css";
 import JobCarousel from '../JobCarousel/JobCarousel';
 import axios from 'axios';
 import LoadingDots from '../LoadingDots/LoadingDots';
-import LoadingDots from '../LoadingDots/LoadingDots';
 
 const JobSection = ({ sectionTitle, query }) => {
     const [jobs, setJobs] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {

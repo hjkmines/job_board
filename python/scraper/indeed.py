@@ -5,7 +5,6 @@ import undetected_chromedriver as uc
 from urllib.parse import urlencode, urljoin
 import json
 from datetime import datetime
-from datetime import timezone
 import requests
 from time import sleep
 import re

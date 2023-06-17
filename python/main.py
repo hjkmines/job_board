@@ -7,6 +7,9 @@ import cleaning
 
 today = date.today()
 
+# Output dir
+if not os.path.exists(f'./output/{today}'):
+    os.mkdir(f'./output/{today}')
 
 # Web scrapers
 print('Scraping Dice...')
@@ -25,12 +28,12 @@ roles = {'developer', 'engineer', 'developers', 'engineers',  'data', 'analyst',
 
 # Includes 'software' for titles that are just 'software engineer', etc.
 levels = {'junior', 'entry-level', 'grad', 'graduate', 'apprentice', 'web',
-          'apprenticeship', 'fellowship', 'software', 'entry', 'intern', 'i', '1', 'associate', 'jr.', 'jr', 'cloud'}
+          'apprenticeship','fellowship', 'software', 'entry', 'intern', 'i', '1', 'associate', 'jr.', 'jr', 'cloud'}
 
 # Optional, but helps exclude higher level positions
-exclude = {'senior', 'principal' , 'sr.', 'ii', 'iii'}
+exclude = {'senior', 'principal', 'sr.', 'sr', 'ii', 'iii'}
 
-criteria = {'roles': roles, 'levels': levels, 'exclude' : exclude}
+criteria = {'roles': roles, 'levels': levels, 'exclude': exclude}
 
 # Scraping Greenhouse
 print('Scraping Greenhouse...')
@@ -53,7 +56,8 @@ jobs_coll = db['jobs_test']
 # jobs_coll = db['jobs_test']
 print('Indexing...')
 jobs_coll.create_index([('points', pymongo.GEOSPHERE)])
-jobs_coll.create_index([('title', pymongo.TEXT),('description', pymongo.TEXT), ('company', pymongo.TEXT)])
+jobs_coll.create_index(
+    [('title', pymongo.TEXT), ('description', pymongo.TEXT), ('company', pymongo.TEXT)])
 
 
 print('Inserting documents...')
