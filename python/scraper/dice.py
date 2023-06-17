@@ -74,7 +74,11 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
                 points.append(
                     {'type': 'MultiPoint', 'coordinates': [coordinates]})
             else:
+<<<<<<< HEAD
                 points.append(get_location(job_json['jobPostalCode']))
+=======
+                points.append(None)
+>>>>>>> c826d1ea89a8467b42e0d458acaee3b9bbb0c51a
 
         except:
             dates.append(None)
@@ -82,7 +86,11 @@ def scrape_dice(query="junior software developer", pages=1, wait=5):
             cities.append(None)
             states.append(None)
             zips.append(None)
+<<<<<<< HEAD
             points.append(None)
+=======
+            points.append({'type': 'MultiPoint', 'coordinates': [[0, 0]]})
+>>>>>>> c826d1ea89a8467b42e0d458acaee3b9bbb0c51a
             countries.append(None)
             remote.append(None)
 

@@ -5,10 +5,10 @@
 *.env
 
 # Python
-*/.venv
+*.venv/
 python/output
 *.pyc
-**__pycache__/
+*__pycache__/
 *.ipynb
 
 *logs/

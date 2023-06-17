@@ -3,9 +3,16 @@ const Job = require('../models/Job');
 const zips = require("../utils/zipUS.json");
 
 const getJobs = async (req, res, next) => {
+<<<<<<< HEAD
 console.log('query')
 console.log(req.params.query)
   try {
+=======
+  
+  try {
+    console.log(req.query)
+    
+>>>>>>> c826d1ea89a8467b42e0d458acaee3b9bbb0c51a
     if (req.query.latest) {
       console.log('latest jobs')
       const today = new Date();
@@ -18,11 +25,25 @@ console.log(req.params.query)
 
       const jobs = await Job.find({ 'date': { $gte: yesterday } }).sort({ 'date': -1 }).lean();
 
+<<<<<<< HEAD
+=======
+      const today = new Date();
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1)
+      yesterday.setHours(0)
+      yesterday.setMinutes(0)
+      yesterday.setSeconds(0)
+      yesterday.setMilliseconds(0)
+     
+      const jobs = await Job.find({ date: { $gte: yesterday, $lte: today }}).sort({ date: -1 }).lean();
+
+>>>>>>> c826d1ea89a8467b42e0d458acaee3b9bbb0c51a
       return res
         .status(200)
         .setHeader('Content-Type', 'application/json')
         .json(jobs)
 
+<<<<<<< HEAD
     } else if (req.query.remoteOnly) {
       console.log('remoteOnly');
       console.log(req.query);
@@ -126,6 +147,10 @@ console.log(req.params.query)
     else if (req.query.geoLocation && !req.query.search) {
       // Geospatial search only
       console.log('geospatial search')
+=======
+    } else if (req.query.lat && req.query.long) {
+      
+>>>>>>> c826d1ea89a8467b42e0d458acaee3b9bbb0c51a
       const jobs = await Job.find({
         "points": {
           "$near": {
@@ -144,6 +169,7 @@ console.log(req.params.query)
         .json(jobs)
 
     }
+<<<<<<< HEAD
 
     else if (req.query.geoLocation && req.query.search) {
       console.log('search text and geo');
@@ -191,6 +217,11 @@ console.log(req.params.query)
 
     else {
       const jobs = await Job.find().sort({ 'date': -1 }).limit(req.query.limit).lean();
+=======
+
+    else {
+      const jobs = await Job.find().sort({ 'date': 'desc' }).limit(req.query.limit).lean();
+>>>>>>> c826d1ea89a8467b42e0d458acaee3b9bbb0c51a
       return res
         .status(200)
         .setHeader('Content-Type', 'application/json')

@@ -5,6 +5,7 @@ import undetected_chromedriver as uc
 from urllib.parse import urlencode, urljoin
 import json
 from datetime import datetime
+from datetime import timezone
 import requests
 from time import sleep
 import re
@@ -95,8 +96,12 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                 job_json = json.loads(str(job_script.contents[0]))
                 try:
                     raw_dates.append(job_json['datePosted'])
+<<<<<<< HEAD
                     date_posted = datetime.strptime(
                         job_json['datePosted'], '%Y-%m-%dT%H:%M:%SZ')
+=======
+                    date_posted = datetime.strptime(job_json['datePosted'], '%Y-%m-%dT%H:%M:%SZ')
+>>>>>>> c826d1ea89a8467b42e0d458acaee3b9bbb0c51a
 
                     dates.append(date_posted)
 
@@ -117,12 +122,16 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                 zip_code = address.get('postalCode')
                 zips.append(zip_code)
                 countries.append(address.get('addressCountry'))
+<<<<<<< HEAD
 
                 if zip_code:
                    coordinates = [zip_coords[str(zip_code)]['LONG'], zip_coords[str(zip_code)]['LAT']]
                    points.append({'type': 'MultiPoint', 'coordinates': [coordinates]})
                 else:
                     points.append(get_location(
+=======
+                points.append(get_location(
+>>>>>>> c826d1ea89a8467b42e0d458acaee3b9bbb0c51a
                     f"{address.get('addressLocality')}, {address.get('addressRegion1')}, {address.get('addressCountry')}"))
 
             except:
@@ -142,10 +151,34 @@ def scrape_indeed(query="junior software developer", pages=1, wait=5):
                 types.append(None)
 
     driver.close()
+<<<<<<< HEAD
     data = []
 
     for i in range(len(titles)):
 
+=======
+
+    # df = pd.DataFrame()
+    # df['title'] = titles
+    # df['company'] = companies
+    # df['link'] = links
+    # df['description'] = descriptions
+    # df['date'] = dates
+    # df['raw_date'] = raw_dates
+    # df['min_salary'] = mins
+    # df['max_salary'] = maxes
+    # df['salary_type'] = types
+    # df['city'] = cities
+    # df['state'] = states
+    # df['country'] = countries
+    # df['points'] = points
+    # df['remote'] = remote
+    # df['source'] = 'indeed'
+    data = []
+
+    for i in range(len(titles)):
+
+>>>>>>> c826d1ea89a8467b42e0d458acaee3b9bbb0c51a
         job_data = {'title': titles[i],
                     'company': companies[i],
                     'link': links[i],
