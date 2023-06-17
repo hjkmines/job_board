@@ -47,10 +47,12 @@ export default function JobCard({ job }) {
       }
     } else if (["greenhouse", "lever", "yc"].includes(job.source)) {
       if (job.location) {
-        let jobLocations = job.location
+        let jobLocations = job.location;
         if (typeof jobLocations === "object") {
           if (jobLocations.includes("Remote None")) {
-            jobLocations = jobLocations.map(location => location == 'Remote None' ? "Remote" : location)
+            jobLocations = jobLocations.map((location) =>
+              location == "Remote None" ? "Remote" : location
+            );
           }
 
           const locations = jobLocations.join(", ");

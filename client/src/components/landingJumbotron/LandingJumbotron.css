@@ -6,16 +6,6 @@
   background-attachment: fixed;
 }
 
-@supports (-webkit-touch-callout: none) {
-  .bg-jumbo {
-    background-image: url("../../assets/job_board_bg.svg");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: scroll;
-  }
-}
-
 .tagGrab {
   font-weight: 900;
   font-size: 64px;

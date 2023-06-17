@@ -6,7 +6,7 @@
 
 # Python
 */.venv
-python/output
+*/output
 *.pyc
 **__pycache__/
 *.ipynb

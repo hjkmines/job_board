@@ -3,17 +3,15 @@ input[type=range] {
   background: #ffffff;
   border: none;
   border-radius: 50px;
-  cursor: pointer;
-
+  
 }
 
 input[type=range]::-webkit-slider-runnable-track {
-
+  width: 50%;
   height: 1rem;
   background: #ffffff;
   border: none;
   border-radius: 50px;
-
 }
 
 input[type=range]::-webkit-slider-thumb {
@@ -23,31 +21,40 @@ input[type=range]::-webkit-slider-thumb {
   width: 10%;
   border-radius: 50px;
   background: #E9AFC5;
+  ;
 
 }
 
 input[type=range]:focus {
-  outline: none;
+outline: none;
   background: #ffffff;
   border: none;
   border-radius: 50px;
-
 }
 
 input[type=range]:focus::-webkit-slider-runnable-track {
   border: none;
   background: #ffffff;
+}
 
+.carousel-container-with-scrollbar {
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  overflow: visible !important;
+}
+
+.custom-slider {
+  position: absolute;
+  bottom: -1rem;
+  width: 100%;
+}
+
+.custom-slider__input {
+  width: 100%;
+}
+
+.job-item {
+  padding: 1rem 0 1rem 1rem;
 }
 
 
-.carousel-control {
-  color: transparent;
-  border: 0;
-  background-color: transparent;
-  
-}
-
-.carousel-control:hover {
- color: white;
-}

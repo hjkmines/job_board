@@ -226,6 +226,7 @@ const getJob = async (req, res, next) => {
     res.status(200).setHeader("Content-type", "application/json").json(job);
   } catch (err) {
     res.status(501).send(`Can't get job data, ${err.message}`);
+    res.status(501).send(`Can't get job data, ${err.message}`);
     next(err);
   }
 };
