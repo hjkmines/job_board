@@ -10,7 +10,7 @@ python/output
 *.pyc
 **__pycache__/
 *.ipynb
-*/notebooks
+*notebooks/
 *logs/
 
 # Misc

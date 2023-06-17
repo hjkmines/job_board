@@ -28,7 +28,7 @@ roles = {'developer', 'engineer', 'developers', 'engineers',  'data', 'analyst',
 
 # Includes 'software' for titles that are just 'software engineer', etc.
 levels = {'junior', 'entry-level', 'grad', 'graduate', 'apprentice', 'web',
-          'apprenticeship','fellowship', 'software', 'entry', 'intern', 'i', '1', 'associate', 'jr.', 'jr', 'cloud'}
+          'apprenticeship', 'fellowship', 'software', 'entry', 'intern', 'i', '1', 'associate', 'jr.', 'jr', 'cloud'}
 
 # Optional, but helps exclude higher level positions
 exclude = {'senior', 'principal', 'sr.', 'sr', 'ii', 'iii'}
