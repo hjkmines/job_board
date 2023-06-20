@@ -13,7 +13,7 @@
 Welcome to the  Hanawilo Job Board, a place for aspiring software engineers and developers! Tired of checking dozens of job posting sites? Look no further! This job board consolidates a wide range of entry-level tech jobs tailored for aspiring software engineers and developers, saving you time and effort. Whether you are a recent graduate, a career changer, or a self-taught coder, this job board is designed to connect you with exciting opportunities to kickstart your career in tech.
 
 
-## Preview 
+## Preview
 <!-- ![Hanawilo Job Board Preview](./readme/JobBoard.gif) -->
 <div align='center'>
 <img src="./readme/JobBoard.gif" width='800'>
