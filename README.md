@@ -6,6 +6,7 @@
 - [Setup](#setup-instructions)
 - [Features](#features-and-benefits)
 - [Inspiration](#inspiration)
+- [Future-Road-Map](#future-road-map)
 - [License](#license)
 
 # Job Board for Aspiring Software Engineers 
@@ -94,7 +95,6 @@ Follow the steps below to get started with the Job Board project:
 - **Customizable Filters:** Utilize advanced search filters to narrow down job listings based on location, programming languages, and more.
 - **Save and Track Applications:** Keep track of the jobs you've applied to and easily manage your application status.
 
-~~- **Community Engagement:** Connect with fellow job seekers, share resources, and exchange advice through our active online community.~~
 
 We are continuously working to improve the Hanawilo Job Board project and expand its features. Your feedback and contributions are highly valued as we strive to create a valuable resource for aspiring software engineers and developers.
 
@@ -104,6 +104,15 @@ Thank you for choosing the Hanawilo Job Board for your career exploration. We wi
 ## Inspiration
 
 The Hanawilo Job Board was born out of the need to streamline the job search process. We understand the frustrations of navigating countless job board sites and sifting through numerous listings. That's why we created Hanawilo, a centralized platform that takes all the hassle out of your application process. Our inspiration stems from the desire to provide aspiring software engineers and developers with a single place to discover and apply for all the job opportunities they need. With Hanawilo, you can bid farewell to the tedious and time-consuming task of searching multiple platforms. We've gathered a comprehensive collection of tech job listings, ensuring that you find everything you need in one convenient location. Simplify your job search with Hanawilo and focus on what matters most – finding your dream entry-level position in the tech industry.
+
+## Future Road Map
+ - **Data Dashboard:** Create a page of data visualizations to display trends in the datasets, companies with most postings, heatmap of job posting locations, etc.
+ - **Community Engagement:** Connect with fellow job seekers, share resources, and exchange advice through our active online community.
+ - **More Data Sources:** Keep expanding and integrating data sources inthe the data pipeline.
+ - **User System:** Users can keep track of applied jobs, save jobs for later and save frequent search parameters.
+ - **Feature Engineering:** Use natural language processing techniques to extract required years of experience and desired qualifications from raw job descriptions. 
+
+
 
 ## License
 
