@@ -2,13 +2,7 @@
    background-image: url('../../assets/ya-shi.svg');
    background-position: center;
    background-repeat: no-repeat;
-   background-size: cover;
-   height: auto;
-}
-
-.navBarCollapse {
-   align-items: center;
-}
+} 
 
 .toggleDropDown {
    padding-left: 0;
